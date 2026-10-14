@@ -5,7 +5,10 @@ import html, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(HERE)
-APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Street Talk', '美國生活英文單字卡')]
+APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Street Talk', '美國生活英文單字卡'),
+        ('typeday', 'Typeday', '打字機風格的待辦月曆')]
+# 頁面由 App 自己產生、直接寫進這裡的子資料夾（這支只列在首頁）：Typeday＝../checkly-ios 的 tools/appstore/build_site.py --apps（中英兩版）
+PREBUILT = {'typeday'}
 STYLE = """:root{--bg:#faf7f9;--ink:#2b1a35;--ink2:#655a6b;--line:#e7dde4;--a:#5b2a6e}
 @media (prefers-color-scheme:dark){:root{--bg:#1c1420;--ink:#f3ecf4;--ink2:#c4b6c8;--line:#3c2f41;--a:#d9b8ea}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
@@ -51,6 +54,8 @@ def page(title, body, back=True):
 
 def main():
     for repo, name, _ in APPS:
+        if repo in PREBUILT:
+            continue
         os.makedirs(os.path.join(HERE, repo), exist_ok=True)
         for kind, fn, title in (('privacy', 'PRIVACY.md', '隱私權政策'), ('support', 'SUPPORT.md', '使用說明與支援')):
             md = open(os.path.join(BASE, repo, fn), encoding='utf-8').read()

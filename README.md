@@ -6,5 +6,6 @@ App 本身的 repo 是私有的；這裡只放公開頁面，網址 <https://jer
 - 旅ことば：`tabi-kotoba/privacy.html`、`tabi-kotoba/support.html`
 - 여행말：`yeohaengmal/privacy.html`、`yeohaengmal/support.html`
 - Street Talk：`street-talk/privacy.html`、`street-talk/support.html`
+- Typeday：`typeday/privacy.html`、`typeday/support.html`（英文 `typeday/en/…`）。這兩頁由 Typeday 自己的 `checkly-ios/tools/appstore/build_site.py --apps` 產生（來源 `appstore/privacy.md`、`support.md` 與 `.en.md`），`build.py` 只把它列進首頁
 
 內容來源是各 App repo 的 `PRIVACY.md`、`SUPPORT.md`；改了那邊跑 `python3 build.py` 重新產生。聯絡：lins.program@gmail.com，或開 Issue。
