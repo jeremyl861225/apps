@@ -6,9 +6,12 @@ import html, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(HERE)
 APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Street Talk', '美國生活英文單字卡'),
-        ('typeday', 'Typeday', '打字機風格的待辦月曆')]
-# 頁面由 App 自己產生、直接寫進這裡的子資料夾（這支只列在首頁）：Typeday＝../checkly-ios 的 tools/appstore/build_site.py --apps（中英兩版）
-PREBUILT = {'typeday'}
+        ('typeday', 'Typeday', '打字機風格的待辦月曆'), ('radius', 'Radius', '在 iPhone 上離線轉檔')]
+# 頁面由 App 自己產生、直接寫進這裡的子資料夾（這支只列在首頁）：Typeday＝../checkly-ios 的 tools/appstore/build_site.py --apps（中英兩版）；
+# Radius＝../radius 的 scripts/build_public_pages.py（9 種語言、一頁切換，網址是資料夾形式 radius/privacy/、radius/support/）
+PREBUILT = {'typeday', 'radius'}
+# 首頁連結的路徑（沒列的照 <repo>/privacy.html、<repo>/support.html）
+LINKS = {'radius': ('radius/privacy/', 'radius/support/')}
 STYLE = """:root{--bg:#faf7f9;--ink:#2b1a35;--ink2:#655a6b;--line:#e7dde4;--a:#5b2a6e}
 @media (prefers-color-scheme:dark){:root{--bg:#1c1420;--ink:#f3ecf4;--ink2:#c4b6c8;--line:#3c2f41;--a:#d9b8ea}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
@@ -62,7 +65,8 @@ def main():
             open(os.path.join(HERE, repo, f'{kind}.html'), 'w', encoding='utf-8').write(page(f'{name} {title}', md2html(md)))
     idx = '<h1>App 隱私權政策與支援</h1>\n<p>jeremyl861225 的 iPhone App。聯絡：<a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>\n' + '\n'.join(
         f'<h2>{name}<span style="font-weight:400;color:var(--ink2);font-size:15px">　{sub}</span></h2>'
-        f'<ul><li><a href="{repo}/privacy.html">隱私權政策 Privacy Policy</a></li><li><a href="{repo}/support.html">使用說明與支援 Support</a></li></ul>'
+        f'<ul><li><a href="{LINKS.get(repo, (f"{repo}/privacy.html",))[0]}">隱私權政策 Privacy Policy</a></li>'
+        f'<li><a href="{LINKS.get(repo, (None, f"{repo}/support.html"))[1]}">使用說明與支援 Support</a></li></ul>'
         for repo, name, sub in APPS)
     open(os.path.join(HERE, 'index.html'), 'w', encoding='utf-8').write(page('App 隱私權政策與支援', idx, back=False))
     print('ok')
