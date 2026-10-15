@@ -1,0 +1,323 @@
+diff --git a/bin/lo-all-static-libs b/bin/lo-all-static-libs
+index 41bba54fe..8d56d9279 100755
+--- a/bin/lo-all-static-libs
++++ b/bin/lo-all-static-libs
+@@ -76,6 +76,8 @@ iOS)
+ 	oslibs="$oslibs $WORKDIR/UnpackedTarball/nss/nss/lib/freebl/out/*.a"
+ 	oslibs="$oslibs $WORKDIR/UnpackedTarball/nss/nss/lib/freebl/out/Darwin_SINGLE_SHLIB/*.o"
+ 	oslibs="$oslibs $WORKDIR/UnpackedTarball/nss/nss/lib/freebl/out/Darwin_SINGLE_SHLIB/deprecated/*.o"
++	# AArch64 AES-GCM（新版 NSS 從 AWS-LC 搬來的組語）在子資料夾裡，上面那行收不到
++	oslibs="$oslibs $WORKDIR/UnpackedTarball/nss/nss/lib/freebl/out/Darwin_SINGLE_SHLIB/aarch64-gcm-slothy/*.o"
+ 	oslibs="$oslibs $WORKDIR/UnpackedTarball/nss/nss/lib/libpkix/pkix/certsel/out/*.a"
+ 	oslibs="$oslibs $WORKDIR/UnpackedTarball/nss/nss/lib/libpkix/pkix/checker/out/*.a"
+ 	oslibs="$oslibs $WORKDIR/UnpackedTarball/nss/nss/lib/libpkix/pkix/crlsel/out/*.a"
+diff --git a/configure.ac b/configure.ac
+index cfe03b87e..c6336ff8c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1154,7 +1154,11 @@ ios*) # iOS
+     enable_xmlhelp=no
+     with_ppds=no
+     if test "$enable_ios_simulator" = "yes"; then
+-        host=x86_64-apple-darwin
++        # Radius: Apple-silicon simulator is arm64 too (upstream still assumes an Intel Mac).
++        case "$build_cpu" in
++        aarch64|arm64) host=aarch64-apple-darwin ;;
++        *) host=x86_64-apple-darwin ;;
++        esac
+     fi
+     # See "Default values, as such probably valid just for Linux" comment above the case "$host_os"
+     LINKFLAGSSHL="-dynamiclib"
+@@ -4073,10 +4077,10 @@ if test $_os = iOS; then
+ 
+     if test "$enable_ios_simulator" = "yes"; then
+         platformlc=iphonesimulator
+-        versionmin=-mios-simulator-version-min=14.5
++        versionmin=-mios-simulator-version-min=18.0
+     else
+         platformlc=iphoneos
+-        versionmin=-miphoneos-version-min=14.5
++        versionmin=-miphoneos-version-min=18.0
+     fi
+ 
+     sysroot=`xcrun --sdk $platformlc --show-sdk-path`
+@@ -5485,9 +5489,8 @@ ios*)
+ 
+     case "$host_cpu" in
+     aarch64|arm64)
+-        if test "$enable_ios_simulator" = "yes"; then
+-            AC_MSG_ERROR([iOS simulator is only available in macOS not iOS])
+-        fi
++        # Radius: the arm64 simulator (Apple silicon) builds exactly like the device, only against the
++        # iPhoneSimulator SDK (see "what iOS SDK to use"); upstream rejected it as an Intel-era leftover.
+         ;;
+     *)
+         AC_MSG_ERROR([Unsupported host_cpu $host_cpu for host_os $host_os])
+diff --git a/desktop/source/lib/init.cxx b/desktop/source/lib/init.cxx
+index a605030eb..4a4f444bc 100644
+--- a/desktop/source/lib/init.cxx
++++ b/desktop/source/lib/init.cxx
+@@ -7220,7 +7220,7 @@ static void doc_paintWindowForView(LibreOfficeKitDocument* pThis, unsigned nLOKW
+     aMapMode.SetOrigin(Point(-(nX / fDPIScale), -(nY / fDPIScale)));
+     pDevice->SetMapMode(aMapMode);
+ 
+-    pWindow->PaintToDevice(pDevice.get(), Point(0, 0));
++    pWindow->PaintToDevice(*pDevice, Point(0, 0));
+ 
+     CGContextRelease(cgc);
+ 
+diff --git a/external/curl/ExternalProject_curl.mk b/external/curl/ExternalProject_curl.mk
+index f31c671bb..ec2041105 100644
+--- a/external/curl/ExternalProject_curl.mk
++++ b/external/curl/ExternalProject_curl.mk
+@@ -51,8 +51,8 @@ $(call gb_ExternalProject_get_state_target,curl,build):
+ 			--disable-ldap --disable-ldaps --disable-manual --disable-pop3 \
+ 			--disable-rtsp --disable-smb --disable-smtp --disable-telnet  \
+ 			--disable-tftp  \
+-			$(if $(ENABLE_OPENSSL),--with-openssl$(if $(SYSTEM_OPENSSL),,="$(gb_UnpackedTarball_workdir)/openssl")) \
+-			$(if $(filter iOS MACOSX,$(OS)),--with-apple-sectrust) \
++			$(if $(ENABLE_OPENSSL),--with-openssl$(if $(SYSTEM_OPENSSL),,="$(gb_UnpackedTarball_workdir)/openssl"),--without-ssl) \
++			$(if $(ENABLE_OPENSSL),$(if $(filter iOS MACOSX,$(OS)),--with-apple-sectrust)) \
+ 			$(if $(filter LINUX,$(OS)),--without-ca-bundle --without-ca-path) \
+ 			$(gb_CONFIGURE_PLATFORMS) \
+ 			$(if $(filter TRUE,$(DISABLE_DYNLOADING)),--disable-shared,--disable-static) \
+diff --git a/external/expat/ExternalProject_expat.mk b/external/expat/ExternalProject_expat.mk
+index 5a6f8ebee..dc9f466d2 100644
+--- a/external/expat/ExternalProject_expat.mk
++++ b/external/expat/ExternalProject_expat.mk
+@@ -22,6 +22,7 @@ $(call gb_ExternalProject_get_state_target,expat,configure) :
+ 			--without-sys-getrandom --without-getrandom\
+ 			$(if $(filter LINUX ANDROID,$(OS)),--with-sys-getrandom) \
+ 			$(if $(filter EMSCRIPTEN MACOSX,$(OS)),--with-getentropy) \
++			$(if $(filter iOS,$(OS)),--with-arc4random-buf) \
+ 			$(gb_CONFIGURE_PLATFORMS) \
+ 			$(if $(CROSS_COMPILING),$(if $(filter INTEL ARM,$(CPUNAME)),ac_cv_c_bigendian=no)) \
+ 	,,expat_configure.log)
+diff --git a/external/expat/StaticLibrary_expat.mk b/external/expat/StaticLibrary_expat.mk
+index 6ca4fc84b..aa5f1fbdb 100644
+--- a/external/expat/StaticLibrary_expat.mk
++++ b/external/expat/StaticLibrary_expat.mk
+@@ -50,6 +50,11 @@ else ifneq ($(filter EMSCRIPTEN MACOSX,$(OS)),)
+ $(eval $(call gb_StaticLibrary_add_generated_cobjects,expat,\
+ 	UnpackedTarball/expat/lib/random_getentropy \
+ ))
++else ifeq ($(OS),iOS)
++# iOS has no public getentropy (no <sys/random.h> in the SDK); arc4random_buf is there since iOS 4.3.
++$(eval $(call gb_StaticLibrary_add_generated_cobjects,expat,\
++	UnpackedTarball/expat/lib/random_arc4random_buf \
++))
+ else
+ $(eval $(call gb_StaticLibrary_add_generated_cobjects,expat,\
+ 	UnpackedTarball/expat/lib/random_getrandom \
+diff --git a/vcl/inc/quartz/salgdi.h b/vcl/inc/quartz/salgdi.h
+index f02631bd9..f500b5aa7 100644
+--- a/vcl/inc/quartz/salgdi.h
++++ b/vcl/inc/quartz/salgdi.h
+@@ -57,6 +57,7 @@
+ class AquaSalFrame;
+ class XorEmulation;
+ class CoreTextFont;
++class SalVirtualDevice;
+ 
+ namespace sal::aqua
+ {
+diff --git a/vcl/ios/iosinst.cxx b/vcl/ios/iosinst.cxx
+index ac64645c3..5a7e1ad11 100644
+--- a/vcl/ios/iosinst.cxx
++++ b/vcl/ios/iosinst.cxx
+@@ -149,8 +149,6 @@ extern "C" SalInstance *create_SalInstance()
+ void IosSalSystem::ShowNativeMessageBox(const OUString& rTitle, const OUString& rMessage)
+ {
+     NSLog(@"%@: %@", [CreateNSString(rTitle) autorelease], [CreateNSString(rMessage) autorelease]);
+-
+-    return 0;
+ }
+ 
+ /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
+diff --git a/vcl/ios/salios.cxx b/vcl/ios/salios.cxx
+index 362fa258e..6af594cb0 100644
+--- a/vcl/ios/salios.cxx
++++ b/vcl/ios/salios.cxx
+@@ -181,9 +181,9 @@ void AquaGraphicsBackend::copyBits(const SalTwoRect& rPosAry, SalGraphics *pSrcG
+     {
+         std::shared_ptr<SalBitmap> pBitmap;
+         if (pSrcGraphics)
+-            pBitmap = pSrcGraphics->GetImpl()->getBitmap(rPosAry.mnSrcX, rPosAry.mnSrcY, rPosAry.mnSrcWidth, rPosAry.mnSrcHeight);
++            pBitmap = pSrcGraphics->GetImpl()->getBitmap(rPosAry.mnSrcX, rPosAry.mnSrcY, rPosAry.mnSrcWidth, rPosAry.mnSrcHeight, false);
+         else
+-            pBitmap = getBitmap(rPosAry.mnSrcX, rPosAry.mnSrcY, rPosAry.mnSrcWidth, rPosAry.mnSrcHeight);
++            pBitmap = getBitmap(rPosAry.mnSrcX, rPosAry.mnSrcY, rPosAry.mnSrcWidth, rPosAry.mnSrcHeight, false);
+ 
+         if (pBitmap)
+         {
+@@ -507,7 +507,7 @@ void AquaSalVirtualDevice::Destroy()
+     }
+ }
+ 
+-bool AquaSalVirtualDevice::SetSize( tools::Long nDX, tools::Long nDY )
++bool AquaSalVirtualDevice::SetSize( tools::Long nDX, tools::Long nDY, bool /*bAlphaMaskTransparent*/ )
+ {
+     SAL_INFO( "vcl.virdev", "AquaSalVirtualDevice::SetSize() this=" << this <<
+               " (" << nDX << "x" << nDY << ") mbForeignContext=" << (mbForeignContext ? "YES" : "NO"));
+diff --git a/vcl/quartz/salgdi.cxx b/vcl/quartz/salgdi.cxx
+index b186a1f94..416131766 100644
+--- a/vcl/quartz/salgdi.cxx
++++ b/vcl/quartz/salgdi.cxx
+@@ -54,16 +54,22 @@
+ #endif
+ #include <quartz/utils.h>
+ #ifdef IOS
++#include <i18nlangtag/languagetag.hxx>
++#include <i18nlangtag/lang.h>
++#include <i18nlangtag/mslangid.hxx>
++#endif
++#ifdef IOS
+ #include <ios/iosinst.hxx>
+ #endif
+ #include <sallayout.hxx>
+ 
+ #include <config_features.h>
++#if HAVE_FEATURE_SKIA
+ #include <vcl/skia/SkiaHelper.hxx>
+-#if !HAVE_FEATURE_SKIA
++#include <skia/osx/gdiimpl.hxx>
++#elif !defined IOS
+ static_assert(false, "skia is required on macOS");
+ #endif
+-#include <skia/osx/gdiimpl.hxx>
+ 
+ #include <quartz/SystemFontList.hxx>
+ #include <quartz/CoreTextFont.hxx>
+@@ -97,7 +103,24 @@ bool CoreTextGlyphFallbackSubstititution::FindFontSubstitute(vcl::font::FontSele
+     CFStringRef pStr = CreateCFString(rMissingChars);
+     if (pStr)
+     {
++#ifdef IOS
++        // 照文字的語言找備援：不給語言時 CoreText 依手機的語言設定挑字——實機上（日文排在前面的手機）
++        // 中文會拿到日文的 Hiragino Mincho，中文文件就變成日文字形（2026-10-08 實測，模擬器看不出來）。
++        CTFontRef pFallback = nullptr;
++        if (rPattern.meLanguage != LANGUAGE_DONTKNOW && rPattern.meLanguage != LANGUAGE_NONE && rPattern.meLanguage != LANGUAGE_SYSTEM)
++        {
++            CFStringRef pLang = CreateCFString(LanguageTag(rPattern.meLanguage).getBcp47());
++            if (pLang)
++            {
++                pFallback = CTFontCreateForStringWithLanguage(pFont->GetCTFont(), pStr, CFRangeMake(0, CFStringGetLength(pStr)), pLang);
++                CFRelease(pLang);
++            }
++        }
++        if (!pFallback)
++            pFallback = CTFontCreateForString(pFont->GetCTFont(), pStr, CFRangeMake(0, CFStringGetLength(pStr)));
++#else
+         CTFontRef pFallback = CTFontCreateForString(pFont->GetCTFont(), pStr, CFRangeMake(0, CFStringGetLength(pStr)));
++#endif
+         if (pFallback)
+         {
+             bFound = true;
+@@ -119,6 +142,25 @@ bool CoreTextGlyphFallbackSubstititution::FindFontSubstitute(vcl::font::FontSele
+             FontAttributes rAttr = DevFontFromCTFontDescriptor(pDesc, nullptr);
+ 
+             rPattern.maSearchName = rAttr.GetFamilyName();
++#ifdef IOS
++            // iOS 的中文備援是 PingFang（FontServices 的 PingFangUI.ttc），它用 'hvgl' 字形表、沒有 'glyf'，
++            // 字型清單刻意不收（見 SystemFontList.cxx 的 tdf#163000：匯出 PDF 會壞），照這個名字一定找不到，
++            // 中文就畫不出來。App 內附 Noto Sans 的繁中／簡中（OFL），改指到它們（香港、澳門用繁中）。
++            // 家族名稱會跟著系統語言變成「蘋方-繁」，所以看 PostScript 名稱（PingFangTC-Regular…）。
++            if (CFStringRef pPSName = CTFontCopyPostScriptName(pFallback))
++            {
++                const OUString aPSName = GetOUString(pPSName);
++                CFRelease(pPSName);
++                // 中文文字：不管 CoreText 回什麼（手機日文優先時會回 Hiragino Mincho），都用內附的 Noto；明朝／宋體類對到 Noto Serif TC。
++                const bool bChinese = MsLangId::isTraditionalChinese(rPattern.meLanguage) || MsLangId::isSimplifiedChinese(rPattern.meLanguage);
++                const bool bSerif = aPSName.indexOf("Mincho") >= 0 || aPSName.indexOf("Song") >= 0 || aPSName.indexOf("Serif") >= 0;
++                if (bChinese)
++                    rPattern.maSearchName = MsLangId::isSimplifiedChinese(rPattern.meLanguage) ? u"Noto Sans SC"_ustr
++                                          : (bSerif ? u"Noto Serif TC"_ustr : u"Noto Sans TC"_ustr);
++                else if (aPSName.startsWith("PingFang"))
++                    rPattern.maSearchName = aPSName.startsWith("PingFangSC") ? u"Noto Sans SC"_ustr : u"Noto Sans TC"_ustr;
++            }
++#endif
+ 
+             CFRelease(pFallback);
+             CFRelease(pDesc);
+@@ -142,6 +184,7 @@ AquaSalGraphics::AquaSalGraphics(bool bPrinter)
+     // is CGPDFContext so even if this bug could be solved by blitting the
+     // Skia bitmap buffer, the printed PDF would not have selectable text so
+     // always disable Skia for print graphics contexts.
++#if HAVE_FEATURE_SKIA
+     if(bPrinter)
+         mpBackend.reset(new AquaGraphicsBackend(maShared));
+     else
+@@ -149,6 +192,11 @@ AquaSalGraphics::AquaSalGraphics(bool bPrinter)
+         assert(SkiaHelper::isVCLSkiaEnabled() && "skia is required on macOS");
+         mpBackend.reset(new AquaSkiaSalGraphicsImpl(*this, maShared));
+     }
++#else
++    // iOS is built without Skia: use the CoreGraphics backend (the one macOS still uses for printing).
++    (void)bPrinter;
++    mpBackend.reset(new AquaGraphicsBackend(maShared));
++#endif
+ 
+     for (int i = 0; i < MAX_FALLBACK; ++i)
+         mpFont[i] = nullptr;
+diff --git a/vcl/quartz/salvd.cxx b/vcl/quartz/salvd.cxx
+index 27b2c96fd..e9d2e6a90 100644
+--- a/vcl/quartz/salvd.cxx
++++ b/vcl/quartz/salvd.cxx
+@@ -48,7 +48,7 @@ std::unique_ptr<SalVirtualDevice> AquaSalInstance::CreateVirtualDevice( SalGraph
+ #ifdef IOS
+     (void)rGraphics;
+     std::unique_ptr<SalVirtualDevice> pNew(new AquaSalVirtualDevice( nullptr, nDX, nDY, eFormat, bAlphaMaskTransparent ));
+-    pNew->SetSize( nDX, nDY );
++    pNew->SetSize( nDX, nDY, bAlphaMaskTransparent );
+     return pNew;
+ #else
+     return std::unique_ptr<SalVirtualDevice>(new AquaSalVirtualDevice( static_cast< AquaSalGraphics* >(&rGraphics),
+diff --git a/vcl/source/app/svmain.cxx b/vcl/source/app/svmain.cxx
+index 979da7d96..8caa77197 100644
+--- a/vcl/source/app/svmain.cxx
++++ b/vcl/source/app/svmain.cxx
+@@ -194,7 +194,14 @@ int ImplSVMain()
+     SAL_WARN_IF( !pSVData->mpApp, "vcl", "no instance of class Application" );
+ 
+     if ( IsVCLInit() )
++#if defined IOS
++        // iOS 的 LibreOfficeKit 先在呼叫端 InitVCL()（desktop/source/lib/init.cxx 的 #ifdef IOS），
++        // 再開 lo_startmain 執行緒跑 soffice_main()：這時要照舊跑 Application::Main()（Desktop::Main 會在
++        // OpenClients 時 SetReady），直接回傳的話 lo_initialize 會永遠卡在 RequestHandler::WaitForReady()。
++        return GetSalInstance()->SVMainRun();
++#else
+         return EXIT_SUCCESS;
++#endif
+ 
+ #if !defined(_WIN32) && !defined(SYSTEM_OPENSSL)
+     static constexpr OUString name(u"SSL_CERT_FILE"_ustr);
+diff --git a/vcl/source/font/PhysicalFontCollection.cxx b/vcl/source/font/PhysicalFontCollection.cxx
+index 37373a541..690350032 100644
+--- a/vcl/source/font/PhysicalFontCollection.cxx
++++ b/vcl/source/font/PhysicalFontCollection.cxx
+@@ -1300,6 +1300,25 @@ PhysicalFontFamily* PhysicalFontCollection::FindFontFamily(FontSelectPattern& rF
+             nSearchType |= ImplFontAttrs::Symbol;
+     }
+ 
++#ifdef IOS
++    // iOS：指定的字型找不到、文字又是中文時，一律用 App 內附的 Noto（iPhone 的中文字型 PingFang 給不了 LibreOffice 用）。
++    // 不能交給下面依屬性挑：結果跟著手機的語言設定走，日文優先的手機會挑到日文的 Hiragino Mincho
++    // （2026-10-08 實機與日文優先的模擬器都重現）。明體、宋體、楷體、Serif 類用 Noto Serif TC（簡中只內附黑體）。
++    if (MsLangId::isTraditionalChinese(rFSD.meLanguage) || MsLangId::isSimplifiedChinese(rFSD.meLanguage))
++    {
++        const OUString& rName = rFSD.GetFamilyName();
++        const bool bSerif = (nSearchType & ImplFontAttrs::Serif)
++            || rName.indexOf(u'明') >= 0 || rName.indexOf(u'宋') >= 0 || rName.indexOf(u'楷') >= 0
++            || rName.toAsciiLowerCase().indexOf("ming") >= 0 || rName.toAsciiLowerCase().indexOf("song") >= 0
++            || rName.toAsciiLowerCase().indexOf("kai") >= 0 || rName.toAsciiLowerCase().indexOf("serif") >= 0
++            || rName.toAsciiLowerCase().indexOf("mincho") >= 0;
++        const OUString aNoto = MsLangId::isSimplifiedChinese(rFSD.meLanguage) ? u"notosanssc"_ustr
++                             : (bSerif ? u"notoseriftc"_ustr : u"notosanstc"_ustr);
++        if (PhysicalFontFamily* pNoto = ImplFindFontFamilyBySearchName(aNoto))
++            return pNoto;
++    }
++#endif
++
+     PhysicalFontFamily::CalcType(nSearchType, eSearchWeight, eSearchWidth, rFSD.GetFamilyType(), pFontAttr);
+     PhysicalFontFamily* pFoundData = FindFontFamilyByAttributes(nSearchType,
+         eSearchWeight, eSearchWidth, rFSD.GetItalic(), aSearchFamilyName);

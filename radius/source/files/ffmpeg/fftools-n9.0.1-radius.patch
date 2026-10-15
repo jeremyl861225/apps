@@ -1,0 +1,120 @@
+diff --git a/fftools/ffmpeg.c b/fftools/ffmpeg.c
+index b394243..36320c5 100644
+--- a/fftools/ffmpeg.c
++++ b/fftools/ffmpeg.c
+@@ -202,6 +202,26 @@ static BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
+     signal(sig, func)
+ #endif
+ 
++#if FFT_IN_PROCESS
++/* Radius (FFTools), modified 2026-10-15: ffmpeg runs inside the app's process, so it must not
++ * replace the app's signal handlers or touch the terminal. Cancellation is requested through
++ * fft_ffmpeg_request_exit() below: the same flags as receiving SIGTERM twice (the app discards
++ * the unfinished output, so stop at once instead of finishing it). SIGPIPE stays ignored, as in
++ * the CLI, so that writing to a closed pipe returns EPIPE instead of ending the app. */
++void fft_ffmpeg_request_exit(void)
++{
++    received_sigterm = SIGTERM;
++    if (received_nb_signals < 2)
++        received_nb_signals = 2;
++}
++
++void term_init(void)
++{
++#ifdef SIGPIPE
++    signal(SIGPIPE, SIG_IGN);
++#endif
++}
++#else
+ void term_init(void)
+ {
+ #if defined __linux__
+@@ -249,6 +269,7 @@ void term_init(void)
+     SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE);
+ #endif
+ }
++#endif /* FFT_IN_PROCESS */
+ 
+ /* read a key without blocking */
+ static int read_key(void)
+diff --git a/fftools/ffmpeg_opt.c b/fftools/ffmpeg_opt.c
+index 2c362c6..78ed016 100644
+--- a/fftools/ffmpeg_opt.c
++++ b/fftools/ffmpeg_opt.c
+@@ -68,7 +68,13 @@ int debug_ts          = 0;
+ int exit_on_error     = 0;
+ int abort_on_flags    = 0;
+ int print_stats       = -1;
++#if FFT_IN_PROCESS
++/* Radius (FFTools), modified 2026-10-15: there is no terminal inside the app; behave as if
++ * -nostdin was always given (never read keys or ask before overwriting). */
++int stdin_interaction = 0;
++#else
+ int stdin_interaction = 1;
++#endif
+ float max_error_rate  = 2.0/3;
+ char *filter_nbthreads;
+ int filter_complex_nbthreads = 0;
+diff --git a/fftools/ffprobe.c b/fftools/ffprobe.c
+index 31f7410..4626581 100644
+--- a/fftools/ffprobe.c
++++ b/fftools/ffprobe.c
+@@ -2612,9 +2612,12 @@ static int open_input_file(InputFile *ifile, const char *filename,
+ 
+     av_dump_format(fmt_ctx, 0, filename, 0);
+ 
++    /* Radius (FFTools), modified 2026-10-15: the errors below used to call exit(1), which would end
++     * the whole app when ffprobe runs inside it. Return the error instead; the
++     * caller closes the input file and ffprobe still exits with status 1. */
+     ifile->streams = av_calloc(fmt_ctx->nb_streams, sizeof(*ifile->streams));
+     if (!ifile->streams)
+-        exit(1);
++        return AVERROR(ENOMEM);
+     ifile->nb_streams = fmt_ctx->nb_streams;
+ 
+     /* bind a decoder to each input stream */
+@@ -2635,15 +2638,19 @@ static int open_input_file(InputFile *ifile, const char *filename,
+             err = filter_codec_opts(codec_opts, stream->codecpar->codec_id,
+                                     fmt_ctx, stream, codec, &opts, NULL);
+             if (err < 0)
+-                exit(1);
++                return err;
+ 
+             ist->dec_ctx = avcodec_alloc_context3(codec);
+-            if (!ist->dec_ctx)
+-                exit(1);
++            if (!ist->dec_ctx) {
++                av_dict_free(&opts);
++                return AVERROR(ENOMEM);
++            }
+ 
+             err = avcodec_parameters_to_context(ist->dec_ctx, stream->codecpar);
+-            if (err < 0)
+-                exit(1);
++            if (err < 0) {
++                av_dict_free(&opts);
++                return err;
++            }
+ 
+             if (do_show_log) {
+                 // For logging it is needed to disable at least frame threads as otherwise
+@@ -2656,15 +2663,17 @@ static int open_input_file(InputFile *ifile, const char *filename,
+ 
+             ist->dec_ctx->pkt_timebase = stream->time_base;
+ 
+-            if (avcodec_open2(ist->dec_ctx, codec, &opts) < 0) {
++            if ((err = avcodec_open2(ist->dec_ctx, codec, &opts)) < 0) {
+                 av_log(NULL, AV_LOG_WARNING, "Could not open codec for input stream %d\n",
+                        stream->index);
+-                exit(1);
++                av_dict_free(&opts);
++                return err;
+             }
+ 
+             if ((t = av_dict_iterate(opts, NULL))) {
+                 av_log(NULL, AV_LOG_ERROR, "Option %s for input stream %d not found\n",
+                        t->key, stream->index);
++                av_dict_free(&opts);
+                 return AVERROR_OPTION_NOT_FOUND;
+             }
+         }

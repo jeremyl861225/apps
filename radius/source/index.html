@@ -1,0 +1,971 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Radius（iPhone App）用到的 LGPL、MPL 元件的原始碼、修改與建置說明。Source code and build instructions for the LGPL and MPL components in Radius.">
+<title>Radius 原始碼與建置說明 · Source Code</title>
+<style>:root{--bg:#faf9f6;--fg:#1c1c1e;--muted:#5d5d63;--line:#e2e0da;--accent:#2e6b5a;--soft:#eef3f0}
+@media (prefers-color-scheme:dark){:root{--bg:#121313;--fg:#e9e9eb;--muted:#a2a2a8;--line:#2d2f2f;--accent:#86c9b3;--soft:#1b2421}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.75 -apple-system,BlinkMacSystemFont,"PingFang TC","Heiti TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;overflow-wrap:break-word}
+main{max-width:42rem;margin:0 auto;padding:20px 16px 72px}
+nav.lang{display:flex;flex-wrap:wrap;gap:.45rem .5rem;font-size:.9rem;padding-bottom:8px}
+nav.lang a{color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:.15rem .8rem;white-space:nowrap}
+nav.lang a:hover,nav.lang a:focus-visible{color:var(--accent);border-color:var(--accent)}
+article+article{margin-top:56px;padding-top:32px;border-top:2px solid var(--line)}
+h1{font-size:1.65rem;line-height:1.3;margin:.6rem 0 .2rem;letter-spacing:.01em}
+h2{font-size:1.12rem;line-height:1.4;margin:2.1rem 0 .5rem;padding-top:.2rem;color:var(--fg)}
+p{margin:.55rem 0}
+p.meta{color:var(--muted);font-size:.92rem;margin-top:0}
+p.summary{background:var(--soft);border-left:4px solid var(--accent);border-radius:6px;padding:.8rem 1rem;margin:1.1rem 0 1.4rem}
+ul{margin:.4rem 0;padding-left:1.25rem}
+ul ul{margin:.2rem 0 .3rem;padding-left:1.1rem;color:var(--fg)}
+li{margin:.3rem 0}
+li::marker{color:var(--muted)}
+strong{font-weight:650}
+a{color:var(--accent);text-underline-offset:2px;overflow-wrap:anywhere}
+@media print{nav.lang{display:none}body{background:#fff;color:#000}}
+[lang="ja"]{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,system-ui,sans-serif}
+[lang="ko"]{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
+[lang="zh-Hans"]{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Heiti SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+nav.site{font-size:.9rem;color:var(--muted);padding:4px 0 6px}
+nav.site a{color:var(--muted)}
+nav.lang a[aria-current]{color:var(--accent);border-color:var(--accent)}
+article[hidden]{display:none}
+.js article+article{margin-top:0;padding-top:0;border-top:0}
+p.also{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.95rem}
+code{font:.8em/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--soft);border-radius:4px;padding:.05rem .3rem;overflow-wrap:anywhere}
+li code.sha{display:inline;font-size:.72em;color:var(--muted);background:none;padding:0;word-break:break-all}</style>
+</head>
+<body>
+<main>
+<nav class="site"><a href="../../">← 所有 App · All apps</a></nav>
+<nav class="lang" aria-label="語言 Language"><a href="#zh" lang="zh-Hant-TW">繁體中文</a><a href="#en" lang="en-US">English</a><a href="#ja" lang="ja">日本語</a><a href="#ko" lang="ko">한국어</a><a href="#es" lang="es">Español</a><a href="#zh-Hans" lang="zh-Hans">简体中文</a><a href="#de" lang="de">Deutsch</a><a href="#fr" lang="fr">Français</a><a href="#pt-BR" lang="pt-BR">Português (Brasil)</a></nav>
+<article id="zh" lang="zh-Hant-TW">
+<h1>Radius 原始碼與建置說明</h1>
+<p class="meta">適用 Radius 1.0（iPhone）｜更新：2026 年 10 月 16 日</p>
+<p class="summary"><strong>Radius 用到以 LGPL 與 MPL 授權的開放原始碼元件。這一頁提供這些元件在 Radius 1.0 裡實際使用的完整對應原始碼、我們的修改，以及建置用的腳本。</strong></p>
+<h2>1. 這一頁涵蓋什麼</h2>
+<ul><li>
+Radius 本身不是開放原始碼軟體；下面的授權只適用於這一頁列出的元件。
+</li><li>
+這裡的檔案對應 App Store 上的 Radius 1.0。之後的版本若更動這些元件，這一頁會更新，舊版的檔案也會留著。
+</li><li>
+授權全文在 App 的「⋯」›「關於與第三方授權」，也在 <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>。
+</li><li>
+所有檔案在 <a href="files/" rel="noreferrer noopener">files/</a>，每個檔案的 SHA-256 在 <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a>；英文說明 <a href="files/README.md" rel="noreferrer noopener">README.md</a>、中文說明 <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a>。
+</li></ul>
+<h2>2. FFmpeg 與相關函式庫（LGPL）</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong>：LGPL 2.1 或更新版本（以 <code>--disable-gpl --disable-version3 --disable-nonfree</code> 編譯）。函式庫<strong>沒有修改</strong>，以 7 個動態連結的 framework 附在 App 裡（libavcodec、libavdevice、libavfilter、libavformat、libavutil、libswresample、libswscale）。
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12.0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code>（ffmpeg.org 的官方壓縮檔）
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code>（官方簽章）
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code>（完整的 configure 參數、每個壓縮檔的網址與 SHA-256）
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong>（我們寫的介接層）：LGPL 2.1 或更新版本。把 FFmpeg 自己的 fftools（ffmpeg、ffprobe）編成 App 在自己的行程裡呼叫的動態 framework；對 FFmpeg 的修改只有 fftools 裡的 3 個檔。
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code>（介接層原始碼、fftools 修補、建置腳本與說明）
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code>（我們對 fftools 的修改）
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code>（建置腳本）
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong>：LGPL 2.0 或更新版本，未修改。只編編碼器，靜態連進 libavcodec。
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1.5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2、libvpx 1.16.0、libwebp 1.6.0</strong>：BSD 3-Clause，未修改，靜態連進 libavcodec。
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7.8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5.6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4.3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib、bzip2、iconv、VideoToolbox、AudioToolbox 是 iOS 內建的。
+</li></ul>
+<h2>3. 以 LibreOffice 為基礎的 Office 引擎（MPL 2.0）</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong>：MPL 2.0。標籤 <code>libreoffice-26.8.1.1</code>（commit <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>），原始碼在 <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a>（GitHub 鏡像 <a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>）。靜態連結進 App，只用來把 Word、Excel、簡報檔轉成 PDF。
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code>（我們的修改，13 個檔）
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code>（建置腳本）
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code>（建置時下載的第三方原始碼壓縮檔：檔名、大小、SHA-256、網址，都未修改）
+</li></ul>
+</li><li>
+修改的內容：Apple 晶片的 arm64 模擬器、最低 iOS 18、curl 不帶 TLS、expat 在 iOS 的亂數來源、vcl 的 iOS 專用修正、靜態庫清單。
+</li><li>
+靜態連結、可以選擇授權的第三方元件（例如 librevenge、libwpd、libwps、libmwaw、libodfgen、liblangtag、Hunspell、Hyphen、Graphite、Redland），一律選用其中的 MPL 或 Apache 2.0 授權。
+</li><li>
+LibreOffice 是 The Document Foundation 的商標；Radius 與 The Document Foundation 沒有隸屬關係，也沒有得到其背書。
+</li></ul>
+<h2>4. 其他元件</h2>
+<ul><li>
+libarchive 3.8.9（BSD 2-Clause）與 XZ Utils／liblzma 5.8.4（0BSD）：壓縮與解壓縮。建置腳本：<a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0（zlib）：SVG 算圖。
+</li><li>
+字型（SIL Open Font License 1.1）：Office 引擎用的 Noto Sans CJK 與 Noto Serif CJK（取得方式：<a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>）；依授權改名後附上子集的 Instrument Serif、Instrument Sans、清松手寫體 1、Klee One、Nanum Pen Script、Caveat。
+</li><li>
+這些都是寬鬆授權，沒有提供原始碼的義務，列出備查；授權全文在 <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>。
+</li></ul>
+<h2>5. 怎麼建置</h2>
+<ul><li>
+需要：Apple 晶片的 Mac、Xcode 27（iOS 27 SDK），以及 Homebrew 的建置工具（每支腳本開頭有列）。路徑不能有空白。
+</li><li>
+FFmpeg 與 FFTools：解開 radius-fftools-1.0.tar.xz，執行 <code>scripts/build_ffmpeg_ios.sh</code>。它會下載上面的壓縮檔（或使用你放在 <code>$RADIUS_FFMPEG_WORK/downloads</code> 的檔案）、核對 SHA-256、確認 configure 的授權是 LGPL 2.1，編出 8 個動態的 xcframework（arm64 實機與 arm64 模擬器，最低 iOS 18）。逐步說明在壓縮檔裡的 README.md。
+</li><li>
+LibreOffice：取出標籤 <code>libreoffice-26.8.1.1</code>，照 <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a> 放好腳本與修補檔，執行 <code>scripts/build_libreoffice_ios.sh device</code>（要好幾個小時）。
+</li></ul>
+<h2>6. 把自己編的 FFmpeg 換進 App</h2>
+<ul><li>
+App（<code>RadiusPhone.app</code>）裡，FFmpeg 與 FFTools 是 <code>Frameworks</code> 資料夾中 8 個獨立的動態 framework，透過 <code>@rpath</code> 載入：FFTools、libavcodec（含 LAME、Opus、libvpx、libwebp）、libavdevice、libavfilter、libavformat、libavutil、libswresample、libswscale。分享延伸（<code>PlugIns/RadiusShare.appex</code>）用的是同一組。
+</li><li>
+App 本身的程式只呼叫 <code>FFTools.h</code> 的 C 介面（<code>fft_start</code>、<code>fft_cancel</code>、<code>fft_run</code>、<code>fft_list_codecs</code>），不直接呼叫 FFmpeg 的函式。改版只要保持 framework 名稱與安裝名稱、<code>FFTools.h</code> 的介面，以及 FFmpeg 9.0 的函式庫主版本（或以你的 FFmpeg 重編 FFTools），就能替換。
+</li><li>
+做法：用上面的腳本編好，把 <code>Frameworks/&lt;名稱&gt;.framework/&lt;名稱&gt;</code> 換成你編的版本（xcframework 的 ios-arm64），再依序用你自己的憑證與描述檔重新簽 8 個 framework、分享延伸與 App，用 Xcode 或 <code>xcrun devicectl</code> 裝到你的 iPhone。詳細步驟在 radius-fftools-1.0.tar.xz 的 README.md。
+</li></ul>
+<h2>7. 書面提供</h2>
+<p>Radius 1.0 最後一次散布之後至少三年內，收到這個版本的人都可以來信 <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a> 索取這一頁上的原始碼，費用不超過提供的成本。</p>
+<h2>8. 聯絡</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#zh">支援與常見問題 →</a></p>
+</article>
+<article id="en" lang="en-US">
+<h1>Radius Source Code &amp; Build Instructions</h1>
+<p class="meta">For Radius 1.0 (iPhone) | Updated October 16, 2026</p>
+<p class="summary"><strong>Radius uses open-source components licensed under the LGPL and the MPL. This page provides the complete corresponding source code of those components as used in Radius 1.0, our changes to them, and the scripts we build them with.</strong></p>
+<h2>1. What this page covers</h2>
+<ul><li>
+Radius itself is not open-source software. The licenses below apply only to the components listed on this page.
+</li><li>
+The files here correspond to Radius 1.0 as released on the App Store. If a later version changes these components, this page will be updated and the files for earlier versions will stay available.
+</li><li>
+The full license texts are in the app under “⋯” &gt; About &amp; Licenses, and in <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li><li>
+All files are in <a href="files/" rel="noreferrer noopener">files/</a>, with the SHA-256 of each file in <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a>. Overview: <a href="files/README.md" rel="noreferrer noopener">README.md</a> (Chinese: <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a>).
+</li></ul>
+<h2>2. FFmpeg and related libraries (LGPL)</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong>: LGPL 2.1 or later (built with <code>--disable-gpl --disable-version3 --disable-nonfree</code>). The libraries are <strong>not modified</strong>; they ship in the app as seven dynamically linked frameworks (libavcodec, libavdevice, libavfilter, libavformat, libavutil, libswresample, libswscale).
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12.0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code> (official tarball from ffmpeg.org)
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code> (official signature)
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code> (complete configure command line; URL and SHA-256 of every tarball)
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong> (our interface layer): LGPL 2.1 or later. It builds FFmpeg's own fftools (ffmpeg, ffprobe) as a dynamic framework that the app calls in its own process. Our only changes to FFmpeg are to three files in fftools.
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code> (interface layer source, fftools patch, build script and instructions)
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code> (our changes to fftools)
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code> (build script)
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong>: LGPL 2.0 or later, unmodified. Encoder only, statically linked into libavcodec.
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1.5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2, libvpx 1.16.0, libwebp 1.6.0</strong>: BSD 3-Clause, unmodified, statically linked into libavcodec.
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7.8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5.6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4.3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib, bzip2, iconv, VideoToolbox and AudioToolbox are part of iOS.
+</li></ul>
+<h2>3. Office engine based on LibreOffice (MPL 2.0)</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong>: MPL 2.0. Tag <code>libreoffice-26.8.1.1</code> (commit <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>); source at <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a> (GitHub mirror: <a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>). It is statically linked into the app and used only to convert Word, Excel and presentation files to PDF.
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code> (our changes, 13 files)
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code> (build script)
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code> (third-party source tarballs downloaded by the build: file name, size, SHA-256, URL; all unmodified)
+</li></ul>
+</li><li>
+What the changes do: build for the arm64 simulator on Apple silicon, minimum iOS 18, curl without TLS, expat's random source on iOS, iOS-specific fixes in vcl, and the static library list.
+</li><li>
+Statically linked third-party components that offer a choice of licenses (for example librevenge, libwpd, libwps, libmwaw, libodfgen, liblangtag, Hunspell, Hyphen, Graphite, Redland) are used under their MPL or Apache 2.0 option.
+</li><li>
+LibreOffice is a trademark of The Document Foundation. Radius is not affiliated with or endorsed by The Document Foundation.
+</li></ul>
+<h2>4. Other components</h2>
+<ul><li>
+libarchive 3.8.9 (BSD 2-Clause) and XZ Utils / liblzma 5.8.4 (0BSD): compression and extraction. Build script: <a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0 (zlib): SVG rendering.
+</li><li>
+Fonts (SIL Open Font License 1.1): Noto Sans CJK and Noto Serif CJK for the Office engine (how we get them: <a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>); subsets of Instrument Serif, Instrument Sans, 清松手寫體 1 (JasonHandwriting1), Klee One, Nanum Pen Script and Caveat, renamed as the license requires.
+</li><li>
+These are permissive licenses with no obligation to provide source code; they are listed for reference. Their license texts are in <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li></ul>
+<h2>5. How to build</h2>
+<ul><li>
+You need a Mac with Apple silicon, Xcode 27 (iOS 27 SDK), and the Homebrew build tools listed at the top of each script. Paths must not contain spaces.
+</li><li>
+FFmpeg and FFTools: unpack radius-fftools-1.0.tar.xz and run <code>scripts/build_ffmpeg_ios.sh</code>. It downloads the tarballs above (or uses the ones you put in <code>$RADIUS_FFMPEG_WORK/downloads</code>), checks their SHA-256, confirms that configure reports LGPL 2.1, and builds eight dynamic xcframeworks (arm64 device and arm64 simulator, minimum iOS 18). Step-by-step instructions are in the README.md inside the archive.
+</li><li>
+LibreOffice: check out tag <code>libreoffice-26.8.1.1</code>, place the script and the patch as described in <a href="files/README.md" rel="noreferrer noopener">README.md</a>, and run <code>scripts/build_libreoffice_ios.sh device</code> (this takes several hours).
+</li></ul>
+<h2>6. Using your own FFmpeg in the app</h2>
+<ul><li>
+In the app bundle (<code>RadiusPhone.app</code>), FFmpeg and FFTools are eight separate dynamic frameworks in the <code>Frameworks</code> folder, loaded through <code>@rpath</code>: FFTools, libavcodec (with LAME, Opus, libvpx and libwebp), libavdevice, libavfilter, libavformat, libavutil, libswresample and libswscale. The share extension (<code>PlugIns/RadiusShare.appex</code>) uses the same ones.
+</li><li>
+The app's own code calls only the C interface in <code>FFTools.h</code> (<code>fft_start</code>, <code>fft_cancel</code>, <code>fft_run</code>, <code>fft_list_codecs</code>); it does not call FFmpeg functions directly. A modified version can replace them as long as it keeps the framework names and install names, the <code>FFTools.h</code> interface, and the FFmpeg 9.0 library major versions (or you rebuild FFTools against your FFmpeg).
+</li><li>
+How: build with the script above, replace each <code>Frameworks/&lt;name&gt;.framework/&lt;name&gt;</code> with your build (the ios-arm64 slice of the xcframework), re-sign the eight frameworks, the share extension and the app, in that order, with your own certificate and provisioning profile, and install it on your iPhone with Xcode or <code>xcrun devicectl</code>. Detailed steps are in the README.md inside radius-fftools-1.0.tar.xz.
+</li></ul>
+<h2>7. Written offer</h2>
+<p>For at least three years after the last distribution of Radius 1.0, anyone who received it can request the source code on this page by emailing <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a>, at a charge no more than the cost of providing it.</p>
+<h2>8. Contact</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#en">Support &amp; FAQ →</a></p>
+</article>
+<article id="ja" lang="ja">
+<h1>Radius ソースコードとビルド手順</h1>
+<p class="meta">対象：Radius 1.0（iPhone）｜更新：2026年10月16日</p>
+<p class="summary"><strong>Radius は LGPL と MPL でライセンスされたオープンソースのコンポーネントを使用しています。このページでは、Radius 1.0 で実際に使用しているこれらのコンポーネントの完全な対応ソースコード、私たちによる変更、ビルドに使用するスクリプトを提供します。</strong></p>
+<h2>1. このページの対象</h2>
+<ul><li>
+Radius 自体はオープンソースソフトウェアではありません。以下のライセンスは、このページに記載したコンポーネントにのみ適用されます。
+</li><li>
+ここにあるファイルは App Store で配信している Radius 1.0 に対応しています。今後のバージョンでこれらのコンポーネントを変更した場合はこのページを更新し、以前のバージョンのファイルも残します。
+</li><li>
+ライセンス全文は、アプリの「⋯」＞「情報とサードパーティのライセンス」と <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a> にあります。
+</li><li>
+すべてのファイルは <a href="files/" rel="noreferrer noopener">files/</a> にあり、各ファイルの SHA-256 は <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a> にあります。概要：<a href="files/README.md" rel="noreferrer noopener">README.md</a>（英語）、<a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a>（繁体字中国語）。
+</li></ul>
+<h2>2. FFmpeg と関連ライブラリ（LGPL）</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong>：LGPL 2.1 以降（<code>--disable-gpl --disable-version3 --disable-nonfree</code> でビルド）。ライブラリ自体は<strong>変更していません</strong>。7 つの動的リンクの framework としてアプリに含まれています（libavcodec、libavdevice、libavfilter、libavformat、libavutil、libswresample、libswscale）。
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12.0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code>（ffmpeg.org の公式アーカイブ）
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code>（公式の署名）
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code>（configure の全オプション、各アーカイブの URL と SHA-256）
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong>（私たちが作成したインターフェース層）：LGPL 2.1 以降。FFmpeg 自身の fftools（ffmpeg、ffprobe）を、アプリが自分のプロセス内で呼び出す動的 framework としてビルドします。FFmpeg への変更は fftools の 3 ファイルだけです。
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code>（インターフェース層のソース、fftools のパッチ、ビルドスクリプトと説明）
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code>（fftools への変更）
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code>（ビルドスクリプト）
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong>：LGPL 2.0 以降、無変更。エンコーダのみをビルドし、libavcodec に静的リンクしています。
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1.5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2、libvpx 1.16.0、libwebp 1.6.0</strong>：BSD 3-Clause、無変更。libavcodec に静的リンクしています。
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7.8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5.6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4.3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib、bzip2、iconv、VideoToolbox、AudioToolbox は iOS に含まれているものです。
+</li></ul>
+<h2>3. LibreOffice ベースの Office エンジン（MPL 2.0）</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong>：MPL 2.0。タグ <code>libreoffice-26.8.1.1</code>（コミット <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>）。ソースコードは <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a>（GitHub のミラー：<a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>）。アプリに静的リンクしており、Word、Excel、プレゼンテーションのファイルを PDF に変換する用途にのみ使っています。
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code>（私たちの変更、13 ファイル）
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code>（ビルドスクリプト）
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code>（ビルド時にダウンロードしたサードパーティのソースアーカイブ：ファイル名、サイズ、SHA-256、URL。いずれも無変更）
+</li></ul>
+</li><li>
+変更の内容：Apple シリコンの arm64 シミュレータ向けビルド、最小 iOS 18、TLS なしの curl、iOS での expat の乱数源、vcl の iOS 専用の修正、静的ライブラリの一覧。
+</li><li>
+静的リンクしている、ライセンスを選択できるサードパーティのコンポーネント（librevenge、libwpd、libwps、libmwaw、libodfgen、liblangtag、Hunspell、Hyphen、Graphite、Redland など）は、MPL または Apache 2.0 を選択して使用しています。
+</li><li>
+LibreOffice は The Document Foundation の商標です。Radius は The Document Foundation と提携しておらず、その承認も受けていません。
+</li></ul>
+<h2>4. その他のコンポーネント</h2>
+<ul><li>
+libarchive 3.8.9（BSD 2-Clause）と XZ Utils／liblzma 5.8.4（0BSD）：圧縮と展開。ビルドスクリプト：<a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0（zlib）：SVG の描画。
+</li><li>
+フォント（SIL Open Font License 1.1）：Office エンジンで使う Noto Sans CJK と Noto Serif CJK（入手方法：<a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>）。ライセンスの規定に従って名前を変えたサブセットの Instrument Serif、Instrument Sans、清松手寫體 1、Klee One、Nanum Pen Script、Caveat。
+</li><li>
+これらは寛容なライセンスで、ソースコードを提供する義務はありませんが、参考として記載しています。ライセンス全文は <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a> にあります。
+</li></ul>
+<h2>5. ビルド方法</h2>
+<ul><li>
+必要なもの：Apple シリコンの Mac、Xcode 27（iOS 27 SDK）、各スクリプトの冒頭に記載した Homebrew のビルドツール。パスに空白を含めることはできません。
+</li><li>
+FFmpeg と FFTools：radius-fftools-1.0.tar.xz を展開し、<code>scripts/build_ffmpeg_ios.sh</code> を実行します。上記のアーカイブをダウンロードし（または <code>$RADIUS_FFMPEG_WORK/downloads</code> に置いたファイルを使い）、SHA-256 を照合し、configure のライセンスが LGPL 2.1 であることを確認してから、8 つの動的 xcframework（arm64 の実機と arm64 のシミュレータ、最小 iOS 18）をビルドします。手順の詳細はアーカイブ内の README.md にあります。
+</li><li>
+LibreOffice：タグ <code>libreoffice-26.8.1.1</code> をチェックアウトし、<a href="files/README.md" rel="noreferrer noopener">README.md</a> のとおりにスクリプトとパッチを配置して、<code>scripts/build_libreoffice_ios.sh device</code> を実行します（数時間かかります）。
+</li></ul>
+<h2>6. 自分でビルドした FFmpeg をアプリで使う</h2>
+<ul><li>
+アプリ（<code>RadiusPhone.app</code>）の中で、FFmpeg と FFTools は <code>Frameworks</code> フォルダにある 8 つの独立した動的 framework で、<code>@rpath</code> 経由で読み込まれます：FFTools、libavcodec（LAME、Opus、libvpx、libwebp を含む）、libavdevice、libavfilter、libavformat、libavutil、libswresample、libswscale。共有機能拡張（<code>PlugIns/RadiusShare.appex</code>）も同じものを使います。
+</li><li>
+アプリ自身のコードが呼び出すのは <code>FFTools.h</code> の C インターフェース（<code>fft_start</code>、<code>fft_cancel</code>、<code>fft_run</code>、<code>fft_list_codecs</code>）だけで、FFmpeg の関数を直接呼び出すことはありません。framework の名前とインストール名、<code>FFTools.h</code> のインターフェース、FFmpeg 9.0 のライブラリのメジャーバージョンを保てば（あるいはあなたの FFmpeg に合わせて FFTools をビルドし直せば）、変更したものに置き換えられます。
+</li><li>
+方法：上記のスクリプトでビルドし、<code>Frameworks/&lt;名前&gt;.framework/&lt;名前&gt;</code> をあなたがビルドしたもの（xcframework の ios-arm64）に置き換え、8 つの framework、共有機能拡張、アプリの順に、あなた自身の証明書とプロビジョニングプロファイルで署名し直して、Xcode または <code>xcrun devicectl</code> で iPhone にインストールします。詳しい手順は radius-fftools-1.0.tar.xz 内の README.md にあります。
+</li></ul>
+<h2>7. 書面による提供の申し出</h2>
+<p>Radius 1.0 の最後の配布から少なくとも 3 年間、このバージョンを受け取った方は誰でも、<a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a> へのメールでこのページのソースコードを請求できます。費用は提供にかかる実費を超えません。</p>
+<h2>8. お問い合わせ</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#ja">サポートとよくある質問 →</a></p>
+</article>
+<article id="ko" lang="ko">
+<h1>Radius 소스 코드 및 빌드 방법</h1>
+<p class="meta">대상: Radius 1.0(iPhone) | 업데이트: 2026년 10월 16일</p>
+<p class="summary"><strong>Radius는 LGPL과 MPL로 라이선스된 오픈 소스 구성 요소를 사용합니다. 이 페이지에서는 Radius 1.0에서 실제로 사용하는 이 구성 요소들의 완전한 대응 소스 코드, 저희가 수정한 내용, 빌드에 쓰는 스크립트를 제공합니다.</strong></p>
+<h2>1. 이 페이지에서 다루는 내용</h2>
+<ul><li>
+Radius 자체는 오픈 소스 소프트웨어가 아닙니다. 아래 라이선스는 이 페이지에 나열된 구성 요소에만 적용됩니다.
+</li><li>
+이곳의 파일은 App Store에 출시된 Radius 1.0에 대응합니다. 이후 버전에서 이 구성 요소들이 바뀌면 이 페이지를 업데이트하며, 이전 버전의 파일도 그대로 남겨 둡니다.
+</li><li>
+라이선스 전문은 앱의 ‘⋯’ &gt; ‘정보 및 타사 라이선스’와 <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>에 있습니다.
+</li><li>
+모든 파일은 <a href="files/" rel="noreferrer noopener">files/</a>에 있고, 각 파일의 SHA-256은 <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a>에 있습니다. 개요: <a href="files/README.md" rel="noreferrer noopener">README.md</a>(영어), <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a>(번체 중국어).
+</li></ul>
+<h2>2. FFmpeg 및 관련 라이브러리(LGPL)</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong>: LGPL 2.1 이상(<code>--disable-gpl --disable-version3 --disable-nonfree</code>로 빌드). 라이브러리는 <strong>수정하지 않았으며</strong>, 동적으로 링크되는 framework 7개로 앱에 포함되어 있습니다(libavcodec, libavdevice, libavfilter, libavformat, libavutil, libswresample, libswscale).
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12.0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code>(ffmpeg.org의 공식 압축 파일)
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code>(공식 서명)
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code>(configure 전체 옵션, 각 압축 파일의 URL과 SHA-256)
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong>(저희가 작성한 인터페이스 계층): LGPL 2.1 이상. FFmpeg 자체의 fftools(ffmpeg, ffprobe)를 앱이 자기 프로세스 안에서 호출하는 동적 framework로 빌드합니다. FFmpeg에 대한 수정은 fftools의 파일 3개뿐입니다.
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code>(인터페이스 계층 소스, fftools 패치, 빌드 스크립트와 설명)
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code>(fftools에 대한 수정)
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code>(빌드 스크립트)
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong>: LGPL 2.0 이상, 수정 없음. 인코더만 빌드해 libavcodec에 정적으로 링크합니다.
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1.5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2, libvpx 1.16.0, libwebp 1.6.0</strong>: BSD 3-Clause, 수정 없음. libavcodec에 정적으로 링크합니다.
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7.8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5.6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4.3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib, bzip2, iconv, VideoToolbox, AudioToolbox는 iOS에 포함된 것입니다.
+</li></ul>
+<h2>3. LibreOffice 기반 Office 엔진(MPL 2.0)</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong>: MPL 2.0. 태그 <code>libreoffice-26.8.1.1</code>(커밋 <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>). 소스 코드는 <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a>에 있습니다(GitHub 미러: <a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>). 앱에 정적으로 링크되어 있으며, Word, Excel, 프레젠테이션 파일을 PDF로 변환하는 데에만 사용합니다.
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code>(저희의 수정, 파일 13개)
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code>(빌드 스크립트)
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code>(빌드할 때 내려받은 서드파티 소스 압축 파일: 파일 이름, 크기, SHA-256, URL. 모두 수정 없음)
+</li></ul>
+</li><li>
+수정 내용: Apple 실리콘의 arm64 시뮬레이터용 빌드, 최소 iOS 18, TLS 없는 curl, iOS에서 expat의 난수 소스, vcl의 iOS 전용 수정, 정적 라이브러리 목록.
+</li><li>
+정적으로 링크되며 라이선스를 선택할 수 있는 서드파티 구성 요소(예: librevenge, libwpd, libwps, libmwaw, libodfgen, liblangtag, Hunspell, Hyphen, Graphite, Redland)는 MPL 또는 Apache 2.0을 선택해 사용합니다.
+</li><li>
+LibreOffice는 The Document Foundation의 상표입니다. Radius는 The Document Foundation과 제휴 관계가 없으며 그 보증도 받지 않았습니다.
+</li></ul>
+<h2>4. 기타 구성 요소</h2>
+<ul><li>
+libarchive 3.8.9(BSD 2-Clause)와 XZ Utils/liblzma 5.8.4(0BSD): 압축과 압축 풀기. 빌드 스크립트: <a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0(zlib): SVG 렌더링.
+</li><li>
+글꼴(SIL Open Font License 1.1): Office 엔진에서 쓰는 Noto Sans CJK와 Noto Serif CJK(받는 방법: <a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>), 라이선스에 따라 이름을 바꾼 하위 집합 글꼴 Instrument Serif, Instrument Sans, 清松手寫體 1, Klee One, Nanum Pen Script, Caveat.
+</li><li>
+이들은 허용적인 라이선스로 소스 코드를 제공할 의무는 없지만 참고용으로 나열합니다. 라이선스 전문은 <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>에 있습니다.
+</li></ul>
+<h2>5. 빌드 방법</h2>
+<ul><li>
+필요한 것: Apple 실리콘 Mac, Xcode 27(iOS 27 SDK), 각 스크립트 맨 앞에 적힌 Homebrew 빌드 도구. 경로에 공백이 있으면 안 됩니다.
+</li><li>
+FFmpeg와 FFTools: radius-fftools-1.0.tar.xz의 압축을 풀고 <code>scripts/build_ffmpeg_ios.sh</code>를 실행합니다. 위의 압축 파일을 내려받거나(또는 <code>$RADIUS_FFMPEG_WORK/downloads</code>에 넣어 둔 파일을 사용하고), SHA-256을 확인하고, configure의 라이선스가 LGPL 2.1인지 확인한 뒤, 동적 xcframework 8개(arm64 실기기와 arm64 시뮬레이터, 최소 iOS 18)를 빌드합니다. 단계별 설명은 압축 파일 안의 README.md에 있습니다.
+</li><li>
+LibreOffice: 태그 <code>libreoffice-26.8.1.1</code>을 체크아웃하고, <a href="files/README.md" rel="noreferrer noopener">README.md</a>에 적힌 대로 스크립트와 패치를 배치한 다음 <code>scripts/build_libreoffice_ios.sh device</code>를 실행합니다(몇 시간 걸립니다).
+</li></ul>
+<h2>6. 직접 빌드한 FFmpeg를 앱에서 사용하기</h2>
+<ul><li>
+앱(<code>RadiusPhone.app</code>) 안에서 FFmpeg와 FFTools는 <code>Frameworks</code> 폴더에 있는 독립된 동적 framework 8개이며, <code>@rpath</code>를 통해 로드됩니다: FFTools, libavcodec(LAME, Opus, libvpx, libwebp 포함), libavdevice, libavfilter, libavformat, libavutil, libswresample, libswscale. 공유 확장 프로그램(<code>PlugIns/RadiusShare.appex</code>)도 같은 것을 사용합니다.
+</li><li>
+앱 자체의 코드는 <code>FFTools.h</code>의 C 인터페이스(<code>fft_start</code>, <code>fft_cancel</code>, <code>fft_run</code>, <code>fft_list_codecs</code>)만 호출하며, FFmpeg 함수를 직접 호출하지 않습니다. framework 이름과 설치 이름, <code>FFTools.h</code> 인터페이스, FFmpeg 9.0의 라이브러리 메이저 버전을 유지하면(또는 직접 빌드한 FFmpeg에 맞춰 FFTools를 다시 빌드하면) 수정한 버전으로 바꿀 수 있습니다.
+</li><li>
+방법: 위의 스크립트로 빌드하고, <code>Frameworks/&lt;이름&gt;.framework/&lt;이름&gt;</code>을 직접 빌드한 것(xcframework의 ios-arm64)으로 바꾼 뒤, framework 8개, 공유 확장 프로그램, 앱 순서로 본인의 인증서와 프로비저닝 프로파일로 다시 서명하고, Xcode나 <code>xcrun devicectl</code>로 iPhone에 설치합니다. 자세한 단계는 radius-fftools-1.0.tar.xz 안의 README.md에 있습니다.
+</li></ul>
+<h2>7. 서면 제공 약속</h2>
+<p>Radius 1.0을 마지막으로 배포한 날로부터 최소 3년 동안, 이 버전을 받은 사람은 누구나 <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a>으로 이메일을 보내 이 페이지의 소스 코드를 요청할 수 있습니다. 비용은 제공에 드는 실비를 넘지 않습니다.</p>
+<h2>8. 문의</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#ko">지원 및 자주 묻는 질문 →</a></p>
+</article>
+<article id="es" lang="es">
+<h1>Código fuente e instrucciones de compilación de Radius</h1>
+<p class="meta">Para Radius 1.0 (iPhone) | Actualizado el 16 de octubre de 2026</p>
+<p class="summary"><strong>Radius usa componentes de código abierto con licencia LGPL y MPL. En esta página está el código fuente correspondiente completo de esos componentes tal como se usan en Radius 1.0, nuestros cambios y los scripts con los que los compilamos.</strong></p>
+<h2>1. Qué cubre esta página</h2>
+<ul><li>
+Radius en sí no es software de código abierto. Las licencias de abajo solo se aplican a los componentes que aparecen en esta página.
+</li><li>
+Los archivos de aquí corresponden a Radius 1.0 tal como se publicó en el App Store. Si una versión posterior cambia estos componentes, esta página se actualizará y los archivos de las versiones anteriores seguirán disponibles.
+</li><li>
+El texto completo de las licencias está en la app, en “⋯” &gt; Acerca de y licencias, y en <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li><li>
+Todos los archivos están en <a href="files/" rel="noreferrer noopener">files/</a>, con el SHA-256 de cada uno en <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a>. Resumen: <a href="files/README.md" rel="noreferrer noopener">README.md</a> (en inglés) y <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a> (en chino tradicional).
+</li></ul>
+<h2>2. FFmpeg y bibliotecas relacionadas (LGPL)</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong>: LGPL 2.1 o posterior (compilado con <code>--disable-gpl --disable-version3 --disable-nonfree</code>). Las bibliotecas <strong>no están modificadas</strong>; van en la app como siete frameworks de enlace dinámico (libavcodec, libavdevice, libavfilter, libavformat, libavutil, libswresample, libswscale).
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12,0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code> (archivo oficial de ffmpeg.org)
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code> (firma oficial)
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code> (línea de configure completa; URL y SHA-256 de cada archivo)
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong> (nuestra capa de interfaz): LGPL 2.1 o posterior. Compila las propias fftools de FFmpeg (ffmpeg, ffprobe) como un framework dinámico al que la app llama dentro de su propio proceso. Nuestros únicos cambios a FFmpeg son en tres archivos de fftools.
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code> (código fuente de la capa de interfaz, parche de fftools, script de compilación e instrucciones)
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code> (nuestros cambios en fftools)
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code> (script de compilación)
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong>: LGPL 2.0 o posterior, sin modificar. Solo el codificador, enlazado estáticamente en libavcodec.
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1,5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2, libvpx 1.16.0, libwebp 1.6.0</strong>: BSD 3-Clause, sin modificar, enlazados estáticamente en libavcodec.
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7,8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5,6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4,3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib, bzip2, iconv, VideoToolbox y AudioToolbox forman parte de iOS.
+</li></ul>
+<h2>3. Motor de Office basado en LibreOffice (MPL 2.0)</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong>: MPL 2.0. Etiqueta <code>libreoffice-26.8.1.1</code> (commit <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>); código fuente en <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a> (réplica en GitHub: <a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>). Está enlazado estáticamente en la app y solo se usa para convertir archivos de Word, Excel y presentaciones a PDF.
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code> (nuestros cambios, 13 archivos)
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code> (script de compilación)
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code> (archivos de código fuente de terceros que descarga la compilación: nombre, tamaño, SHA-256, URL; todos sin modificar)
+</li></ul>
+</li><li>
+Qué hacen los cambios: compilar para el simulador arm64 en Mac con chip de Apple, iOS 18 como mínimo, curl sin TLS, la fuente de aleatoriedad de expat en iOS, correcciones de vcl propias de iOS y la lista de bibliotecas estáticas.
+</li><li>
+Los componentes de terceros enlazados estáticamente que permiten elegir licencia (por ejemplo librevenge, libwpd, libwps, libmwaw, libodfgen, liblangtag, Hunspell, Hyphen, Graphite, Redland) se usan con su opción MPL o Apache 2.0.
+</li><li>
+LibreOffice es una marca registrada de The Document Foundation. Radius no está afiliada a The Document Foundation ni cuenta con su respaldo.
+</li></ul>
+<h2>4. Otros componentes</h2>
+<ul><li>
+libarchive 3.8.9 (BSD 2-Clause) y XZ Utils / liblzma 5.8.4 (0BSD): compresión y extracción. Script de compilación: <a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0 (zlib): renderizado de SVG.
+</li><li>
+Fuentes (SIL Open Font License 1.1): Noto Sans CJK y Noto Serif CJK para el motor de Office (cómo las obtenemos: <a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>); subconjuntos de Instrument Serif, Instrument Sans, 清松手寫體 1 (JasonHandwriting1), Klee One, Nanum Pen Script y Caveat, con el nombre cambiado como exige la licencia.
+</li><li>
+Son licencias permisivas que no obligan a ofrecer el código fuente; se mencionan como referencia. El texto de sus licencias está en <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li></ul>
+<h2>5. Cómo compilar</h2>
+<ul><li>
+Necesitas un Mac con chip de Apple, Xcode 27 (SDK de iOS 27) y las herramientas de Homebrew que se indican al principio de cada script. Las rutas no pueden tener espacios.
+</li><li>
+FFmpeg y FFTools: descomprime radius-fftools-1.0.tar.xz y ejecuta <code>scripts/build_ffmpeg_ios.sh</code>. Descarga los archivos de arriba (o usa los que pongas en <code>$RADIUS_FFMPEG_WORK/downloads</code>), comprueba su SHA-256, verifica que configure indique LGPL 2.1 y compila ocho xcframeworks dinámicos (dispositivo arm64 y simulador arm64, iOS 18 como mínimo). Las instrucciones paso a paso están en el README.md del archivo comprimido.
+</li><li>
+LibreOffice: obtén la etiqueta <code>libreoffice-26.8.1.1</code>, coloca el script y el parche como se describe en <a href="files/README.md" rel="noreferrer noopener">README.md</a> y ejecuta <code>scripts/build_libreoffice_ios.sh device</code> (tarda varias horas).
+</li></ul>
+<h2>6. Usar tu propio FFmpeg en la app</h2>
+<ul><li>
+Dentro de la app (<code>RadiusPhone.app</code>), FFmpeg y FFTools son ocho frameworks dinámicos independientes en la carpeta <code>Frameworks</code>, cargados mediante <code>@rpath</code>: FFTools, libavcodec (con LAME, Opus, libvpx y libwebp), libavdevice, libavfilter, libavformat, libavutil, libswresample y libswscale. La extensión para compartir (<code>PlugIns/RadiusShare.appex</code>) usa los mismos.
+</li><li>
+El código propio de la app solo llama a la interfaz en C de <code>FFTools.h</code> (<code>fft_start</code>, <code>fft_cancel</code>, <code>fft_run</code>, <code>fft_list_codecs</code>); no llama directamente a funciones de FFmpeg. Una versión modificada puede sustituirlos siempre que conserve los nombres de los frameworks y sus nombres de instalación, la interfaz de <code>FFTools.h</code> y las versiones principales de las bibliotecas de FFmpeg 9.0 (o que recompiles FFTools con tu FFmpeg).
+</li><li>
+Cómo: compila con el script de arriba, sustituye cada <code>Frameworks/&lt;nombre&gt;.framework/&lt;nombre&gt;</code> por tu versión (la porción ios-arm64 del xcframework), vuelve a firmar los ocho frameworks, la extensión para compartir y la app, en ese orden, con tu propio certificado y perfil de aprovisionamiento, e instálala en tu iPhone con Xcode o con <code>xcrun devicectl</code>. Los pasos detallados están en el README.md de radius-fftools-1.0.tar.xz.
+</li></ul>
+<h2>7. Oferta por escrito</h2>
+<p>Durante al menos tres años después de la última distribución de Radius 1.0, cualquier persona que la haya recibido puede pedir el código fuente de esta página escribiendo a <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a>, por un importe no superior al coste de proporcionarlo.</p>
+<h2>8. Contacto</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#es">Soporte y preguntas frecuentes →</a></p>
+</article>
+<article id="zh-Hans" lang="zh-Hans">
+<h1>Radius 源代码与构建说明</h1>
+<p class="meta">适用 Radius 1.0（iPhone）｜更新：2026 年 10 月 16 日</p>
+<p class="summary"><strong>Radius 使用了以 LGPL 与 MPL 授权的开源组件。本页提供这些组件在 Radius 1.0 中实际使用的完整对应源代码、我们的修改，以及构建用的脚本。</strong></p>
+<h2>1. 本页涵盖的内容</h2>
+<ul><li>
+Radius 本身不是开源软件；下面的授权只适用于本页列出的组件。
+</li><li>
+这里的文件对应 App Store 上的 Radius 1.0。之后的版本如果更改了这些组件，本页会更新，旧版的文件也会保留。
+</li><li>
+授权全文在 App 的“⋯”›“关于与第三方授权”，也在 <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>。
+</li><li>
+所有文件在 <a href="files/" rel="noreferrer noopener">files/</a>，每个文件的 SHA-256 在 <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a>；英文说明 <a href="files/README.md" rel="noreferrer noopener">README.md</a>、繁体中文说明 <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a>。
+</li></ul>
+<h2>2. FFmpeg 及相关库（LGPL）</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong>：LGPL 2.1 或更新版本（以 <code>--disable-gpl --disable-version3 --disable-nonfree</code> 编译）。库本身<strong>没有修改</strong>，以 7 个动态链接的 framework 附在 App 中（libavcodec、libavdevice、libavfilter、libavformat、libavutil、libswresample、libswscale）。
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12.0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code>（ffmpeg.org 的官方压缩包）
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code>（官方签名）
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code>（完整的 configure 参数、每个压缩包的网址与 SHA-256）
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong>（我们编写的接口层）：LGPL 2.1 或更新版本。把 FFmpeg 自带的 fftools（ffmpeg、ffprobe）编译成 App 在自身进程中调用的动态 framework；对 FFmpeg 的修改只有 fftools 中的 3 个文件。
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code>（接口层源代码、fftools 补丁、构建脚本与说明）
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code>（我们对 fftools 的修改）
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code>（构建脚本）
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong>：LGPL 2.0 或更新版本，未修改。只编译编码器，静态链接进 libavcodec。
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1.5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2、libvpx 1.16.0、libwebp 1.6.0</strong>：BSD 3-Clause，未修改，静态链接进 libavcodec。
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7.8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5.6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4.3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib、bzip2、iconv、VideoToolbox、AudioToolbox 是 iOS 自带的。
+</li></ul>
+<h2>3. 基于 LibreOffice 的 Office 引擎（MPL 2.0）</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong>：MPL 2.0。标签 <code>libreoffice-26.8.1.1</code>（commit <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>），源代码在 <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a>（GitHub 镜像 <a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>）。静态链接进 App，只用于把 Word、Excel、演示文稿转换成 PDF。
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code>（我们的修改，13 个文件）
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code>（构建脚本）
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code>（构建时下载的第三方源代码压缩包：文件名、大小、SHA-256、网址，均未修改）
+</li></ul>
+</li><li>
+修改的内容：Apple 芯片的 arm64 模拟器、最低 iOS 18、curl 不带 TLS、expat 在 iOS 上的随机数来源、vcl 的 iOS 专用修正、静态库清单。
+</li><li>
+静态链接、可以选择授权的第三方组件（例如 librevenge、libwpd、libwps、libmwaw、libodfgen、liblangtag、Hunspell、Hyphen、Graphite、Redland），一律选用其中的 MPL 或 Apache 2.0 授权。
+</li><li>
+LibreOffice 是 The Document Foundation 的商标；Radius 与 The Document Foundation 没有隶属关系，也未获得其认可。
+</li></ul>
+<h2>4. 其他组件</h2>
+<ul><li>
+libarchive 3.8.9（BSD 2-Clause）与 XZ Utils／liblzma 5.8.4（0BSD）：压缩与解压缩。构建脚本：<a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0（zlib）：SVG 渲染。
+</li><li>
+字体（SIL Open Font License 1.1）：Office 引擎使用的 Noto Sans CJK 与 Noto Serif CJK（获取方式：<a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>）；按授权要求改名后附带子集的 Instrument Serif、Instrument Sans、清松手写体 1、Klee One、Nanum Pen Script、Caveat。
+</li><li>
+以上都是宽松授权，没有提供源代码的义务，列出供参考；授权全文在 <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>。
+</li></ul>
+<h2>5. 如何构建</h2>
+<ul><li>
+需要：Apple 芯片的 Mac、Xcode 27（iOS 27 SDK），以及 Homebrew 的构建工具（每个脚本开头都有列出）。路径中不能有空格。
+</li><li>
+FFmpeg 与 FFTools：解压 radius-fftools-1.0.tar.xz，运行 <code>scripts/build_ffmpeg_ios.sh</code>。它会下载上面的压缩包（或使用你放在 <code>$RADIUS_FFMPEG_WORK/downloads</code> 中的文件）、校验 SHA-256、确认 configure 的授权是 LGPL 2.1，编译出 8 个动态的 xcframework（arm64 真机与 arm64 模拟器，最低 iOS 18）。分步说明在压缩包内的 README.md。
+</li><li>
+LibreOffice：检出标签 <code>libreoffice-26.8.1.1</code>，按 <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a> 放好脚本与补丁，运行 <code>scripts/build_libreoffice_ios.sh device</code>（需要好几个小时）。
+</li></ul>
+<h2>6. 把自己编译的 FFmpeg 换进 App</h2>
+<ul><li>
+App（<code>RadiusPhone.app</code>）中，FFmpeg 与 FFTools 是 <code>Frameworks</code> 文件夹里 8 个独立的动态 framework，通过 <code>@rpath</code> 加载：FFTools、libavcodec（含 LAME、Opus、libvpx、libwebp）、libavdevice、libavfilter、libavformat、libavutil、libswresample、libswscale。共享扩展（<code>PlugIns/RadiusShare.appex</code>）使用的是同一组。
+</li><li>
+App 本身的代码只调用 <code>FFTools.h</code> 的 C 接口（<code>fft_start</code>、<code>fft_cancel</code>、<code>fft_run</code>、<code>fft_list_codecs</code>），不直接调用 FFmpeg 的函数。修改版只要保持 framework 名称与安装名称、<code>FFTools.h</code> 的接口，以及 FFmpeg 9.0 的库主版本号（或用你的 FFmpeg 重新编译 FFTools），就可以替换。
+</li><li>
+做法：用上面的脚本编译好，把 <code>Frameworks/&lt;名称&gt;.framework/&lt;名称&gt;</code> 换成你编译的版本（xcframework 的 ios-arm64），再依次用你自己的证书与描述文件重新签名 8 个 framework、共享扩展与 App，用 Xcode 或 <code>xcrun devicectl</code> 安装到你的 iPhone。详细步骤在 radius-fftools-1.0.tar.xz 的 README.md。
+</li></ul>
+<h2>7. 书面提供</h2>
+<p>Radius 1.0 最后一次分发之后至少三年内，收到该版本的人都可以发邮件到 <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a> 索取本页上的源代码，费用不超过提供的成本。</p>
+<h2>8. 联系方式</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#zh-Hans">支持与常见问题 →</a></p>
+</article>
+<article id="de" lang="de">
+<h1>Radius: Quellcode und Build-Anleitung</h1>
+<p class="meta">Für Radius 1.0 (iPhone) | Aktualisiert am 16. Oktober 2026</p>
+<p class="summary"><strong>Radius verwendet Open-Source-Komponenten unter LGPL und MPL. Auf dieser Seite findest du den vollständigen zugehörigen Quellcode dieser Komponenten in der Fassung, die Radius 1.0 verwendet, unsere Änderungen daran und die Skripte, mit denen wir sie bauen.</strong></p>
+<h2>1. Worum es auf dieser Seite geht</h2>
+<ul><li>
+Radius selbst ist keine Open-Source-Software. Die folgenden Lizenzen gelten nur für die auf dieser Seite aufgeführten Komponenten.
+</li><li>
+Die Dateien hier gehören zu Radius 1.0, wie es im App Store veröffentlicht ist. Ändert eine spätere Version diese Komponenten, wird diese Seite aktualisiert; die Dateien früherer Versionen bleiben verfügbar.
+</li><li>
+Die vollständigen Lizenztexte findest du in der App unter „⋯“ › „Info und Drittanbieter-Lizenzen“ sowie in <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li><li>
+Alle Dateien liegen in <a href="files/" rel="noreferrer noopener">files/</a>, die SHA-256-Prüfsumme jeder Datei steht in <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a>. Übersicht: <a href="files/README.md" rel="noreferrer noopener">README.md</a> (Englisch), <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a> (traditionelles Chinesisch).
+</li></ul>
+<h2>2. FFmpeg und zugehörige Bibliotheken (LGPL)</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong>: LGPL 2.1 oder neuer (gebaut mit <code>--disable-gpl --disable-version3 --disable-nonfree</code>). Die Bibliotheken sind <strong>nicht verändert</strong>; sie liegen der App als sieben dynamisch gelinkte Frameworks bei (libavcodec, libavdevice, libavfilter, libavformat, libavutil, libswresample, libswscale).
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12,0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code> (offizielles Archiv von ffmpeg.org)
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code> (offizielle Signatur)
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code> (vollständige configure-Befehlszeile; URL und SHA-256 jedes Archivs)
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong> (unsere Schnittstellenschicht): LGPL 2.1 oder neuer. Sie baut die fftools von FFmpeg selbst (ffmpeg, ffprobe) als dynamisches Framework, das die App in ihrem eigenen Prozess aufruft. Unsere einzigen Änderungen an FFmpeg betreffen drei Dateien in fftools.
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code> (Quellcode der Schnittstellenschicht, fftools-Patch, Build-Skript und Anleitung)
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code> (unsere Änderungen an fftools)
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code> (Build-Skript)
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong>: LGPL 2.0 oder neuer, unverändert. Nur der Encoder, statisch in libavcodec gelinkt.
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1,5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2, libvpx 1.16.0, libwebp 1.6.0</strong>: BSD 3-Clause, unverändert, statisch in libavcodec gelinkt.
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7,8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5,6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4,3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib, bzip2, iconv, VideoToolbox und AudioToolbox sind Teil von iOS.
+</li></ul>
+<h2>3. Office-Engine auf Basis von LibreOffice (MPL 2.0)</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong>: MPL 2.0. Tag <code>libreoffice-26.8.1.1</code> (Commit <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>); Quellcode unter <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a> (Spiegel auf GitHub: <a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>). Sie ist statisch in die App gelinkt und wird nur verwendet, um Word-, Excel- und Präsentationsdateien in PDF umzuwandeln.
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code> (unsere Änderungen, 13 Dateien)
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code> (Build-Skript)
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code> (Quellarchive von Drittanbietern, die der Build herunterlädt: Dateiname, Größe, SHA-256, URL; alle unverändert)
+</li></ul>
+</li><li>
+Was die Änderungen bewirken: Build für den arm64-Simulator auf Macs mit Apple-Chip, mindestens iOS 18, curl ohne TLS, die Zufallsquelle von expat unter iOS, iOS-spezifische Korrekturen in vcl und die Liste der statischen Bibliotheken.
+</li><li>
+Statisch gelinkte Komponenten von Drittanbietern, die eine Wahl der Lizenz erlauben (zum Beispiel librevenge, libwpd, libwps, libmwaw, libodfgen, liblangtag, Hunspell, Hyphen, Graphite, Redland), werden unter ihrer MPL- oder Apache-2.0-Option verwendet.
+</li><li>
+LibreOffice ist eine Marke von The Document Foundation. Radius steht in keiner Verbindung zu The Document Foundation und wird von ihr nicht unterstützt.
+</li></ul>
+<h2>4. Weitere Komponenten</h2>
+<ul><li>
+libarchive 3.8.9 (BSD 2-Clause) und XZ Utils / liblzma 5.8.4 (0BSD): Komprimieren und Entpacken. Build-Skript: <a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0 (zlib): Darstellung von SVG.
+</li><li>
+Schriften (SIL Open Font License 1.1): Noto Sans CJK und Noto Serif CJK für die Office-Engine (so beziehen wir sie: <a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>); Teilmengen von Instrument Serif, Instrument Sans, 清松手寫體 1 (JasonHandwriting1), Klee One, Nanum Pen Script und Caveat, umbenannt, wie es die Lizenz verlangt.
+</li><li>
+Das sind freizügige Lizenzen ohne Pflicht zur Bereitstellung des Quellcodes; sie sind zur Information aufgeführt. Ihre Lizenztexte stehen in <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li></ul>
+<h2>5. So wird gebaut</h2>
+<ul><li>
+Du brauchst einen Mac mit Apple-Chip, Xcode 27 (iOS 27 SDK) und die Homebrew-Werkzeuge, die am Anfang jedes Skripts aufgeführt sind. Pfade dürfen keine Leerzeichen enthalten.
+</li><li>
+FFmpeg und FFTools: radius-fftools-1.0.tar.xz entpacken und <code>scripts/build_ffmpeg_ios.sh</code> ausführen. Das Skript lädt die Archive oben herunter (oder verwendet die, die du in <code>$RADIUS_FFMPEG_WORK/downloads</code> ablegst), prüft ihre SHA-256-Prüfsummen, stellt sicher, dass configure LGPL 2.1 meldet, und baut acht dynamische xcframeworks (arm64-Gerät und arm64-Simulator, mindestens iOS 18). Eine Schritt-für-Schritt-Anleitung steht in der README.md im Archiv.
+</li><li>
+LibreOffice: Tag <code>libreoffice-26.8.1.1</code> auschecken, Skript und Patch wie in <a href="files/README.md" rel="noreferrer noopener">README.md</a> beschrieben ablegen und <code>scripts/build_libreoffice_ios.sh device</code> ausführen (dauert mehrere Stunden).
+</li></ul>
+<h2>6. Eigenes FFmpeg in der App verwenden</h2>
+<ul><li>
+Im App-Bundle (<code>RadiusPhone.app</code>) sind FFmpeg und FFTools acht eigenständige dynamische Frameworks im Ordner <code>Frameworks</code>, geladen über <code>@rpath</code>: FFTools, libavcodec (mit LAME, Opus, libvpx und libwebp), libavdevice, libavfilter, libavformat, libavutil, libswresample und libswscale. Die Teilen-Erweiterung (<code>PlugIns/RadiusShare.appex</code>) verwendet dieselben.
+</li><li>
+Der eigene Code der App ruft nur die C-Schnittstelle in <code>FFTools.h</code> auf (<code>fft_start</code>, <code>fft_cancel</code>, <code>fft_run</code>, <code>fft_list_codecs</code>), keine FFmpeg-Funktionen direkt. Eine geänderte Fassung kann sie ersetzen, solange sie die Namen der Frameworks und ihre Installationsnamen, die Schnittstelle von <code>FFTools.h</code> und die Hauptversionen der Bibliotheken von FFmpeg 9.0 beibehält (oder du FFTools gegen dein FFmpeg neu baust).
+</li><li>
+So geht’s: mit dem Skript oben bauen, jede <code>Frameworks/&lt;Name&gt;.framework/&lt;Name&gt;</code> durch deine Fassung ersetzen (der ios-arm64-Teil des xcframework), die acht Frameworks, die Teilen-Erweiterung und die App in dieser Reihenfolge mit deinem eigenen Zertifikat und Bereitstellungsprofil neu signieren und mit Xcode oder <code>xcrun devicectl</code> auf dein iPhone installieren. Die einzelnen Schritte stehen in der README.md in radius-fftools-1.0.tar.xz.
+</li></ul>
+<h2>7. Schriftliches Angebot</h2>
+<p>Noch mindestens drei Jahre nach der letzten Verbreitung von Radius 1.0 kann jede Person, die diese Version erhalten hat, den Quellcode auf dieser Seite per E-Mail an <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a> anfordern, gegen eine Gebühr, die die Kosten der Bereitstellung nicht übersteigt.</p>
+<h2>8. Kontakt</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#de">Support und häufige Fragen →</a></p>
+</article>
+<article id="fr" lang="fr">
+<h1>Radius : code source et instructions de compilation</h1>
+<p class="meta">Pour Radius 1.0 (iPhone) | Mise à jour : 16 octobre 2026</p>
+<p class="summary"><strong>Radius utilise des composants open source sous licence LGPL et MPL. Cette page fournit le code source correspondant complet de ces composants tels qu’ils sont utilisés dans Radius 1.0, nos modifications et les scripts avec lesquels nous les compilons.</strong></p>
+<h2>1. Ce que couvre cette page</h2>
+<ul><li>
+Radius n’est pas lui-même un logiciel open source. Les licences ci-dessous ne s’appliquent qu’aux composants listés sur cette page.
+</li><li>
+Les fichiers ci-dessous correspondent à Radius 1.0 tel qu’il est publié sur l’App Store. Si une version ultérieure modifie ces composants, cette page sera mise à jour et les fichiers des versions précédentes resteront disponibles.
+</li><li>
+Le texte intégral des licences se trouve dans l’app, sous « ⋯ » › À propos et licences tierces, ainsi que dans <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li><li>
+Tous les fichiers sont dans <a href="files/" rel="noreferrer noopener">files/</a>, avec le SHA-256 de chacun dans <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a>. Présentation : <a href="files/README.md" rel="noreferrer noopener">README.md</a> (en anglais) et <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a> (en chinois traditionnel).
+</li></ul>
+<h2>2. FFmpeg et bibliothèques associées (LGPL)</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong> : LGPL 2.1 ou ultérieure (compilé avec <code>--disable-gpl --disable-version3 --disable-nonfree</code>). Les bibliothèques ne sont <strong>pas modifiées</strong> ; elles sont fournies dans l’app sous forme de sept frameworks à liaison dynamique (libavcodec, libavdevice, libavfilter, libavformat, libavutil, libswresample, libswscale).
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12,0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code> (archive officielle de ffmpeg.org)
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code> (signature officielle)
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code> (ligne de commande configure complète ; URL et SHA-256 de chaque archive)
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong> (notre couche d’interface) : LGPL 2.1 ou ultérieure. Elle compile les fftools de FFmpeg lui-même (ffmpeg, ffprobe) en un framework dynamique que l’app appelle dans son propre processus. Nos seules modifications de FFmpeg portent sur trois fichiers de fftools.
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code> (code source de la couche d’interface, patch de fftools, script de compilation et instructions)
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code> (nos modifications de fftools)
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code> (script de compilation)
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong> : LGPL 2.0 ou ultérieure, non modifié. Encodeur seulement, lié statiquement dans libavcodec.
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1,5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2, libvpx 1.16.0, libwebp 1.6.0</strong> : BSD 3-Clause, non modifiés, liés statiquement dans libavcodec.
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7,8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5,6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4,3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib, bzip2, iconv, VideoToolbox et AudioToolbox font partie d’iOS.
+</li></ul>
+<h2>3. Moteur Office basé sur LibreOffice (MPL 2.0)</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong> : MPL 2.0. Étiquette <code>libreoffice-26.8.1.1</code> (commit <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>) ; code source sur <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a> (miroir sur GitHub : <a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>). Il est lié statiquement dans l’app et ne sert qu’à convertir des fichiers Word, Excel et de présentation en PDF.
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code> (nos modifications, 13 fichiers)
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code> (script de compilation)
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code> (archives de code source tierces téléchargées par la compilation : nom, taille, SHA-256, URL ; toutes non modifiées)
+</li></ul>
+</li><li>
+Ce que font les modifications : compilation pour le simulateur arm64 sur Mac avec puce Apple, iOS 18 minimum, curl sans TLS, source d’aléa d’expat sous iOS, corrections propres à iOS dans vcl et liste des bibliothèques statiques.
+</li><li>
+Les composants tiers liés statiquement qui proposent un choix de licences (par exemple librevenge, libwpd, libwps, libmwaw, libodfgen, liblangtag, Hunspell, Hyphen, Graphite, Redland) sont utilisés sous leur option MPL ou Apache 2.0.
+</li><li>
+LibreOffice est une marque de The Document Foundation. Radius n’est ni affilié à The Document Foundation ni approuvé par elle.
+</li></ul>
+<h2>4. Autres composants</h2>
+<ul><li>
+libarchive 3.8.9 (BSD 2-Clause) et XZ Utils / liblzma 5.8.4 (0BSD) : compression et extraction. Script de compilation : <a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0 (zlib) : rendu SVG.
+</li><li>
+Polices (SIL Open Font License 1.1) : Noto Sans CJK et Noto Serif CJK pour le moteur Office (comment nous les obtenons : <a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>) ; sous-ensembles d’Instrument Serif, Instrument Sans, 清松手寫體 1 (JasonHandwriting1), Klee One, Nanum Pen Script et Caveat, renommés comme l’exige la licence.
+</li><li>
+Ce sont des licences permissives sans obligation de fournir le code source ; elles sont mentionnées à titre indicatif. Leurs textes de licence sont dans <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li></ul>
+<h2>5. Comment compiler</h2>
+<ul><li>
+Il vous faut un Mac avec puce Apple, Xcode 27 (SDK iOS 27) et les outils Homebrew indiqués en tête de chaque script. Les chemins ne doivent pas contenir d’espaces.
+</li><li>
+FFmpeg et FFTools : décompressez radius-fftools-1.0.tar.xz et exécutez <code>scripts/build_ffmpeg_ios.sh</code>. Le script télécharge les archives ci-dessus (ou utilise celles que vous placez dans <code>$RADIUS_FFMPEG_WORK/downloads</code>), vérifie leur SHA-256, s’assure que configure indique LGPL 2.1 et compile huit xcframeworks dynamiques (appareil arm64 et simulateur arm64, iOS 18 minimum). Les instructions pas à pas sont dans le README.md de l’archive.
+</li><li>
+LibreOffice : récupérez l’étiquette <code>libreoffice-26.8.1.1</code>, placez le script et le patch comme indiqué dans <a href="files/README.md" rel="noreferrer noopener">README.md</a>, puis exécutez <code>scripts/build_libreoffice_ios.sh device</code> (plusieurs heures).
+</li></ul>
+<h2>6. Utiliser votre propre FFmpeg dans l’app</h2>
+<ul><li>
+Dans l’app (<code>RadiusPhone.app</code>), FFmpeg et FFTools sont huit frameworks dynamiques distincts dans le dossier <code>Frameworks</code>, chargés via <code>@rpath</code> : FFTools, libavcodec (avec LAME, Opus, libvpx et libwebp), libavdevice, libavfilter, libavformat, libavutil, libswresample et libswscale. L’extension de partage (<code>PlugIns/RadiusShare.appex</code>) utilise les mêmes.
+</li><li>
+Le code propre de l’app n’appelle que l’interface C de <code>FFTools.h</code> (<code>fft_start</code>, <code>fft_cancel</code>, <code>fft_run</code>, <code>fft_list_codecs</code>) ; il n’appelle aucune fonction de FFmpeg directement. Une version modifiée peut les remplacer si elle conserve les noms des frameworks et leurs noms d’installation, l’interface de <code>FFTools.h</code> et les versions majeures des bibliothèques de FFmpeg 9.0 (ou si vous recompilez FFTools avec votre FFmpeg).
+</li><li>
+Comment : compilez avec le script ci-dessus, remplacez chaque <code>Frameworks/&lt;nom&gt;.framework/&lt;nom&gt;</code> par votre version (la tranche ios-arm64 du xcframework), signez à nouveau les huit frameworks, l’extension de partage puis l’app, dans cet ordre, avec votre propre certificat et votre profil d’approvisionnement, et installez-la sur votre iPhone avec Xcode ou <code>xcrun devicectl</code>. Les étapes détaillées sont dans le README.md de radius-fftools-1.0.tar.xz.
+</li></ul>
+<h2>7. Offre écrite</h2>
+<p>Pendant au moins trois ans après la dernière distribution de Radius 1.0, toute personne qui l’a reçu peut demander le code source de cette page par e-mail à <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a>, pour un montant ne dépassant pas le coût de sa fourniture.</p>
+<h2>8. Contact</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#fr">Assistance et questions fréquentes →</a></p>
+</article>
+<article id="pt-BR" lang="pt-BR">
+<h1>Radius: código-fonte e instruções de compilação</h1>
+<p class="meta">Para o Radius 1.0 (iPhone) | Atualizado em 16 de outubro de 2026</p>
+<p class="summary"><strong>O Radius usa componentes de código aberto licenciados sob a LGPL e a MPL. Esta página oferece o código-fonte correspondente completo desses componentes como são usados no Radius 1.0, as nossas alterações e os scripts com que os compilamos.</strong></p>
+<h2>1. O que esta página abrange</h2>
+<ul><li>
+O Radius em si não é software de código aberto. As licenças abaixo se aplicam apenas aos componentes listados nesta página.
+</li><li>
+Os arquivos daqui correspondem ao Radius 1.0 como publicado na App Store. Se uma versão posterior alterar esses componentes, esta página será atualizada e os arquivos das versões anteriores continuarão disponíveis.
+</li><li>
+O texto completo das licenças está no app, em “⋯” &gt; Sobre e licenças de terceiros, e em <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li><li>
+Todos os arquivos estão em <a href="files/" rel="noreferrer noopener">files/</a>, com o SHA-256 de cada um em <a href="files/SHA256SUMS" rel="noreferrer noopener">SHA256SUMS</a>. Visão geral: <a href="files/README.md" rel="noreferrer noopener">README.md</a> (em inglês) e <a href="files/README.zh-Hant.md" rel="noreferrer noopener">README.zh-Hant.md</a> (em chinês tradicional).
+</li></ul>
+<h2>2. FFmpeg e bibliotecas relacionadas (LGPL)</h2>
+<ul><li>
+<strong>FFmpeg 9.0.1</strong>: LGPL 2.1 ou posterior (compilado com <code>--disable-gpl --disable-version3 --disable-nonfree</code>). As bibliotecas <strong>não foram modificadas</strong>; acompanham o app como sete frameworks de vinculação dinâmica (libavcodec, libavdevice, libavfilter, libavformat, libavutil, libswresample, libswscale).
+<ul><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz</a> · 12,0 MB · SHA-256 <code class="sha">cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635</code> (arquivo oficial de ffmpeg.org)
+</li><li>
+<a href="files/ffmpeg/ffmpeg-9.0.1.tar.xz.asc" rel="noreferrer noopener">ffmpeg-9.0.1.tar.xz.asc</a> · 520 B · SHA-256 <code class="sha">b613a00005232a1245ace7080088781ac23a916119d3e5b0d6c042368eee0177</code> (assinatura oficial)
+</li><li>
+<a href="files/ffmpeg/BUILD-INFO.txt" rel="noreferrer noopener">BUILD-INFO.txt</a> · 2 KB · SHA-256 <code class="sha">b359ffea8a44b93c94473a87fb1e9cc5e3af04fb74cf130eb0bca7565406d676</code> (linha de comando completa do configure; URL e SHA-256 de cada arquivo)
+</li></ul>
+</li><li>
+<strong>FFTools 1.0</strong> (nossa camada de interface): LGPL 2.1 ou posterior. Compila as próprias fftools do FFmpeg (ffmpeg, ffprobe) como um framework dinâmico que o app chama dentro do próprio processo. Nossas únicas alterações no FFmpeg são em três arquivos de fftools.
+<ul><li>
+<a href="files/ffmpeg/radius-fftools-1.0.tar.xz" rel="noreferrer noopener">radius-fftools-1.0.tar.xz</a> · 32 KB · SHA-256 <code class="sha">08a634b4fc521c27cc72714c5cd6dddf83e2dd7ec8626ccea00d3e991cc9efff</code> (código-fonte da camada de interface, patch de fftools, script de compilação e instruções)
+</li><li>
+<a href="files/ffmpeg/fftools-n9.0.1-radius.patch" rel="noreferrer noopener">fftools-n9.0.1-radius.patch</a> · 4 KB · SHA-256 <code class="sha">c469d82311288a2e78ce7bab2453744c38ff972bf1f24c21c59a5870f83ea71c</code> (nossas alterações em fftools)
+</li><li>
+<a href="files/ffmpeg/build_ffmpeg_ios.sh" rel="noreferrer noopener">build_ffmpeg_ios.sh</a> · 25 KB · SHA-256 <code class="sha">79b857845ce296048e9507a6ede1fa373d17bdbcc7964f2f27550e2e14340591</code> (script de compilação)
+</li></ul>
+</li><li>
+<strong>LAME 3.100</strong>: LGPL 2.0 ou posterior, sem modificações. Só o codificador, vinculado estaticamente à libavcodec.
+<ul><li>
+<a href="files/ffmpeg/lame-3.100.tar.gz" rel="noreferrer noopener">lame-3.100.tar.gz</a> · 1,5 MB · SHA-256 <code class="sha">ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e</code>
+</li></ul>
+</li><li>
+<strong>Opus 1.5.2, libvpx 1.16.0, libwebp 1.6.0</strong>: BSD 3-Clause, sem modificações, vinculados estaticamente à libavcodec.
+<ul><li>
+<a href="files/ffmpeg/opus-1.5.2.tar.gz" rel="noreferrer noopener">opus-1.5.2.tar.gz</a> · 7,8 MB · SHA-256 <code class="sha">65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1</code>
+</li><li>
+<a href="files/ffmpeg/libvpx-1.16.0.tar.gz" rel="noreferrer noopener">libvpx-1.16.0.tar.gz</a> · 5,6 MB · SHA-256 <code class="sha">7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c</code>
+</li><li>
+<a href="files/ffmpeg/libwebp-1.6.0.tar.gz" rel="noreferrer noopener">libwebp-1.6.0.tar.gz</a> · 4,3 MB · SHA-256 <code class="sha">e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564</code>
+</li></ul>
+</li><li>
+zlib, bzip2, iconv, VideoToolbox e AudioToolbox fazem parte do iOS.
+</li></ul>
+<h2>3. Mecanismo do Office baseado no LibreOffice (MPL 2.0)</h2>
+<ul><li>
+<strong>LibreOffice 26.8.1.1</strong>: MPL 2.0. Tag <code>libreoffice-26.8.1.1</code> (commit <code>bf6ef2662401c7d6dce671ab4deb26ee0af3a7c1</code>); código-fonte em <a href="https://git.libreoffice.org/core" rel="noreferrer noopener">git.libreoffice.org/core</a> (espelho no GitHub: <a href="https://github.com/LibreOffice/core/tree/libreoffice-26.8.1.1" rel="noreferrer noopener">LibreOffice/core</a>). É vinculado estaticamente ao app e usado apenas para converter arquivos do Word, do Excel e de apresentações em PDF.
+<ul><li>
+<a href="files/libreoffice/libreoffice-26.8.1.1-radius-ios.patch" rel="noreferrer noopener">libreoffice-26.8.1.1-radius-ios.patch</a> · 16 KB · SHA-256 <code class="sha">87fdf96d37105a82ccf4e81f47b11f3f01212db663adabbca920adda3bc40dad</code> (nossas alterações, 13 arquivos)
+</li><li>
+<a href="files/libreoffice/build_libreoffice_ios.sh" rel="noreferrer noopener">build_libreoffice_ios.sh</a> · 6 KB · SHA-256 <code class="sha">97ae68dddc3dc5e5df3243ce6b337e3ca011043325f12b7705dbaec33fd63581</code> (script de compilação)
+</li><li>
+<a href="files/libreoffice/libreoffice-external-tarballs.tsv" rel="noreferrer noopener">libreoffice-external-tarballs.tsv</a> · 16 KB · SHA-256 <code class="sha">54230b2a1bb7a6b5b913daaf4a444523f58b954f4ebe45bb3912652ff898d90e</code> (arquivos de código-fonte de terceiros baixados pela compilação: nome, tamanho, SHA-256, URL; todos sem modificações)
+</li></ul>
+</li><li>
+O que as alterações fazem: compilação para o simulador arm64 em Macs com chip da Apple, iOS 18 no mínimo, curl sem TLS, a fonte de aleatoriedade do expat no iOS, correções do vcl específicas do iOS e a lista de bibliotecas estáticas.
+</li><li>
+Os componentes de terceiros vinculados estaticamente que permitem escolher a licença (por exemplo librevenge, libwpd, libwps, libmwaw, libodfgen, liblangtag, Hunspell, Hyphen, Graphite, Redland) são usados sob a opção MPL ou Apache 2.0.
+</li><li>
+LibreOffice é uma marca registrada da The Document Foundation. O Radius não é afiliado à The Document Foundation nem endossado por ela.
+</li></ul>
+<h2>4. Outros componentes</h2>
+<ul><li>
+libarchive 3.8.9 (BSD 2-Clause) e XZ Utils / liblzma 5.8.4 (0BSD): compactação e extração. Script de compilação: <a href="files/other/build_libarchive_ios.sh" rel="noreferrer noopener">build_libarchive_ios.sh</a> · 4 KB · SHA-256 <code class="sha">052f2f3f1b672ff51bb2220f7fdcc135a00652edde1b21fd5522784251e0b465</code>
+</li><li>
+SwiftDraw 0.29.0 (zlib): renderização de SVG.
+</li><li>
+Fontes (SIL Open Font License 1.1): Noto Sans CJK e Noto Serif CJK para o mecanismo do Office (como as obtemos: <a href="files/other/fetch_cjk_fonts.sh" rel="noreferrer noopener">fetch_cjk_fonts.sh</a> · 2 KB · SHA-256 <code class="sha">e0ba439399fc462cd4d9155ca957cc8d0c8205e0c321fa2d607506c4bfbfade1</code>); subconjuntos de Instrument Serif, Instrument Sans, 清松手寫體 1 (JasonHandwriting1), Klee One, Nanum Pen Script e Caveat, renomeados como a licença exige.
+</li><li>
+São licenças permissivas, sem obrigação de fornecer o código-fonte; aparecem aqui como referência. Os textos das licenças estão em <a href="files/licenses/" rel="noreferrer noopener">files/licenses/</a>.
+</li></ul>
+<h2>5. Como compilar</h2>
+<ul><li>
+Você precisa de um Mac com chip da Apple, Xcode 27 (SDK do iOS 27) e as ferramentas do Homebrew listadas no início de cada script. Os caminhos não podem ter espaços.
+</li><li>
+FFmpeg e FFTools: descompacte radius-fftools-1.0.tar.xz e execute <code>scripts/build_ffmpeg_ios.sh</code>. O script baixa os arquivos acima (ou usa os que você colocar em <code>$RADIUS_FFMPEG_WORK/downloads</code>), confere o SHA-256, verifica se o configure informa LGPL 2.1 e compila oito xcframeworks dinâmicos (dispositivo arm64 e simulador arm64, iOS 18 no mínimo). As instruções passo a passo estão no README.md dentro do arquivo compactado.
+</li><li>
+LibreOffice: obtenha a tag <code>libreoffice-26.8.1.1</code>, coloque o script e o patch como descrito em <a href="files/README.md" rel="noreferrer noopener">README.md</a> e execute <code>scripts/build_libreoffice_ios.sh device</code> (leva várias horas).
+</li></ul>
+<h2>6. Usar o seu próprio FFmpeg no app</h2>
+<ul><li>
+No pacote do app (<code>RadiusPhone.app</code>), o FFmpeg e o FFTools são oito frameworks dinâmicos independentes na pasta <code>Frameworks</code>, carregados via <code>@rpath</code>: FFTools, libavcodec (com LAME, Opus, libvpx e libwebp), libavdevice, libavfilter, libavformat, libavutil, libswresample e libswscale. A extensão de compartilhamento (<code>PlugIns/RadiusShare.appex</code>) usa os mesmos.
+</li><li>
+O código do próprio app chama apenas a interface em C de <code>FFTools.h</code> (<code>fft_start</code>, <code>fft_cancel</code>, <code>fft_run</code>, <code>fft_list_codecs</code>); ele não chama funções do FFmpeg diretamente. Uma versão modificada pode substituí-los desde que mantenha os nomes dos frameworks e seus nomes de instalação, a interface de <code>FFTools.h</code> e as versões principais das bibliotecas do FFmpeg 9.0 (ou que você recompile o FFTools com o seu FFmpeg).
+</li><li>
+Como fazer: compile com o script acima, substitua cada <code>Frameworks/&lt;nome&gt;.framework/&lt;nome&gt;</code> pela sua versão (a fatia ios-arm64 do xcframework), assine novamente os oito frameworks, a extensão de compartilhamento e o app, nessa ordem, com o seu próprio certificado e perfil de provisionamento, e instale no seu iPhone com o Xcode ou com <code>xcrun devicectl</code>. Os passos detalhados estão no README.md de radius-fftools-1.0.tar.xz.
+</li></ul>
+<h2>7. Oferta por escrito</h2>
+<p>Por pelo menos três anos após a última distribuição do Radius 1.0, qualquer pessoa que o tenha recebido pode pedir o código-fonte desta página pelo e-mail <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a>, por um valor que não exceda o custo de fornecê-lo.</p>
+<h2>8. Contato</h2>
+<p><a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>
+<p class="also"><a href="../support/#pt-BR">Suporte e perguntas frequentes →</a></p>
+</article>
+</main>
+<script>
+(function(){
+  var arts=[].slice.call(document.querySelectorAll('main > article[id]'));
+  if(arts.length<2) return;
+  document.documentElement.className+=' js';
+  var ids=arts.map(function(a){return a.id});
+  var map={'zh-tw':'zh','zh-hk':'zh','zh-mo':'zh','zh-hant':'zh','zh-cn':'zh-Hans','zh-sg':'zh-Hans','zh-hans':'zh-Hans','zh':'zh-Hans','pt':'pt-BR'};
+  function fromBrowser(){
+    var list=navigator.languages||[navigator.language||''];
+    for(var i=0;i<list.length;i++){
+      var l=String(list[i]).toLowerCase(), m=l.split('-')[0];
+      if(l.indexOf('zh-hant')===0) l='zh-hant'; if(l.indexOf('zh-hans')===0) l='zh-hans';
+      var c=map[l]||map[m]||m;
+      for(var j=0;j<ids.length;j++){ if(ids[j].toLowerCase()===c.toLowerCase()) return ids[j]; }
+    }
+    return ids.indexOf('en')>=0?'en':ids[0];
+  }
+  function show(){
+    var h=decodeURIComponent(location.hash.slice(1)), id=ids.indexOf(h)>=0?h:fromBrowser();
+    arts.forEach(function(a){a.hidden=(a.id!==id)});
+    [].forEach.call(document.querySelectorAll('nav.lang a'),function(a){
+      if(a.getAttribute('href')==='#'+id) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current');
+    });
+    [].forEach.call(document.querySelectorAll('a[data-keep-lang]'),function(a){a.href=a.getAttribute('data-keep-lang')+'#'+id});
+    var cur=document.getElementById(id); if(cur) document.documentElement.lang=cur.getAttribute('lang');
+    if(ids.indexOf(h)>=0) window.scrollTo(0,0);
+  }
+  show(); window.addEventListener('hashchange',show);
+})();
+</script>
+</body>
+</html>

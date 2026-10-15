@@ -12,6 +12,8 @@ APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohae
 PREBUILT = {'typeday', 'radius'}
 # 首頁連結的路徑（沒列的照 <repo>/privacy.html、<repo>/support.html）
 LINKS = {'radius': ('radius/privacy/', 'radius/support/')}
+# 首頁另外多列的連結：Radius 的「原始碼與建置說明」（LGPL／MPL 元件的原始碼，由 ../radius 的原始碼包流程產生，2026-10-16）
+EXTRA = {'radius': [('radius/source/', '原始碼與建置說明 Source Code')]}
 STYLE = """:root{--bg:#faf7f9;--ink:#2b1a35;--ink2:#655a6b;--line:#e7dde4;--a:#5b2a6e}
 @media (prefers-color-scheme:dark){:root{--bg:#1c1420;--ink:#f3ecf4;--ink2:#c4b6c8;--line:#3c2f41;--a:#d9b8ea}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
@@ -66,7 +68,8 @@ def main():
     idx = '<h1>App 隱私權政策與支援</h1>\n<p>jeremyl861225 的 iPhone App。聯絡：<a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>\n' + '\n'.join(
         f'<h2>{name}<span style="font-weight:400;color:var(--ink2);font-size:15px">　{sub}</span></h2>'
         f'<ul><li><a href="{LINKS.get(repo, (f"{repo}/privacy.html",))[0]}">隱私權政策 Privacy Policy</a></li>'
-        f'<li><a href="{LINKS.get(repo, (None, f"{repo}/support.html"))[1]}">使用說明與支援 Support</a></li></ul>'
+        f'<li><a href="{LINKS.get(repo, (None, f"{repo}/support.html"))[1]}">使用說明與支援 Support</a></li>'
+        + ''.join(f'<li><a href="{href}">{html.escape(label)}</a></li>' for href, label in EXTRA.get(repo, [])) + '</ul>'
         for repo, name, sub in APPS)
     open(os.path.join(HERE, 'index.html'), 'w', encoding='utf-8').write(page('App 隱私權政策與支援', idx, back=False))
     print('ok')
