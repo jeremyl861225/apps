@@ -3,7 +3,7 @@
 jeremyl861225 的 iPhone App 的公開頁面：隱私權政策與支援（App Store Connect 的「隱私權政策網址」「支援網址」指到這裡）。
 App 本身的 repo 是私有的；這裡只放公開頁面，網址 <https://jeremyl861225.github.io/apps/>。
 
-- 旅ことば：`tabi-kotoba/privacy.html`、`tabi-kotoba/support.html`
+- 旅ことば：`tabi-kotoba/privacy.html`、`tabi-kotoba/support.html`；離線字典資料 `tabi-kotoba/dict/`（`dict.json`＋授權說明頁，JMdict 衍生、CC BY-SA 4.0，要一直公開可取得。網頁版 2026-10-22 關閉後改放這裡；字典改版時從 `../tabi-kotoba/data/dict.json` 複製過來，說明頁是手寫的、不由 build.py 產生）
 - 여행말：`yeohaengmal/privacy.html`、`yeohaengmal/support.html`
 - Street Talk：`street-talk/privacy.html`、`street-talk/support.html`
 - Typeday：`typeday/privacy.html`、`typeday/support.html`（英文 `typeday/en/…`）。這兩頁由 Typeday 自己的 `checkly-ios/tools/appstore/build_site.py --apps` 產生（來源 `appstore/privacy.md`、`support.md` 與 `.en.md`），`build.py` 只把它列進首頁
