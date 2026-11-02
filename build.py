@@ -15,7 +15,9 @@ LINKS = {'radius': ('radius/privacy/', 'radius/support/')}
 # 首頁另外多列的連結：Radius 的「原始碼與建置說明」（LGPL／MPL 元件的原始碼，由 ../radius 的原始碼包流程產生，2026-10-16）
 EXTRA = {'radius': [('radius/source/', '原始碼與建置說明 Source Code')],
          # 旅ことば 的離線字典資料（JMdict 衍生，CC BY-SA 4.0 要一直公開可取得；網頁版 2026-10-22 關閉後改放這裡）
-         'tabi-kotoba': [('tabi-kotoba/dict/', '離線字典資料 Dictionary Data（CC BY-SA 4.0）')]}
+         'tabi-kotoba': [('tabi-kotoba/dict/', '離線字典資料 Dictionary Data（CC BY-SA 4.0）')],
+         # 여행말 的離線字典資料（韓國語基礎辭典衍生，CC BY-SA 2.0 KR；網頁版 2026-11-03 關閉後改放這裡）
+         'yeohaengmal': [('yeohaengmal/dict/', '離線字典資料 Dictionary Data（CC BY-SA 2.0 KR）')]}
 STYLE = """:root{--bg:#faf7f9;--ink:#2b1a35;--ink2:#655a6b;--line:#e7dde4;--a:#5b2a6e}
 @media (prefers-color-scheme:dark){:root{--bg:#1c1420;--ink:#f3ecf4;--ink2:#c4b6c8;--line:#3c2f41;--a:#d9b8ea}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
