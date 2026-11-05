@@ -5,7 +5,7 @@ import html, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(HERE)
-APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Street Talk', '美國生活英文單字卡'),
+APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Corner Talk', '美國生活英文單字卡'),
         ('typeday', 'Typeday', '打字機風格的待辦月曆'), ('radius', 'Radius', '在 iPhone 上離線轉檔')]
 # 頁面由 App 自己產生、直接寫進這裡的子資料夾（這支只列在首頁）：Typeday＝../checkly-ios 的 tools/appstore/build_site.py --apps（中英兩版）；
 # Radius＝../radius 的 scripts/build_public_pages.py（9 種語言、一頁切換，網址是資料夾形式 radius/privacy/、radius/support/）
