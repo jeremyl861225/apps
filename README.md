@@ -6,6 +6,7 @@ App 本身的 repo 是私有的；這裡只放公開頁面，網址 <https://jer
 - 旅ことば：`tabi-kotoba/privacy.html`、`tabi-kotoba/support.html`；離線字典資料 `tabi-kotoba/dict/`（`dict.json`＋授權說明頁，JMdict 衍生、CC BY-SA 4.0，要一直公開可取得。網頁版 2026-10-22 關閉後改放這裡；字典改版時從 `../tabi-kotoba/data/dict.json` 複製過來，說明頁是手寫的、不由 build.py 產生）
 - 여행말：`yeohaengmal/privacy.html`、`yeohaengmal/support.html`；離線字典資料 `yeohaengmal/dict/`（`dict.json`＋授權說明頁，韓國語基礎辭典衍生、CC BY-SA 2.0 KR，要一直公開可取得。網頁版 2026-11-03 關閉後改放這裡；字典改版時從 `../yeohaengmal/data/dict.json` 複製過來，說明頁是手寫的）
 - Street Talk：`street-talk/privacy.html`、`street-talk/support.html`
+- Mots de voyage：`mots-de-voyage/privacy.html`、`mots-de-voyage/support.html`；離線字典資料 `mots-de-voyage/dict/`（Wiktionary＋Lexique 衍生、CC BY-SA 4.0，要一直公開可取得；字典改版時從 `../mots-de-voyage/data/dict.json` 複製過來，說明頁是手寫的）
 - Typeday：`typeday/privacy.html`、`typeday/support.html`（英文 `typeday/en/…`）。這兩頁由 Typeday 自己的 `checkly-ios/tools/appstore/build_site.py --apps` 產生（來源 `appstore/privacy.md`、`support.md` 與 `.en.md`），`build.py` 只把它列進首頁
 - Radius：`radius/privacy/`、`radius/support/`（資料夾形式，9 種語言在同一頁切換，各語言的錨點 `#zh`、`#en`、`#ja`…）。由 Radius 自己的 `radius/scripts/build_public_pages.py` 產生（來源 `docs/privacy/<語言>.md`、`docs/support/<語言>.md`），`build.py` 只把它列進首頁
   - `radius/source/`：「原始碼與建置說明」（LGPL／MPL 元件的原始碼、修補、建置腳本，檔案在 `radius/source/files/`，單檔 < 50 MB）。由 Radius 的原始碼包流程產生（`make_package.py`、`make_page.py`，版型同上），整個資料夾直接複製過來

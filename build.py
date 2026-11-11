@@ -1,11 +1,11 @@
 """從各 App repo 的 PRIVACY.md、SUPPORT.md 產生這裡的公開 HTML（2026-10-10）。
 App 的 repo 是私有的，App Store 要的隱私權政策與支援網址指到這裡：https://jeremyl861225.github.io/apps/<repo>/privacy.html
-用法：python3 build.py（App repo 要在同一層：../tabi-kotoba、../yeohaengmal、../street-talk）。改完 commit＋push。"""
+用法：python3 build.py（App repo 要在同一層：../tabi-kotoba、../yeohaengmal、../street-talk、../mots-de-voyage）。改完 commit＋push。"""
 import html, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(HERE)
-APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Corner Talk', '美國生活英文單字卡'),
+APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Corner Talk', '美國生活英文單字卡'), ('mots-de-voyage', 'Mots de voyage', '法國旅遊法文單字卡'),
         ('typeday', 'Typeday', '打字機風格的待辦月曆'), ('radius', 'Radius', '在 iPhone 上離線轉檔')]
 # 頁面由 App 自己產生、直接寫進這裡的子資料夾（這支只列在首頁）：Typeday＝../checkly-ios 的 tools/appstore/build_site.py --apps（中英兩版）；
 # Radius＝../radius 的 scripts/build_public_pages.py（9 種語言、一頁切換，網址是資料夾形式 radius/privacy/、radius/support/）
@@ -17,7 +17,9 @@ EXTRA = {'radius': [('radius/source/', '原始碼與建置說明 Source Code')],
          # 旅ことば 的離線字典資料（JMdict 衍生，CC BY-SA 4.0 要一直公開可取得；網頁版 2026-10-22 關閉後改放這裡）
          'tabi-kotoba': [('tabi-kotoba/dict/', '離線字典資料 Dictionary Data（CC BY-SA 4.0）')],
          # 여행말 的離線字典資料（韓國語基礎辭典衍生，CC BY-SA 2.0 KR；網頁版 2026-11-03 關閉後改放這裡）
-         'yeohaengmal': [('yeohaengmal/dict/', '離線字典資料 Dictionary Data（CC BY-SA 2.0 KR）')]}
+         'yeohaengmal': [('yeohaengmal/dict/', '離線字典資料 Dictionary Data（CC BY-SA 2.0 KR）')],
+         # Mots de voyage 的離線字典資料（Wiktionary／Lexique 衍生，CC BY-SA 4.0；網頁版 2026-11-11 關閉後放這裡）
+         'mots-de-voyage': [('mots-de-voyage/dict/', '離線字典資料 Dictionary Data（CC BY-SA 4.0）')]}
 STYLE = """:root{--bg:#faf7f9;--ink:#2b1a35;--ink2:#655a6b;--line:#e7dde4;--a:#5b2a6e}
 @media (prefers-color-scheme:dark){:root{--bg:#1c1420;--ink:#f3ecf4;--ink2:#c4b6c8;--line:#3c2f41;--a:#d9b8ea}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
