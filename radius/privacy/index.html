@@ -45,7 +45,7 @@ p.also{margin-top:2.2rem;padding-top:1rem;border-top:1px solid var(--line);font-
 <nav class="lang" aria-label="語言 Language"><a href="#zh" lang="zh-Hant-TW">繁體中文</a><a href="#en" lang="en-US">English</a><a href="#ja" lang="ja">日本語</a><a href="#ko" lang="ko">한국어</a><a href="#es" lang="es">Español</a><a href="#zh-Hans" lang="zh-Hans">简体中文</a><a href="#de" lang="de">Deutsch</a><a href="#fr" lang="fr">Français</a><a href="#pt-BR" lang="pt-BR">Português (Brasil)</a></nav>
 <article id="zh" lang="zh-Hant-TW">
 <h1>Radius 隱私權政策</h1>
-<p class="meta">版本 1.2｜生效日期：2026 年 10 月 16 日</p>
+<p class="meta">版本 1.3｜生效日期：2026 年 11 月 24 日</p>
 <p class="summary"><strong>簡單說：Radius 不收集、不上傳、也不分享你的個人資料與檔案。你的檔案只在你的裝置上轉換。</strong></p>
 <h2>1. 適用範圍</h2>
 <p>本政策適用於 App Store 上的 Radius iOS App，以及它在「分享」選單裡的延伸功能（以下合稱「Radius」）。Radius 由一位個人開發者開發，本政策裡的「我們」指的就是這位開發者。</p>
@@ -70,6 +70,8 @@ App 裡沒有廣告，也沒有任何分析、追蹤、崩潰回報或廣告用�
 轉好的檔案存在「檔案」App 的「我的 iPhone › Radius」資料夾。在「分享」選單裡轉好的檔案，會在你下次回到 Radius 時搬進這個資料夾。
 </li><li>
 需要交給 App 接手的工作（例如在「分享」選單裡要編輯 PDF），會暫放在 App 與分享延伸共用的空間，App 收下後就刪除。
+</li><li>
+從網頁下載的影片（見第 7 節）先下載到暫存區，再照你的選擇轉檔，或原檔存進 Radius 資料夾。取消或下載失敗時，暫存檔當場刪除。
 </li></ul>
 <h2>4. 存在你裝置上的資料</h2>
 <p>下列資料只存在你的裝置上，不會傳給我們。</p>
@@ -102,14 +104,25 @@ App 裡沒有廣告，也沒有任何分析、追蹤、崩潰回報或廣告用�
 刪除：在簽名畫面按「刪除存好的簽名」，或刪除 App。
 </li></ul>
 </li><li>
-<strong>App 鎖定的設定</strong>：是否用 Face ID／Touch ID（或裝置密碼）鎖住 Radius，以及離開多久後要再解鎖。
+<strong>App 鎖定的設定</strong>：是否鎖住 Radius、用哪一種方式解鎖（Face ID／Touch ID 或裝置密碼，或是 Radius 專用密碼），以及離開多久後要再解鎖。
 <ul><li>
 存放：只在 App 裡（分享選單裡的 Radius 不上鎖）。「恢復預設值」不會改它。
 </li><li>
 刪除：在「轉檔設定」關掉鎖定，或刪除 App。
 </li></ul>
 </li><li>
-<strong>小型使用紀錄</strong>：成功轉出的檔案總數、評分視窗用的計數、是否看過教學、是否已提醒過免費次數快用完、購買畫面或贈送卡片最近出現的時間、語音轉文字上次選的語言、標註文字的大小與顏色。
+<strong>Radius 專用密碼</strong>（你選用這種解鎖方式時才有）：
+<ul><li>
+存放：密碼本身不會存下來，存的是加了隨機資料後算出的雜湊值，放在系統的鑰匙圈，只留在這支裝置上，不會透過 iCloud 鑰匙圈同步，也無法從它推回密碼。
+</li><li>
+App 裡另外記下連續輸錯的次數與要等到什麼時候才能再試，以及設定密碼當時這支 iPhone 的 Face ID／Touch ID 登錄狀態的一段代碼（由系統提供，用來發現臉或指紋後來有沒有新增或更動；它不是臉部或指紋資料）。
+</li><li>
+這組密碼只有你知道，我們拿不到，也沒辦法幫你找回。
+</li><li>
+刪除：在「轉檔設定」關掉鎖定就會清除。刪除 App 之後，鑰匙圈裡的雜湊值可能還留著，但重新安裝後鎖定是關的，不會再用到它；下次設定密碼時會被蓋掉。
+</li></ul>
+</li><li>
+<strong>小型使用紀錄</strong>：成功轉出的檔案總數、評分視窗用的計數、是否看過教學、是否看過「從網頁下載影片」的說明、是否已提醒過免費次數快用完、購買畫面或贈送卡片最近出現的時間、語音轉文字上次選的語言、標註文字的大小與顏色。
 <ul><li>
 用途：決定什麼時候提醒你、什麼時候請系統顯示評分視窗，以及記住你上次的選擇。
 </li><li>
@@ -149,7 +162,7 @@ App 裡沒有廣告，也沒有任何分析、追蹤、崩潰回報或廣告用�
 </li><li>
 <strong>語音辨識</strong>：語音轉文字會在裝置上辨識影片與錄音裡說的話，做成字幕或逐字稿，聲音不會上傳。如果系統詢問這項權限而你不允許，就不能使用語音轉文字。
 </li><li>
-<strong>Face ID／Touch ID</strong>：只有在你於「轉檔設定」打開鎖定時才使用，用來在打開 Radius 時確認是你本人；驗證不過可以改輸入裝置密碼。比對由 iOS 完成，Radius 只拿到「驗證成功與否」，拿不到你的臉部或指紋資料，這些資料都留在裝置的 Secure Enclave 裡。不打開鎖定的話，Radius 不會使用這項權限。
+<strong>Face ID／Touch ID</strong>：只有在你於「轉檔設定」打開鎖定時才使用，用來在打開 Radius 時確認是你本人；驗證不過可以改輸入裝置密碼。比對由 iOS 完成，Radius 只拿到「驗證成功與否」，拿不到你的臉部或指紋資料，這些資料都留在裝置的 Secure Enclave 裡。選用 Radius 專用密碼時，你可以另外打開「也可以用 Face ID 解鎖」；這時只認臉部或指紋，不能改輸入裝置密碼。不打開鎖定的話，Radius 不會使用這項權限。
 </li><li>
 <strong>Radius 不要求的權限</strong>：
 <ul><li>
@@ -165,7 +178,7 @@ App 裡沒有廣告，也沒有任何分析、追蹤、崩潰回報或廣告用�
 <strong>改變或收回權限</strong>：你隨時可以到 iOS 的「設定 › App › Radius」改變或收回上面這些權限。收回後，只有用到該權限的功能不能用，其他功能照常。
 </li></ul>
 <h2>7. 什麼時候會用到網路</h2>
-<p>轉檔本身不需要網路。下列情況會用到網路，都由 Apple 的系統或你選擇的服務處理，我們拿不到這些資料：</p>
+<p>轉檔本身不需要網路。下列情況會用到網路：除了「從網頁下載影片」是 Radius 直接連到你指定的網站以外，都由 Apple 的系統或你選擇的服務處理。不管哪一種，我們都拿不到這些資料：</p>
 <ul><li>
 <strong>App Store</strong>：購買、恢復購買、兌換優惠代碼，都由 Apple 的 App Store 處理。
 </li><li>
@@ -176,6 +189,21 @@ App 裡沒有廣告，也沒有任何分析、追蹤、崩潰回報或廣告用�
 <strong>還在雲端的照片與檔案</strong>：如果你選的照片、Live Photo 或檔案還沒下載到裝置上，會由系統或提供這個檔案的雲端服務下載。
 </li><li>
 <strong>存到雲端資料夾</strong>：如果你把存檔位置設成雲端硬碟 App 提供的資料夾，Radius 只把檔案寫進那個資料夾，上傳由該服務負責，並受它的隱私權政策約束。Radius 不會登入、也不會存取你的雲端帳號。
+</li><li>
+<strong>從網頁下載影片</strong>：只有在你於網頁按「分享 › Radius」時才會發生。
+<ul><li>
+Radius 會讀取這一頁的網址、標題與頁面上影片的位址，用來找出這一頁有哪些影片。從 Safari 分享時，還會讀到瀏覽器的識別字串，以及這個網站存在瀏覽器裡、網頁本身讀得到的 cookie。
+</li><li>
+你選了要下載的影片後，Radius 直接從你的裝置連到那個網站與存放影片的主機。cookie 只會送回原本的網站，不會送到別的網站；這一頁的完整網址只給同一個網站，其他主機只會知道你是從哪個網站來的。
+</li><li>
+這些連線不經過我們，Radius 也沒有自己的伺服器，我們不會知道你看了哪個網頁、下載了什麼。
+</li><li>
+對方的網站會像你用瀏覽器看影片時一樣，看到你的 IP 位址，並可能留下紀錄；這部分適用該網站自己的隱私權政策。
+</li><li>
+上面這些資料只在下載當下使用，不會存下來；Radius 不使用系統的 cookie 儲存區，也不留快取。只用加密連線（https）下載。
+</li><li>
+Radius 不會解除任何版權保護；請只下載你有權保存的影片。
+</li></ul>
 </li><li>
 <strong>你主動做的事</strong>：用「分享」把檔案傳給別人或其他 App，或點「關於」頁裡的連結（由瀏覽器打開）。檔案或連結送到哪裡，由你選擇的對象處理。
 </li></ul>
@@ -216,7 +244,7 @@ SwiftDraw（SVG 圖片）
 </article>
 <article id="en" lang="en-US">
 <h1>Radius Privacy Policy</h1>
-<p class="meta">Version 1.2 | Effective date: October 16, 2026</p>
+<p class="meta">Version 1.3 | Effective date: November 24, 2026</p>
 <p class="summary"><strong>In short: Radius does not collect, upload, or share your personal data or your files. Your files are converted only on your device.</strong></p>
 <h2>1. Scope</h2>
 <p>This policy covers the Radius iOS app on the App Store and its extension in the Share menu (together, “Radius”). Radius is developed by an individual developer; “we” and “us” in this policy refer to that developer.</p>
@@ -241,6 +269,8 @@ Temporary copies and intermediate files are deleted as soon as they are no longe
 Converted files are saved in the Files app under On My iPhone &gt; Radius. Files converted from the Share menu are moved there the next time you return to Radius.
 </li><li>
 Jobs that have to be handed over to the app (for example, editing a PDF from the Share menu) are kept briefly in a space shared by the app and its share extension, and deleted once the app has picked them up.
+</li><li>
+Videos downloaded from webpages (see section 7) are first downloaded to the temporary area and then, as you choose, either converted or saved unchanged to the Radius folder. If you cancel or the download fails, the temporary file is deleted right away.
 </li></ul>
 <h2>4. Data stored on your device</h2>
 <p>The following stays on your device and is never sent to us.</p>
@@ -273,14 +303,25 @@ Purpose: so you can reuse it next time you sign.
 Deleting: tap Delete Saved Signature on the signature screen, or delete the app.
 </li></ul>
 </li><li>
-<strong>App lock settings</strong>: whether Radius is locked with Face ID or Touch ID (or your device passcode), and how long you can be away from it before it has to be unlocked again.
+<strong>App lock settings</strong>: whether Radius is locked, which way it is unlocked (Face ID or Touch ID or your device passcode, or a Radius passcode), and how long you can be away from it before it has to be unlocked again.
 <ul><li>
 Where: in the app only (Radius in the Share menu is never locked). Reset to Defaults does not change them.
 </li><li>
 Deleting: turn the lock off in Conversion Settings, or delete the app.
 </li></ul>
 </li><li>
-<strong>Small usage records</strong>: the total number of files converted successfully, counters used for the rating prompt, whether you have seen the tutorial, whether you have been reminded that your free conversions are running out, when the purchase screen or the card offering more free conversions was last shown, the language you last chose for Speech to Text, and the size and color of markup text.
+<strong>Radius passcode</strong> (only if you choose this way of unlocking):
+<ul><li>
+Where: the passcode itself is never stored. What is stored is a hash calculated from it after random data is added, kept in the system keychain. It stays on this device only, is not synced through iCloud Keychain, and cannot be turned back into the passcode.
+</li><li>
+The app also records how many times in a row a wrong passcode has been entered and when you can try again, and a token for the state of Face ID or Touch ID enrollment on this iPhone at the time you set the passcode (provided by the system and used to notice whether a face or fingerprint has since been added or changed; it is not face or fingerprint data).
+</li><li>
+Only you know this passcode. We cannot obtain it, and we cannot recover it for you.
+</li><li>
+Deleting: turning the lock off in Conversion Settings removes it. After you delete the app, the hash may remain in the keychain, but the lock is off after you reinstall, so it is not used again; it is overwritten the next time you set a passcode.
+</li></ul>
+</li><li>
+<strong>Small usage records</strong>: the total number of files converted successfully, counters used for the rating prompt, whether you have seen the tutorial, whether you have seen the introduction to downloading videos from webpages, whether you have been reminded that your free conversions are running out, when the purchase screen or the card offering more free conversions was last shown, the language you last chose for Speech to Text, and the size and color of markup text.
 <ul><li>
 Purpose: to decide when to remind you and when to ask the system to show the rating prompt, and to remember your last choices.
 </li><li>
@@ -320,7 +361,7 @@ Remove Metadata only removes information attached to the file. It does not hide 
 </li><li>
 <strong>Speech recognition</strong>: Speech to Text recognizes, on your device, what is said in videos and recordings and turns it into subtitles or a transcript; the audio is not uploaded. If the system asks for this permission and you don’t allow it, you can’t use Speech to Text.
 </li><li>
-<strong>Face ID / Touch ID</strong>: used only if you turn on the lock in Conversion Settings, to check that it’s you when Radius is opened; if that fails, you can enter your device passcode instead. The match is done by iOS: Radius only learns whether authentication succeeded, and never receives your face or fingerprint data, which stays in your device’s Secure Enclave. If you don’t turn on the lock, Radius never uses this permission.
+<strong>Face ID / Touch ID</strong>: used only if you turn on the lock in Conversion Settings, to check that it’s you when Radius is opened; if that fails, you can enter your device passcode instead. The match is done by iOS: Radius only learns whether authentication succeeded, and never receives your face or fingerprint data, which stays in your device’s Secure Enclave. If you choose a Radius passcode, you can also turn on Also Unlock with Face ID; in that case only your face or fingerprint is accepted, and you can’t enter your device passcode instead. If you don’t turn on the lock, Radius never uses this permission.
 </li><li>
 <strong>Permissions Radius does not ask for</strong>:
 <ul><li>
@@ -336,7 +377,7 @@ Location, contacts, notifications, and permission to track.
 <strong>Changing or withdrawing permissions</strong>: you can change or withdraw any of the permissions above at any time in iOS Settings &gt; Apps &gt; Radius. Only the features that need that permission stop working; everything else works as usual.
 </li></ul>
 <h2>7. When the network is used</h2>
-<p>Converting itself doesn’t need the internet. The cases below use the network; all of them are handled by Apple’s system or by a service you choose, and we never receive this data:</p>
+<p>Converting itself doesn’t need the internet. The cases below use the network. Except for downloading videos from webpages, where Radius connects directly to the website you point it to, all of them are handled by Apple’s system or by a service you choose. In every case, we never receive this data:</p>
 <ul><li>
 <strong>App Store</strong>: purchases, restoring purchases, and redeeming offer codes are all handled by Apple’s App Store.
 </li><li>
@@ -347,6 +388,21 @@ Location, contacts, notifications, and permission to track.
 <strong>Photos and files still in the cloud</strong>: if a photo, Live Photo, or file you choose hasn’t been downloaded to your device yet, the system or the cloud service that provides it downloads it.
 </li><li>
 <strong>Saving to a cloud folder</strong>: if you set the save location to a folder provided by a cloud storage app, Radius only writes the files into that folder; uploading is done by that service and is covered by its privacy policy. Radius never signs in to or accesses your cloud account.
+</li><li>
+<strong>Downloading videos from webpages</strong>: this happens only when you tap Share &gt; Radius on a webpage.
+<ul><li>
+Radius reads the page’s address, its title, and the addresses of the videos on it, in order to find out which videos the page has. When you share from Safari, it also reads the browser’s user agent string and the cookies that this website has stored in the browser and that the webpage itself can read.
+</li><li>
+After you choose a video to download, Radius connects directly from your device to that website and to the hosts that store the video. Cookies are sent back only to the website they came from, never to any other website; the page’s full address is given only to that same website, and other hosts learn only which website you came from.
+</li><li>
+These connections do not pass through us, and Radius has no servers of its own; we do not learn which webpage you viewed or what you downloaded.
+</li><li>
+The website sees your IP address, just as it does when you watch the video in a browser, and may keep a record of it; this is covered by that website’s own privacy policy.
+</li><li>
+The data described above is used only while downloading and is not stored; Radius does not use the system cookie store and keeps no cache. Downloads use encrypted connections (https) only.
+</li><li>
+Radius does not remove any copy protection; please download only videos you have the right to save.
+</li></ul>
 </li><li>
 <strong>Things you start yourself</strong>: sending a file to someone or to another app with Share, or tapping a link on the About page (which opens in your browser). Once sent, a file or link is handled by the recipient you choose.
 </li></ul>
@@ -387,7 +443,7 @@ Email: <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a>
 </article>
 <article id="ja" lang="ja">
 <h1>Radiusのプライバシーポリシー</h1>
-<p class="meta">バージョン1.2｜施行日: 2026年10月16日</p>
+<p class="meta">バージョン1.3｜施行日: 2026年11月24日</p>
 <p class="summary"><strong>一言でいうと、Radiusは個人データやファイルを収集せず、アップロードも共有もしません。ファイルはお使いのデバイスの中だけで変換されます。</strong></p>
 <h2>1. 適用範囲</h2>
 <p>本ポリシーは、App Storeで配信しているRadius iOSアプリと、その「共有」メニュー内の拡張機能（以下、あわせて「Radius」）に適用されます。Radiusは個人開発者が開発しており、本ポリシーで「開発者」とは、この個人開発者を指します。</p>
@@ -412,6 +468,8 @@ Radiusに渡したファイル（「写真」や「ファイル」から選ん�
 変換したファイルは、「ファイル」アプリの「このiPhone内」＞「Radius」フォルダに保存されます。「共有」メニューで変換したファイルは、次にRadiusに戻ったときにこのフォルダへ移されます。
 </li><li>
 アプリへの引き継ぎが必要な作業（たとえば「共有」メニューでのPDFの編集）は、アプリと共有拡張機能が共有する領域に一時的に置かれ、アプリが受け取ると削除されます。
+</li><li>
+Webページからダウンロードしたビデオ（第7節参照）は、まず一時領域にダウンロードし、選択に応じて変換するか、変換せずにRadiusフォルダに保存します。キャンセルしたときやダウンロードに失敗したときは、一時ファイルをその場で削除します。
 </li></ul>
 <h2>4. お使いのデバイスに保存されるデータ</h2>
 <p>以下のデータはお使いのデバイスにだけ保存され、開発者には送信されません。</p>
@@ -444,14 +502,25 @@ Radiusに渡したファイル（「写真」や「ファイル」から選ん�
 削除: 署名の画面で「保存した署名を削除」をタップするか、アプリを削除します。
 </li></ul>
 </li><li>
-<strong>アプリのロックの設定</strong>: Face IDまたはTouch ID（またはパスコード）でRadiusをロックするかどうかと、アプリを離れてからどれくらいで再度ロックを解除する必要があるか。
+<strong>アプリのロックの設定</strong>: Radiusをロックするかどうか、ロック解除の方法（Face ID/Touch IDまたはデバイスのパスコードか、Radius専用パスコードか）、アプリを離れてからどれくらいで再度ロックを解除する必要があるか。
 <ul><li>
 保存先: アプリの中だけ（「共有」メニュー内のRadiusはロックされません）。「デフォルトに戻す」では変わりません。
 </li><li>
 削除: 「変換設定」でロックをオフにするか、アプリを削除します。
 </li></ul>
 </li><li>
-<strong>小さな利用記録</strong>: 変換に成功したファイルの総数、評価のダイアログ用のカウント、チュートリアルを見たかどうか、無料回数がなくなりそうだと知らせたかどうか、購入画面やプレゼントのカードを最後に表示した時刻、文字起こしで最後に選んだ言語、マークアップで追加するテキストのサイズと色。
+<strong>Radius専用パスコード</strong>（このロック解除の方法を選んだ場合のみ）:
+<ul><li>
+保存先: パスコードそのものは保存しません。保存するのは、ランダムなデータを加えて計算したハッシュ値です。システムのキーチェーンに置かれ、このデバイスの中にだけとどまります。iCloudキーチェーンで同期されることはなく、ハッシュ値からパスコードを逆算することもできません。
+</li><li>
+アプリの中にはこのほか、続けて入力を間違えた回数、次に入力できるようになる時刻、パスコードを設定した時点でのこのiPhoneのFace ID/Touch IDの登録状態を表すコードを記録します（このコードはシステムが提供するもので、顔や指紋があとから追加または変更されていないかを確認するために使います。顔や指紋のデータではありません）。
+</li><li>
+このパスコードを知っているのはご自身だけです。開発者は受け取れず、復元をお手伝いすることもできません。
+</li><li>
+削除: 「変換設定」でロックをオフにすると削除されます。アプリを削除したあとも、キーチェーンのハッシュ値は残ることがあります。ただし、再インストール後はロックがオフになっているため使われることはなく、次にパスコードを設定したときに上書きされます。
+</li></ul>
+</li><li>
+<strong>小さな利用記録</strong>: 変換に成功したファイルの総数、評価のダイアログ用のカウント、チュートリアルを見たかどうか、「Webページからビデオをダウンロード」の説明を見たかどうか、無料回数がなくなりそうだと知らせたかどうか、購入画面やプレゼントのカードを最後に表示した時刻、文字起こしで最後に選んだ言語、マークアップで追加するテキストのサイズと色。
 <ul><li>
 用途: お知らせのタイミングと、システムに評価のダイアログを表示してもらうタイミングを決め、前回の選択を覚えておくため。
 </li><li>
@@ -491,7 +560,7 @@ Radiusに渡したファイル（「写真」や「ファイル」から選ん�
 </li><li>
 <strong>音声認識</strong>: 文字起こしは、ビデオや録音の音声をデバイス上で認識して字幕や文字起こしテキストにします。音声はアップロードされません。システムからこのアクセス権を求められて許可しなかった場合は、文字起こしを使えません。
 </li><li>
-<strong>Face ID/Touch ID</strong>: 「変換設定」でロックをオンにしたときだけ使い、Radiusを開くときに本人かどうかを確認します。認証できないときは、パスコードを入力できます。照合はiOSが行い、Radiusが受け取るのは「認証に成功したかどうか」だけで、顔や指紋のデータは受け取りません。これらのデータはデバイスのSecure Enclaveの中にとどまります。ロックをオンにしなければ、Radiusはこのアクセス権を使いません。
+<strong>Face ID/Touch ID</strong>: 「変換設定」でロックをオンにしたときだけ使い、Radiusを開くときに本人かどうかを確認します。認証できないときは、デバイスのパスコードを入力できます。照合はiOSが行い、Radiusが受け取るのは「認証に成功したかどうか」だけで、顔や指紋のデータは受け取りません。これらのデータはデバイスのSecure Enclaveの中にとどまります。Radius専用パスコードを使う場合は、別に「Face IDでもロックを解除」をオンにできます。このときは顔または指紋でのみ認証し、デバイスのパスコードは入力できません。ロックをオンにしなければ、Radiusはこのアクセス権を使いません。
 </li><li>
 <strong>Radiusが求めないアクセス権</strong>:
 <ul><li>
@@ -507,7 +576,7 @@ Radiusに渡したファイル（「写真」や「ファイル」から選ん�
 <strong>アクセス権の変更と取り消し</strong>: iOSの「設定」＞「アプリ」＞「Radius」で、いつでも上のアクセス権を変更または取り消せます。取り消すと、そのアクセス権を使う機能だけが使えなくなり、ほかの機能は通常どおり使えます。
 </li></ul>
 <h2>7. ネットワークを使うとき</h2>
-<p>変換そのものにネットワークは必要ありません。次の場合はネットワークを使いますが、いずれもAppleのシステム、またはご自身が選んだサービスが処理するもので、開発者はそのデータを受け取りません:</p>
+<p>変換そのものにネットワークは必要ありません。次の場合はネットワークを使います。「Webページからビデオをダウンロード」ではRadiusがご自身の指定したWebサイトに直接接続しますが、それ以外はいずれもAppleのシステム、またはご自身が選んだサービスが処理します。どの場合も、開発者はそのデータを受け取りません:</p>
 <ul><li>
 <strong>App Store</strong>: 購入、購入の復元、コードの使用は、AppleのApp Storeが処理します。
 </li><li>
@@ -518,6 +587,21 @@ Radiusに渡したファイル（「写真」や「ファイル」から選ん�
 <strong>まだクラウドにある写真やファイル</strong>: 選んだ写真、Live Photos、ファイルがまだデバイスにダウンロードされていない場合は、システム、またはそのファイルを提供するクラウドサービスがダウンロードします。
 </li><li>
 <strong>クラウドのフォルダへの保存</strong>: 保存先を、クラウドストレージのアプリが提供するフォルダに設定した場合、Radiusはそのフォルダにファイルを書き込むだけで、アップロードはそのサービスが行い、そのサービスのプライバシーポリシーが適用されます。Radiusがクラウドのアカウントにサインインしたり、アクセスしたりすることはありません。
+</li><li>
+<strong>Webページからビデオをダウンロード</strong>: Webページで「共有」＞「Radius」をタップしたときにだけ行われます。
+<ul><li>
+Radiusは、そのページのURL、タイトル、ページ内のビデオのURLを読み取り、そのページにどのビデオがあるかを調べます。Safariから共有したときは、ブラウザの識別文字列と、そのWebサイトがブラウザに保存していてWebページ自身が読み取れるCookieも読み取ります。
+</li><li>
+ダウンロードするビデオを選ぶと、Radiusはお使いのデバイスから、そのWebサイトと、ビデオを置いているサーバに直接接続します。Cookieは元のWebサイトにだけ送り返し、ほかのWebサイトには送りません。そのページの完全なURLは同じWebサイトにだけ伝え、ほかのサーバには、どのWebサイトから来たかだけが伝わります。
+</li><li>
+これらの接続は開発者を経由しません。Radiusには独自のサーバもないため、どのWebページを見たか、何をダウンロードしたかを開発者が知ることはありません。
+</li><li>
+接続先のWebサイトには、ブラウザでビデオを見るときと同じようにIPアドレスが伝わり、記録が残ることがあります。この部分には、そのWebサイトのプライバシーポリシーが適用されます。
+</li><li>
+上記のデータはダウンロードのときにだけ使い、保存しません。RadiusはシステムのCookieストレージを使わず、キャッシュも残しません。ダウンロードには暗号化された接続（https）だけを使います。
+</li><li>
+Radiusが著作権保護を解除することはありません。保存する権利のあるビデオだけをダウンロードしてください。
+</li></ul>
 </li><li>
 <strong>ご自身で行う操作</strong>: 「共有」でファイルをほかの人やアプリに送る場合や、「情報」ページにあるリンクをタップする場合（ブラウザで開きます）。ファイルやリンクの送信先は、ご自身が選んだ相手が処理します。
 </li></ul>
@@ -558,7 +642,7 @@ LibreOfficeをベースにしたOfficeエンジン（Word、Excel、プレゼン
 </article>
 <article id="ko" lang="ko">
 <h1>Radius 개인정보 처리방침</h1>
-<p class="meta">버전 1.2 | 시행일: 2026년 10월 16일</p>
+<p class="meta">버전 1.3 | 시행일: 2026년 11월 24일</p>
 <p class="summary"><strong>간단히 말해, Radius는 개인정보와 파일을 수집하지도, 업로드하지도, 공유하지도 않습니다. 파일은 사용자의 기기 안에서만 변환됩니다.</strong></p>
 <h2>1. 적용 범위</h2>
 <p>이 방침은 App Store에서 배포하는 Radius iOS 앱과, 이 앱이 공유 시트에서 제공하는 확장 기능(이하 통틀어 ‘Radius’)에 적용됩니다. Radius는 개인 개발자 한 명이 만들었으며, 이 방침에서 ‘개발자’는 이 개인 개발자를 가리킵니다.</p>
@@ -583,6 +667,8 @@ Radius에 전달한 파일(사진 앱이나 파일 앱에서 고른 파일, 붙�
 변환한 파일은 파일 앱의 ‘나의 iPhone &gt; Radius’ 폴더에 저장됩니다. 공유 시트에서 변환한 파일은 다음에 Radius로 돌아올 때 이 폴더로 옮겨집니다.
 </li><li>
 앱이 이어받아야 하는 작업(예: 공유 시트에서 하는 PDF 편집)은 앱과 공유 확장 기능이 함께 쓰는 공간에 임시로 두었다가, 앱이 받으면 삭제합니다.
+</li><li>
+웹페이지에서 다운로드한 비디오(7번 항목 참조)는 먼저 임시 공간에 다운로드한 뒤, 사용자의 선택에 따라 변환하거나 원본 그대로 Radius 폴더에 저장합니다. 취소하거나 다운로드에 실패하면 임시 파일은 그 자리에서 삭제합니다.
 </li></ul>
 <h2>4. 사용자의 기기에 저장되는 데이터</h2>
 <p>다음 데이터는 사용자의 기기에만 저장되며 개발자에게 전송되지 않습니다.</p>
@@ -615,14 +701,25 @@ Radius에 전달한 파일(사진 앱이나 파일 앱에서 고른 파일, 붙�
 삭제: 서명 화면에서 ‘저장된 서명 삭제’를 누르거나 앱을 삭제합니다.
 </li></ul>
 </li><li>
-<strong>앱 잠금 설정</strong>: Face ID나 Touch ID(또는 기기 암호)로 Radius를 잠글지 여부와, 앱을 벗어난 뒤 얼마 만에 다시 잠금을 해제해야 하는지.
+<strong>앱 잠금 설정</strong>: Radius를 잠글지 여부, 잠금 해제 방식(Face ID나 Touch ID 또는 기기 암호, 아니면 Radius 전용 암호), 그리고 앱을 벗어난 뒤 얼마 만에 다시 잠금을 해제해야 하는지.
 <ul><li>
 저장 위치: 앱 안에만 있습니다(공유 시트의 Radius는 잠기지 않습니다). ‘기본 설정으로 복원’으로는 바뀌지 않습니다.
 </li><li>
 삭제: ‘변환 설정’에서 잠금을 끄거나 앱을 삭제합니다.
 </li></ul>
 </li><li>
-<strong>간단한 사용 기록</strong>: 변환에 성공한 파일의 총 개수, 평가 요청 창에 쓰는 횟수, 튜토리얼을 봤는지 여부, 무료 횟수가 거의 다 됐다고 알려 줬는지 여부, 구입 화면이나 선물 카드가 마지막으로 나타난 시각, 음성 텍스트 변환에서 마지막으로 고른 언어, 마크업 텍스트의 크기와 색상.
+<strong>Radius 전용 암호</strong>(이 잠금 해제 방식을 선택한 경우에만 해당):
+<ul><li>
+저장 위치: 암호 자체는 저장하지 않습니다. 암호에 무작위 데이터를 더해 계산한 해시값만 시스템 키체인에 저장하며, 이 값은 이 기기에만 남고 iCloud 키체인으로 동기화되지 않으며, 이 값에서 암호를 거꾸로 알아낼 수도 없습니다.
+</li><li>
+앱 안에는 이 밖에 암호를 연속으로 틀린 횟수와 언제부터 다시 시도할 수 있는지, 그리고 암호를 설정할 당시 이 iPhone의 Face ID/Touch ID 등록 상태를 나타내는 코드(시스템이 제공하며, 이후 얼굴이나 지문이 추가되거나 변경되었는지 알아내는 데 씁니다. 얼굴이나 지문 데이터가 아닙니다)를 기록합니다.
+</li><li>
+이 암호는 사용자만 알고 있습니다. 개발자는 이 암호를 알 수 없으며 찾아 드릴 수도 없습니다.
+</li><li>
+삭제: ‘변환 설정’에서 잠금을 끄면 지워집니다. 앱을 삭제한 뒤에도 키체인의 해시값은 남아 있을 수 있지만, 다시 설치하면 잠금이 꺼져 있어 이 값은 더 이상 쓰이지 않으며, 다음에 암호를 설정할 때 덮어씁니다.
+</li></ul>
+</li><li>
+<strong>간단한 사용 기록</strong>: 변환에 성공한 파일의 총 개수, 평가 요청 창에 쓰는 횟수, 튜토리얼을 봤는지 여부, ‘웹페이지에서 비디오 다운로드’ 안내를 봤는지 여부, 무료 횟수가 거의 다 됐다고 알려 줬는지 여부, 구입 화면이나 선물 카드가 마지막으로 나타난 시각, 음성 텍스트 변환에서 마지막으로 고른 언어, 마크업 텍스트의 크기와 색상.
 <ul><li>
 용도: 안내하는 시점과 시스템에 평가 요청 창을 띄워 달라고 요청하는 시점을 정하고, 사용자의 지난 선택을 기억하기 위해서입니다.
 </li><li>
@@ -662,7 +759,7 @@ Radius에 전달한 파일(사진 앱이나 파일 앱에서 고른 파일, 붙�
 </li><li>
 <strong>음성 인식</strong>: 음성 텍스트 변환은 비디오와 녹음 속 말을 기기에서 인식해 자막이나 전사문으로 만들며, 음성은 업로드되지 않습니다. 시스템이 이 권한을 요청했는데 허용하지 않으면 음성 텍스트 변환을 쓸 수 없습니다.
 </li><li>
-<strong>Face ID/Touch ID</strong>: ‘변환 설정’에서 잠금을 켠 경우에만 사용하며, Radius를 열 때 본인인지 확인하는 데 씁니다. 인증에 실패하면 기기 암호를 입력할 수 있습니다. 확인은 iOS가 하고 Radius는 ‘인증 성공 여부’만 받을 뿐 얼굴이나 지문 데이터는 받지 못합니다. 이 데이터는 기기의 Secure Enclave 안에만 있습니다. 잠금을 켜지 않으면 Radius는 이 권한을 사용하지 않습니다.
+<strong>Face ID/Touch ID</strong>: ‘변환 설정’에서 잠금을 켠 경우에만 사용하며, Radius를 열 때 본인인지 확인하는 데 씁니다. 인증에 실패하면 기기 암호를 입력할 수 있습니다. 확인은 iOS가 하고 Radius는 ‘인증 성공 여부’만 받을 뿐 얼굴이나 지문 데이터는 받지 못합니다. 이 데이터는 기기의 Secure Enclave 안에만 있습니다. Radius 전용 암호를 선택한 경우에는 ‘Face ID로도 잠금 해제’를 따로 켤 수 있으며, 이때는 얼굴이나 지문만 인식하고 기기 암호로 대신할 수 없습니다. 잠금을 켜지 않으면 Radius는 이 권한을 사용하지 않습니다.
 </li><li>
 <strong>Radius가 요청하지 않는 권한</strong>:
 <ul><li>
@@ -678,7 +775,7 @@ Radius에 전달한 파일(사진 앱이나 파일 앱에서 고른 파일, 붙�
 <strong>권한 변경과 철회</strong>: iOS의 설정 &gt; 앱 &gt; Radius에서 언제든 위 권한을 변경하거나 철회할 수 있습니다. 철회하면 해당 권한을 쓰는 기능만 사용할 수 없고, 나머지 기능은 그대로 쓸 수 있습니다.
 </li></ul>
 <h2>7. 인터넷을 쓰는 경우</h2>
-<p>변환 자체에는 인터넷이 필요하지 않습니다. 다음의 경우에는 인터넷을 쓰며, 모두 Apple의 시스템이나 사용자가 선택한 서비스가 처리하므로 개발자는 이 데이터를 받지 못합니다.</p>
+<p>변환 자체에는 인터넷이 필요하지 않습니다. 다음의 경우에는 인터넷을 씁니다. Radius가 사용자가 지정한 웹사이트에 직접 연결하는 ‘웹페이지에서 비디오 다운로드’를 제외하면, 모두 Apple의 시스템이나 사용자가 선택한 서비스가 처리합니다. 어느 경우든 개발자는 이 데이터를 받지 못합니다.</p>
 <ul><li>
 <strong>App Store</strong>: 구입, 구입 항목 복원, 코드 교환은 Apple의 App Store가 처리합니다.
 </li><li>
@@ -689,6 +786,21 @@ Radius에 전달한 파일(사진 앱이나 파일 앱에서 고른 파일, 붙�
 <strong>아직 클라우드에 있는 사진과 파일</strong>: 사용자가 고른 사진, Live Photo, 파일이 아직 기기에 다운로드되지 않았다면 시스템이나 해당 파일을 제공하는 클라우드 서비스가 다운로드합니다.
 </li><li>
 <strong>클라우드 폴더에 저장</strong>: 저장 위치를 클라우드 저장소 앱이 제공하는 폴더로 지정하면, Radius는 그 폴더에 파일을 쓰기만 하고 업로드는 해당 서비스가 담당하며 그 서비스의 개인정보 처리방침이 적용됩니다. Radius가 사용자의 클라우드 계정에 로그인하거나 접근하는 일은 없습니다.
+</li><li>
+<strong>웹페이지에서 비디오 다운로드</strong>: 사용자가 웹페이지에서 ‘공유 &gt; Radius’를 누를 때에만 일어납니다.
+<ul><li>
+Radius는 이 페이지에 어떤 비디오가 있는지 찾기 위해 페이지의 URL, 제목, 페이지에 있는 비디오의 주소를 읽습니다. Safari에서 공유할 때는 브라우저의 식별 문자열과, 이 웹사이트가 브라우저에 저장한 쿠키 가운데 웹페이지 자체가 읽을 수 있는 쿠키도 읽습니다.
+</li><li>
+다운로드할 비디오를 선택하면 Radius는 사용자의 기기에서 해당 웹사이트와 비디오가 저장된 서버로 직접 연결합니다. 쿠키는 원래 웹사이트로만 보내며 다른 웹사이트로는 보내지 않습니다. 이 페이지의 전체 URL은 같은 웹사이트에만 전달하며, 다른 서버는 사용자가 어느 웹사이트에서 왔는지만 알 수 있습니다.
+</li><li>
+이 연결은 개발자를 거치지 않으며 Radius에는 자체 서버도 없으므로, 개발자는 사용자가 어떤 웹페이지를 보았는지, 무엇을 다운로드했는지 알 수 없습니다.
+</li><li>
+상대 웹사이트는 사용자가 브라우저로 비디오를 볼 때와 마찬가지로 사용자의 IP 주소를 볼 수 있고 기록을 남길 수 있습니다. 이 부분에는 해당 웹사이트의 개인정보 처리방침이 적용됩니다.
+</li><li>
+위 데이터는 다운로드하는 동안에만 사용하며 저장하지 않습니다. Radius는 시스템의 쿠키 저장소를 사용하지 않고 캐시도 남기지 않습니다. 암호화된 연결(https)로만 다운로드합니다.
+</li><li>
+Radius는 어떤 저작권 보호도 해제하지 않습니다. 저장할 권리가 있는 비디오만 다운로드해 주십시오.
+</li></ul>
 </li><li>
 <strong>사용자가 직접 하는 동작</strong>: ‘공유’로 파일을 다른 사람이나 앱에 보내거나, ‘정보’ 화면의 링크를 누르는 경우(브라우저에서 열립니다). 파일이나 링크가 어디로 전달되는지는 사용자가 고른 대상이 처리합니다.
 </li></ul>
@@ -729,7 +841,7 @@ LibreOffice를 기반으로 한 Office 엔진(Word, Excel, 프레젠테이션 �
 </article>
 <article id="es" lang="es">
 <h1>Política de privacidad de Radius</h1>
-<p class="meta">Versión 1.2 | Fecha de entrada en vigor: 16 de octubre de 2026</p>
+<p class="meta">Versión 1.3 | Fecha de entrada en vigor: 24 de noviembre de 2026</p>
 <p class="summary"><strong>En pocas palabras: Radius no recopila, no sube ni comparte tus datos personales ni tus archivos. Tus archivos se convierten solo en tu dispositivo.</strong></p>
 <h2>1. Alcance</h2>
 <p>Esta política se aplica a la app Radius para iOS en App Store y a su extensión en el menú Compartir (en conjunto, “Radius”). Radius lo desarrolla una sola persona, de forma independiente; en esta política, “nosotros” se refiere a esa persona.</p>
@@ -754,6 +866,8 @@ Las copias temporales y los archivos intermedios se eliminan en cuanto dejan de 
 Los archivos convertidos se guardan en la app Archivos, en En mi iPhone &gt; Radius. Los archivos convertidos desde el menú Compartir se mueven a esa carpeta la próxima vez que vuelves a Radius.
 </li><li>
 Los trabajos que hay que pasar a la app (por ejemplo, editar un PDF desde el menú Compartir) se guardan temporalmente en un espacio compartido por la app y su extensión de Compartir, y se eliminan en cuanto la app los recibe.
+</li><li>
+Los videos descargados de páginas web (consulta la sección 7) primero se descargan a un área temporal y después, según lo que elijas, se convierten o se guardan tal cual en la carpeta de Radius. Si cancelas o la descarga falla, el archivo temporal se elimina en ese momento.
 </li></ul>
 <h2>4. Datos guardados en tu dispositivo</h2>
 <p>Los datos siguientes solo se guardan en tu dispositivo y no se nos envían.</p>
@@ -786,14 +900,25 @@ Para qué: usarla directamente la próxima vez que firmes.
 Cómo eliminarla: toca Eliminar firma guardada en la pantalla de firma, o elimina la app.
 </li></ul>
 </li><li>
-<strong>Bloqueo de la app</strong>: si Radius se bloquea con Face ID o Touch ID (o con el código del dispositivo) y cuánto tiempo después de salir hay que volver a desbloquearlo.
+<strong>Bloqueo de la app</strong>: si Radius se bloquea, con qué se desbloquea (Face ID o Touch ID, el código del dispositivo o el código de Radius) y cuánto tiempo después de salir hay que volver a desbloquearlo.
 <ul><li>
 Dónde: solo en la app (Radius en el menú Compartir no se bloquea). Restablecer valores predeterminados no lo cambia.
 </li><li>
 Cómo eliminarlo: desactiva el bloqueo en Opciones de conversión o elimina la app.
 </li></ul>
 </li><li>
-<strong>Pequeños registros de uso</strong>: el número total de archivos convertidos con éxito, los contadores para la ventana de calificación, si ya viste el tutorial, si ya se te avisó que tus conversiones gratis se están acabando, cuándo apareció por última vez la pantalla de compra o la tarjeta de conversiones de regalo, el último idioma que elegiste en Voz a texto, y el tamaño y el color del texto de marcado.
+<strong>Código de Radius</strong> (solo existe si eliges esta forma de desbloqueo):
+<ul><li>
+Dónde: el código en sí no se guarda. Se guarda un hash calculado a partir del código y de datos aleatorios, en el llavero del sistema; permanece solo en este dispositivo, no se sincroniza con el Llavero de iCloud y no permite deducir el código.
+</li><li>
+La app anota además cuántas veces seguidas se ingresó un código incorrecto y hasta cuándo hay que esperar para volver a intentarlo, así como un identificador del estado de registro de Face ID o Touch ID de este iPhone en el momento de crear el código (lo proporciona el sistema y sirve para detectar si después se agregó o se cambió un rostro o una huella; no son datos de tu rostro ni de tu huella).
+</li><li>
+Este código solo lo conoces tú: nosotros no tenemos acceso a él ni podemos ayudarte a recuperarlo.
+</li><li>
+Cómo eliminarlo: se borra al desactivar el bloqueo en Opciones de conversión. Después de eliminar la app, el hash puede seguir en el llavero, pero al reinstalarla el bloqueo está desactivado y ese hash no se vuelve a usar; se sobrescribe la próxima vez que crees un código.
+</li></ul>
+</li><li>
+<strong>Pequeños registros de uso</strong>: el número total de archivos convertidos con éxito, los contadores para la ventana de calificación, si ya viste el tutorial, si ya viste la explicación de Descargar videos de páginas web, si ya se te avisó que tus conversiones gratis se están acabando, cuándo apareció por última vez la pantalla de compra o la tarjeta de conversiones de regalo, el último idioma que elegiste en Voz a texto, y el tamaño y el color del texto de marcado.
 <ul><li>
 Para qué: decidir cuándo avisarte y cuándo pedir al sistema que muestre la ventana de calificación, y recordar tu última elección.
 </li><li>
@@ -833,7 +958,7 @@ Quitar datos privados solo borra la información adjunta al archivo; no oculta e
 </li><li>
 <strong>Reconocimiento de voz</strong>: Voz a texto reconoce en tu dispositivo lo que se dice en videos y grabaciones y lo convierte en subtítulos o en una transcripción; el audio no se sube. Si el sistema te pide este permiso y no lo permites, no podrás usar Voz a texto.
 </li><li>
-<strong>Face ID / Touch ID</strong>: solo se usa si activas el bloqueo en Opciones de conversión, para comprobar que eres tú al abrir Radius; si la verificación falla, puedes ingresar el código del dispositivo. La comparación la hace iOS: Radius solo recibe si la verificación fue correcta o no, y nunca recibe los datos de tu rostro ni de tu huella, que permanecen en el Secure Enclave de tu dispositivo. Si no activas el bloqueo, Radius no usa este permiso.
+<strong>Face ID / Touch ID</strong>: solo se usa si activas el bloqueo en Opciones de conversión, para comprobar que eres tú al abrir Radius; si la verificación falla, puedes ingresar el código del dispositivo. La comparación la hace iOS: Radius solo recibe si la verificación fue correcta o no, y nunca recibe los datos de tu rostro ni de tu huella, que permanecen en el Secure Enclave de tu dispositivo. Si eliges el código de Radius, puedes activar además Desbloquear también con Face ID; en ese caso solo se acepta el rostro o la huella, y no se puede ingresar el código del dispositivo en su lugar. Si no activas el bloqueo, Radius no usa este permiso.
 </li><li>
 <strong>Permisos que Radius no solicita</strong>:
 <ul><li>
@@ -849,7 +974,7 @@ Ubicación, contactos, notificaciones y el permiso para rastrearte entre apps y 
 <strong>Cambiar o revocar permisos</strong>: puedes cambiar o revocar estos permisos cuando quieras en Configuración &gt; Apps &gt; Radius. Al revocar un permiso, solo dejan de funcionar las funciones que lo necesitan; todo lo demás funciona igual.
 </li></ul>
 <h2>7. Cuándo se usa la red</h2>
-<p>Convertir no requiere Internet. En los casos siguientes sí se usa la red; en todos ellos el trabajo lo hace el sistema de Apple o un servicio que tú eliges, y nosotros no tenemos acceso a estos datos:</p>
+<p>Convertir no requiere Internet. En los casos siguientes sí se usa la red: salvo en Descargar videos de páginas web, donde Radius se conecta directamente al sitio web que tú indicas, el trabajo lo hace el sistema de Apple o un servicio que tú eliges. En ningún caso tenemos acceso a estos datos:</p>
 <ul><li>
 <strong>App Store</strong>: las compras, la restauración de compras y el canje de códigos de oferta los gestiona App Store, de Apple.
 </li><li>
@@ -860,6 +985,21 @@ Ubicación, contactos, notificaciones y el permiso para rastrearte entre apps y 
 <strong>Fotos y archivos que siguen en la nube</strong>: si una foto, una Live Photo o un archivo que elegiste todavía no se ha descargado en el dispositivo, lo descarga el sistema o el servicio en la nube que lo ofrece.
 </li><li>
 <strong>Guardar en una carpeta en la nube</strong>: si configuras que los archivos se guarden en una carpeta que ofrece una app de almacenamiento en la nube, Radius solo escribe los archivos en esa carpeta; la subida la realiza ese servicio y se rige por su política de privacidad. Radius no inicia sesión ni accede a tu cuenta en la nube.
+</li><li>
+<strong>Descargar videos de páginas web</strong>: solo ocurre cuando tocas Compartir &gt; Radius en una página web.
+<ul><li>
+Radius lee la URL y el título de esa página y las direcciones de los videos que contiene, para averiguar qué videos hay en ella. Si compartes desde Safari, también lee la cadena de identificación del navegador y las cookies que ese sitio web guardó en el navegador y que la propia página puede leer.
+</li><li>
+Cuando eliges el video que quieres descargar, Radius se conecta directamente desde tu dispositivo a ese sitio web y a los servidores donde está alojado el video. Las cookies solo se envían de vuelta al sitio web original, nunca a otros sitios; la URL completa de la página solo se entrega a ese mismo sitio web, y los demás servidores solo saben desde qué sitio web llegas.
+</li><li>
+Estas conexiones no pasan por nosotros, y Radius no tiene servidores propios: no sabemos qué páginas web viste ni qué descargaste.
+</li><li>
+El sitio web verá tu dirección IP, igual que cuando ves el video en el navegador, y puede conservar un registro; en eso se aplica la política de privacidad de ese sitio web.
+</li><li>
+Estos datos solo se usan durante la descarga y no se guardan; Radius no usa el almacén de cookies del sistema ni conserva caché. Solo descarga mediante conexiones cifradas (https).
+</li><li>
+Radius no elimina ninguna protección anticopia; descarga solo los videos que tengas derecho a guardar.
+</li></ul>
 </li><li>
 <strong>Lo que haces tú</strong>: enviar un archivo a otra persona o a otra app con Compartir, o tocar un enlace en la pantalla Acerca de (que se abre en el navegador). Una vez enviados, el archivo o el enlace los gestiona el destinatario que elegiste.
 </li></ul>
@@ -900,7 +1040,7 @@ Correo electrónico: <a href="mailto:lins.program@gmail.com">lins.program@gmail.
 </article>
 <article id="zh-Hans" lang="zh-Hans">
 <h1>Radius 隐私政策</h1>
-<p class="meta">版本 1.2｜生效日期：2026 年 10 月 16 日</p>
+<p class="meta">版本 1.3｜生效日期：2026 年 11 月 24 日</p>
 <p class="summary"><strong>简单说：Radius 不收集、不上传，也不分享你的个人信息和文件。你的文件只在你的设备上转换。</strong></p>
 <h2>1. 适用范围</h2>
 <p>本政策适用于 App Store 上的 Radius iOS App，以及它在“共享”菜单里的扩展功能（以下合称“Radius”）。Radius 由一位个人开发者开发，本政策里的“我们”指的就是这位开发者。</p>
@@ -925,6 +1065,8 @@ App 里没有广告，也没有任何分析、追踪、崩溃报告或广告用�
 转好的文件存在“文件” App 的“我的 iPhone › Radius”文件夹。在“共享”菜单里转好的文件，会在你下次回到 Radius 时移进这个文件夹。
 </li><li>
 需要交给 App 接手的任务（例如在“共享”菜单里要编辑 PDF），会暂放在 App 与共享扩展共用的空间，App 收下后就删除。
+</li><li>
+从网页下载的视频（见第 7 节）先下载到临时存储区，再按你的选择转换，或把原文件存进 Radius 文件夹。取消或下载失败时，临时文件当场删除。
 </li></ul>
 <h2>4. 存在你设备上的数据</h2>
 <p>下列数据只存在你的设备上，不会发给我们。</p>
@@ -957,14 +1099,25 @@ App 里没有广告，也没有任何分析、追踪、崩溃报告或广告用�
 删除：在签名画面点“删除已保存的签名”，或删除 App。
 </li></ul>
 </li><li>
-<strong>App 锁定的设置</strong>：是否用面容 ID／触控 ID（或设备密码）锁定 Radius，以及离开多久后要再次解锁。
+<strong>App 锁定的设置</strong>：是否锁定 Radius、用哪一种方式解锁（面容 ID／触控 ID 或设备密码，或者 Radius 专用密码），以及离开多久后要再次解锁。
 <ul><li>
 存放：只在 App 里（“共享”菜单里的 Radius 不上锁）。“恢复默认值”不会改它。
 </li><li>
 删除：在“转换设置”里关掉锁定，或删除 App。
 </li></ul>
 </li><li>
-<strong>少量使用记录</strong>：成功转出的文件总数、评分窗口用的计数、是否看过教程、是否已提醒过免费次数快用完、购买画面或赠送卡片最近出现的时间、语音转文字上次选的语言、标注文字的大小和颜色。
+<strong>Radius 专用密码</strong>（你选用这种解锁方式时才有）：
+<ul><li>
+存放：密码本身不会保存，保存的是加入随机数据后算出的哈希值，放在系统的钥匙串里，只留在这台设备上，不会通过 iCloud 钥匙串同步，也无法从它反推出密码。
+</li><li>
+App 里另外记下连续输错的次数和要等到什么时候才能再试，以及设置密码当时这部 iPhone 的面容 ID／触控 ID 录入状态的一段代码（由系统提供，用来发现面容或指纹后来有没有新增或改动；它不是面部或指纹数据）。
+</li><li>
+这组密码只有你知道，我们拿不到，也无法帮你找回。
+</li><li>
+删除：在“转换设置”里关掉锁定就会清除。删除 App 之后，钥匙串里的哈希值可能还留着，但重新安装后锁定是关闭的，不会再用到它；下次设置密码时会被覆盖。
+</li></ul>
+</li><li>
+<strong>少量使用记录</strong>：成功转出的文件总数、评分窗口用的计数、是否看过教程、是否看过“从网页下载视频”的说明、是否已提醒过免费次数快用完、购买画面或赠送卡片最近出现的时间、语音转文字上次选的语言、标注文字的大小和颜色。
 <ul><li>
 用途：决定什么时候提醒你、什么时候请系统显示评分窗口，以及记住你上次的选择。
 </li><li>
@@ -1004,7 +1157,7 @@ App 里没有广告，也没有任何分析、追踪、崩溃报告或广告用�
 </li><li>
 <strong>语音识别</strong>：语音转文字会在设备上识别视频和录音里说的话，做成字幕或逐字稿，声音不会上传。如果系统询问这项权限而你不允许，就不能使用语音转文字。
 </li><li>
-<strong>面容 ID／触控 ID</strong>：只有在你于“转换设置”里打开锁定时才使用，用来在打开 Radius 时确认是你本人；验证不通过可以改输入设备密码。比对由 iOS 完成，Radius 只拿到“验证成功与否”，拿不到你的面部或指纹数据，这些数据都留在设备的安全隔区（Secure Enclave）里。不打开锁定的话，Radius 不会使用这项权限。
+<strong>面容 ID／触控 ID</strong>：只有在你于“转换设置”里打开锁定时才使用，用来在打开 Radius 时确认是你本人；验证不通过可以改输入设备密码。比对由 iOS 完成，Radius 只拿到“验证成功与否”，拿不到你的面部或指纹数据，这些数据都留在设备的安全隔区（Secure Enclave）里。选用 Radius 专用密码时，你可以另外打开“也可以用 面容 ID 解锁”；这时只认面容或指纹，不能改输入设备密码。不打开锁定的话，Radius 不会使用这项权限。
 </li><li>
 <strong>Radius 不请求的权限</strong>：
 <ul><li>
@@ -1020,7 +1173,7 @@ App 里没有广告，也没有任何分析、追踪、崩溃报告或广告用�
 <strong>更改或收回权限</strong>：你随时可以到 iOS 的“设置 › App › Radius”更改或收回上面这些权限。收回后，只有用到该权限的功能不能用，其他功能照常。
 </li></ul>
 <h2>7. 什么时候会用到网络</h2>
-<p>转换本身不需要网络。下列情况会用到网络，都由 Apple 的系统或你选择的服务处理，我们拿不到这些数据：</p>
+<p>转换本身不需要网络。下列情况会用到网络：除了“从网页下载视频”是 Radius 直接连到你指定的网站以外，都由 Apple 的系统或你选择的服务处理。无论哪一种，我们都拿不到这些数据：</p>
 <ul><li>
 <strong>App Store</strong>：购买、恢复购买、兑换优惠代码，都由 Apple 的 App Store 处理。
 </li><li>
@@ -1031,6 +1184,21 @@ App 里没有广告，也没有任何分析、追踪、崩溃报告或广告用�
 <strong>还在云端的照片和文件</strong>：如果你选的照片、实况照片或文件还没下载到设备上，会由系统或提供这个文件的云服务下载。
 </li><li>
 <strong>存到云端文件夹</strong>：如果你把存放位置设成云盘 App 提供的文件夹，Radius 只把文件写进那个文件夹，上传由该服务负责，并受它的隐私政策约束。Radius 不会登录，也不会访问你的云端账号。
+</li><li>
+<strong>从网页下载视频</strong>：只有在你于网页上点“共享 › Radius”时才会发生。
+<ul><li>
+Radius 会读取这一页的网址、标题和页面上视频的地址，用来找出这一页有哪些视频。从 Safari 浏览器共享时，还会读到浏览器的标识字符串，以及这个网站存在浏览器里、网页本身读得到的 cookie。
+</li><li>
+你选好要下载的视频后，Radius 直接从你的设备连到那个网站和存放视频的主机。cookie 只会发回原来的网站，不会发到别的网站；这一页的完整网址只提供给同一个网站，其他主机只会知道你是从哪个网站来的。
+</li><li>
+这些连接不经过我们，Radius 也没有自己的服务器，我们不会知道你看了哪个网页、下载了什么。
+</li><li>
+对方的网站会像你用浏览器看视频时一样，看到你的 IP 地址，并可能留下记录；这部分适用该网站自己的隐私政策。
+</li><li>
+上面这些数据只在下载当时使用，不会保存；Radius 不使用系统的 cookie 存储区，也不保留缓存。只用加密连接（https）下载。
+</li><li>
+Radius 不会解除任何版权保护；请只下载你有权保存的视频。
+</li></ul>
 </li><li>
 <strong>你主动做的事</strong>：用“共享”把文件发给别人或其他 App，或点“关于”页里的链接（由浏览器打开）。文件或链接发到哪里，由你选择的对象处理。
 </li></ul>
@@ -1071,7 +1239,7 @@ SwiftDraw（SVG 图片）
 </article>
 <article id="de" lang="de">
 <h1>Datenschutzerklärung für Radius</h1>
-<p class="meta">Version 1.2 | Gültig ab: 16. Oktober 2026</p>
+<p class="meta">Version 1.3 | Gültig ab: 24. November 2026</p>
 <p class="summary"><strong>Kurz gesagt: Radius erhebt deine personenbezogenen Daten und deine Dateien nicht, lädt sie nicht hoch und gibt sie nicht weiter. Deine Dateien werden nur auf deinem Gerät konvertiert.</strong></p>
 <h2>1. Geltungsbereich</h2>
 <p>Diese Erklärung gilt für die iOS-App Radius im App Store und für ihre Erweiterung im Teilen-Menü (zusammen „Radius“). Radius wird von einer Einzelperson entwickelt; „wir“ bezeichnet in dieser Erklärung diese Person.</p>
@@ -1096,6 +1264,8 @@ Temporäre Kopien und Zwischendateien werden gelöscht, sobald sie nicht mehr ge
 Konvertierte Dateien liegen in der App „Dateien“ unter „Auf meinem iPhone › Radius“. Dateien, die im Teilen-Menü konvertiert wurden, werden beim nächsten Öffnen von Radius in diesen Ordner verschoben.
 </li><li>
 Aufträge, die an die App übergeben werden müssen (zum Beispiel das Bearbeiten eines PDFs im Teilen-Menü), liegen kurz in einem Bereich, den sich die App und ihre Teilen-Erweiterung teilen, und werden gelöscht, sobald die App sie übernommen hat.
+</li><li>
+Videos, die du von einer Webseite herunterlädst (siehe Abschnitt 7), werden zuerst in den temporären Bereich geladen und dann je nach deiner Wahl konvertiert oder unverändert im Radius-Ordner gespeichert. Wenn du abbrichst oder der Download fehlschlägt, wird die temporäre Datei sofort gelöscht.
 </li></ul>
 <h2>4. Daten, die auf deinem Gerät gespeichert sind</h2>
 <p>Die folgenden Daten liegen nur auf deinem Gerät und werden nicht an uns übermittelt.</p>
@@ -1128,14 +1298,25 @@ Zweck: bei der nächsten Unterschrift direkt verwenden.
 Löschen: In der Signaturansicht auf „Gespeicherte Signatur löschen“ tippen oder die App löschen.
 </li></ul>
 </li><li>
-<strong>Einstellung für die App-Sperre</strong>: ob Radius mit Face ID oder Touch ID (oder dem Gerätecode) gesperrt ist und nach welcher Zeit außerhalb der App erneut entsperrt werden muss.
+<strong>Einstellung für die App-Sperre</strong>: ob Radius gesperrt ist, womit entsperrt wird (Face ID oder Touch ID bzw. der Gerätecode oder aber ein eigener Radius-Code) und nach welcher Zeit außerhalb der App erneut entsperrt werden muss.
 <ul><li>
 Speicherort: nur in der App (Radius im Teilen-Menü wird nicht gesperrt). „Auf Standard zurücksetzen“ ändert sie nicht.
 </li><li>
 Löschen: Die Sperre in den „Einstellungen“ von Radius ausschalten oder die App löschen.
 </li></ul>
 </li><li>
-<strong>Einfache Nutzungsangaben</strong>: die Gesamtzahl der erfolgreich konvertierten Dateien, Zähler für die Bewertungsanfrage, ob du die Einführung gesehen hast, ob du schon darauf hingewiesen wurdest, dass deine kostenlosen Konvertierungen zur Neige gehen, wann zuletzt die Kaufansicht oder die Geschenkkarte erschien, die zuletzt gewählte Sprache bei „Sprache zu Text“ sowie Größe und Farbe von Anmerkungstext.
+<strong>Radius-Code</strong> (nur vorhanden, wenn du diese Art des Entsperrens wählst):
+<ul><li>
+Speicherort: Der Code selbst wird nicht gespeichert. Gespeichert wird ein Hashwert, der aus dem Code und zufälligen Zusatzdaten berechnet wird. Er liegt im Schlüsselbund des Systems, bleibt nur auf diesem Gerät, wird nicht über den iCloud-Schlüsselbund synchronisiert, und der Code lässt sich daraus nicht zurückrechnen.
+</li><li>
+In der App werden außerdem die Zahl der aufeinanderfolgenden Fehleingaben und der Zeitpunkt gespeichert, ab dem du es wieder versuchen kannst, sowie eine Kennung für den Stand der auf diesem iPhone eingerichteten Face ID bzw. Touch ID zu dem Zeitpunkt, als du den Code festgelegt hast (sie stammt vom System und dient dazu, zu erkennen, ob später ein Gesicht oder Fingerabdruck hinzugefügt oder geändert wurde; sie enthält keine Gesichts- oder Fingerabdruckdaten).
+</li><li>
+Diesen Code kennst nur du. Wir haben keinen Zugriff darauf und können ihn auch nicht wiederherstellen.
+</li><li>
+Löschen: Wenn du die Sperre in den „Einstellungen“ von Radius ausschaltest, wird er gelöscht. Nach dem Löschen der App bleibt der Hashwert möglicherweise im Schlüsselbund erhalten; nach einer Neuinstallation ist die Sperre aber ausgeschaltet, und er wird nicht mehr verwendet. Wenn du das nächste Mal einen Code festlegst, wird er überschrieben.
+</li></ul>
+</li><li>
+<strong>Einfache Nutzungsangaben</strong>: die Gesamtzahl der erfolgreich konvertierten Dateien, Zähler für die Bewertungsanfrage, ob du die Einführung gesehen hast, ob du den Hinweis zu „Videos von Webseiten laden“ gesehen hast, ob du schon darauf hingewiesen wurdest, dass deine kostenlosen Konvertierungen zur Neige gehen, wann zuletzt die Kaufansicht oder die Geschenkkarte erschien, die zuletzt gewählte Sprache bei „Sprache zu Text“ sowie Größe und Farbe von Anmerkungstext.
 <ul><li>
 Zweck: entscheiden, wann Radius dich erinnert und wann es das System bittet, die Bewertungsanfrage anzuzeigen, sowie deine letzte Auswahl merken.
 </li><li>
@@ -1175,7 +1356,7 @@ Wenn du die Angaben vor dem Teilen entfernen möchtest, nutze „Private Infos e
 </li><li>
 <strong>Spracherkennung</strong>: „Sprache zu Text“ erkennt gesprochene Sprache in Videos und Aufnahmen auf dem Gerät und macht daraus Untertitel oder ein Transkript; der Ton wird nicht hochgeladen. Fragt das System nach dieser Berechtigung und du erlaubst sie nicht, kannst du „Sprache zu Text“ nicht verwenden.
 </li><li>
-<strong>Face ID / Touch ID</strong>: wird nur verwendet, wenn du die Sperre in den „Einstellungen“ von Radius einschaltest, und bestätigt beim Öffnen von Radius, dass du es bist; schlägt die Prüfung fehl, kannst du stattdessen den Gerätecode eingeben. Der Abgleich erfolgt durch iOS: Radius erfährt nur, ob die Prüfung erfolgreich war, und bekommt weder Gesichts- noch Fingerabdruckdaten. Diese bleiben in der Secure Enclave deines Geräts. Wenn du die Sperre nicht einschaltest, verwendet Radius diese Berechtigung nicht.
+<strong>Face ID / Touch ID</strong>: wird nur verwendet, wenn du die Sperre in den „Einstellungen“ von Radius einschaltest, und bestätigt beim Öffnen von Radius, dass du es bist; schlägt die Prüfung fehl, kannst du stattdessen den Gerätecode eingeben. Der Abgleich erfolgt durch iOS: Radius erfährt nur, ob die Prüfung erfolgreich war, und bekommt weder Gesichts- noch Fingerabdruckdaten. Diese bleiben in der Secure Enclave deines Geräts. Wenn du den Radius-Code verwendest, kannst du zusätzlich „Auch mit Face ID entsperren“ einschalten; dann zählt nur das Gesicht bzw. der Fingerabdruck, und der Gerätecode kann nicht stattdessen eingegeben werden. Wenn du die Sperre nicht einschaltest, verwendet Radius diese Berechtigung nicht.
 </li><li>
 <strong>Berechtigungen, die Radius nicht anfordert</strong>:
 <ul><li>
@@ -1191,7 +1372,7 @@ Standort, Kontakte, Mitteilungen und „Tracking erlauben“.
 <strong>Berechtigungen ändern oder widerrufen</strong>: Du kannst die oben genannten Berechtigungen jederzeit unter „Einstellungen › Apps › Radius“ in iOS ändern oder widerrufen. Danach funktionieren nur die Funktionen nicht mehr, die diese Berechtigung brauchen; alles andere läuft wie gewohnt weiter.
 </li></ul>
 <h2>7. Wann das Netzwerk genutzt wird</h2>
-<p>Das Konvertieren selbst braucht kein Netzwerk. In den folgenden Fällen wird das Netzwerk genutzt; sie werden vom System von Apple oder von einem Dienst deiner Wahl abgewickelt, und wir bekommen diese Daten nicht:</p>
+<p>Das Konvertieren selbst braucht kein Netzwerk. In den folgenden Fällen wird das Netzwerk genutzt: Außer bei „Videos von Webseiten laden“, wo sich Radius direkt mit der von dir angegebenen Website verbindet, werden sie vom System von Apple oder von einem Dienst deiner Wahl abgewickelt. In keinem dieser Fälle bekommen wir diese Daten:</p>
 <ul><li>
 <strong>App Store</strong>: Kauf, Käufe wiederherstellen und Einlösen von Angebotscodes werden vom App Store von Apple abgewickelt.
 </li><li>
@@ -1202,6 +1383,21 @@ Standort, Kontakte, Mitteilungen und „Tracking erlauben“.
 <strong>Fotos und Dateien, die noch in der Cloud liegen</strong>: Wenn ein ausgewähltes Foto, Live Photo oder eine Datei noch nicht auf dem Gerät ist, lädt das System oder der Cloud-Dienst, der die Datei bereitstellt, sie herunter.
 </li><li>
 <strong>Speichern in einem Cloud-Ordner</strong>: Wenn du den Speicherort auf einen Ordner einer Cloud-Speicher-App legst, schreibt Radius die Datei nur in diesen Ordner; das Hochladen übernimmt der jeweilige Dienst, und es gelten dessen Datenschutzbestimmungen. Radius meldet sich nicht bei deinem Cloud-Konto an und greift nicht darauf zu.
+</li><li>
+<strong>Videos von Webseiten laden</strong>: Das geschieht nur, wenn du auf einer Webseite auf „Teilen › Radius“ tippst.
+<ul><li>
+Radius liest die Adresse und den Titel dieser Seite sowie die Adressen der Videos auf der Seite, um herauszufinden, welche Videos es dort gibt. Beim Teilen aus Safari liest Radius außerdem die Kennung des Browsers und die Cookies, die diese Website im Browser gespeichert hat und die die Webseite selbst lesen kann.
+</li><li>
+Sobald du ein Video zum Herunterladen ausgewählt hast, verbindet sich Radius direkt von deinem Gerät aus mit dieser Website und mit dem Server, auf dem das Video liegt. Cookies werden nur an die ursprüngliche Website zurückgesendet, nicht an andere Websites; die vollständige Adresse der Seite erhält nur dieselbe Website, andere Server erfahren lediglich, von welcher Website du kommst.
+</li><li>
+Diese Verbindungen laufen nicht über uns, und Radius hat auch keine eigenen Server. Wir erfahren nicht, welche Webseite du dir angesehen und was du heruntergeladen hast.
+</li><li>
+Die betreffende Website sieht deine IP-Adresse, genauso wie wenn du dir das Video im Browser ansiehst, und protokolliert sie möglicherweise; dafür gelten die Datenschutzbestimmungen dieser Website.
+</li><li>
+Die oben genannten Daten werden nur während des Downloads verwendet und nicht gespeichert; Radius nutzt weder den Cookie-Speicher des Systems, noch legt es einen Cache an. Heruntergeladen wird nur über verschlüsselte Verbindungen (https).
+</li><li>
+Radius umgeht keinen Kopierschutz; lade bitte nur Videos herunter, die du speichern darfst.
+</li></ul>
 </li><li>
 <strong>Was du selbst auslöst</strong>: eine Datei über „Teilen“ an andere Personen oder Apps senden oder einen Link auf der Seite „Info“ antippen (er wird im Browser geöffnet). Die Datei bzw. den Link verarbeitet dann der Empfänger, den du gewählt hast.
 </li></ul>
@@ -1242,7 +1438,7 @@ E-Mail: <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a>
 </article>
 <article id="fr" lang="fr">
 <h1>Politique de confidentialité de Radius</h1>
-<p class="meta">Version 1.2 | Date d’entrée en vigueur : 16 octobre 2026</p>
+<p class="meta">Version 1.3 | Date d’entrée en vigueur : 24 novembre 2026</p>
 <p class="summary"><strong>En bref : Radius ne collecte, ne transmet et ne partage ni vos données personnelles ni vos fichiers. Vos fichiers sont convertis uniquement sur votre appareil.</strong></p>
 <h2>1. Champ d’application</h2>
 <p>La présente politique s’applique à l’app iOS Radius sur l’App Store, ainsi qu’à son extension dans le menu Partager (ci-après ensemble, « Radius »). Radius est développé par un développeur individuel ; dans la présente politique, « nous » désigne ce développeur.</p>
@@ -1267,6 +1463,8 @@ Les copies temporaires et les fichiers intermédiaires sont supprimés dès qu�
 Les fichiers convertis sont enregistrés dans l’app Fichiers, dans « Sur mon iPhone › Radius ». Ceux qui sont convertis depuis le menu Partager y sont déplacés la prochaine fois que vous revenez dans Radius.
 </li><li>
 Les tâches qui doivent être confiées à l’app (par exemple modifier un PDF depuis le menu Partager) sont placées temporairement dans un espace partagé entre l’app et son extension, puis supprimées dès que l’app les a prises en charge.
+</li><li>
+Les vidéos téléchargées depuis une page web (voir la section 7) sont d’abord téléchargées dans la zone temporaire, puis, selon votre choix, converties ou enregistrées telles quelles dans le dossier Radius. Si vous annulez ou si le téléchargement échoue, le fichier temporaire est supprimé aussitôt.
 </li></ul>
 <h2>4. Données stockées sur votre appareil</h2>
 <p>Les données suivantes restent sur votre appareil et ne nous sont jamais transmises.</p>
@@ -1299,14 +1497,25 @@ Utilité : la réutiliser directement la prochaine fois que vous signez.
 Suppression : touchez « Supprimer la signature enregistrée » sur l’écran de signature, ou supprimez l’app.
 </li></ul>
 </li><li>
-<strong>Réglage du verrouillage de l’app</strong> : le choix de verrouiller ou non Radius par Face ID ou Touch ID (ou par le code de l’appareil), et le délai d’absence après lequel il faut le déverrouiller de nouveau.
+<strong>Réglage du verrouillage de l’app</strong> : le choix de verrouiller ou non Radius, le mode de déverrouillage (Face ID ou Touch ID, ou le code de l’appareil, ou encore un code Radius), et le délai d’absence après lequel il faut le déverrouiller de nouveau.
 <ul><li>
 Emplacement : dans l’app uniquement (Radius dans le menu Partager n’est pas verrouillé). « Rétablir les valeurs par défaut » ne le modifie pas.
 </li><li>
 Suppression : désactivez le verrouillage dans « Réglages de conversion », ou supprimez l’app.
 </li></ul>
 </li><li>
-<strong>Petits relevés d’utilisation</strong> : nombre total de fichiers convertis avec succès, compteurs pour la demande de notation, le fait que vous ayez vu ou non le tutoriel et que l’on vous ait déjà prévenu ou non que vos essais gratuits touchent à leur fin, date de dernière apparition de l’écran d’achat ou de la carte d’essais offerts, dernière langue choisie pour la transcription vocale, taille et couleur du texte d’annotation.
+<strong>Code Radius</strong> (seulement si vous choisissez ce mode de déverrouillage) :
+<ul><li>
+Emplacement : le code lui-même n’est pas enregistré ; seule est conservée une valeur de hachage calculée après ajout de données aléatoires, placée dans le Trousseau du système. Elle reste uniquement sur cet appareil, n’est pas synchronisée par le Trousseau iCloud et ne permet pas de retrouver le code.
+</li><li>
+L’app enregistre en outre le nombre d’erreurs de saisie consécutives et le moment à partir duquel vous pourrez réessayer, ainsi qu’une valeur reflétant l’état d’enregistrement de Face ID ou Touch ID sur cet iPhone au moment où vous avez défini le code (fournie par le système, elle sert à détecter si un visage ou une empreinte digitale a été ajouté ou modifié par la suite ; ce ne sont pas des données de visage ou d’empreinte digitale).
+</li><li>
+Vous seul connaissez ce code : nous n’y avons pas accès et ne pouvons pas le retrouver pour vous.
+</li><li>
+Suppression : désactiver le verrouillage dans « Réglages de conversion » l’efface. Après la suppression de l’app, la valeur de hachage peut subsister dans le Trousseau, mais le verrouillage est désactivé après une réinstallation et elle n’est plus utilisée ; elle est remplacée la prochaine fois que vous définissez un code.
+</li></ul>
+</li><li>
+<strong>Petits relevés d’utilisation</strong> : nombre total de fichiers convertis avec succès, compteurs pour la demande de notation, le fait que vous ayez vu ou non le tutoriel, que vous ayez vu ou non l’explication de « Télécharger des vidéos du web », et que l’on vous ait déjà prévenu ou non que vos essais gratuits touchent à leur fin, date de dernière apparition de l’écran d’achat ou de la carte d’essais offerts, dernière langue choisie pour la transcription vocale, taille et couleur du texte d’annotation.
 <ul><li>
 Utilité : décider quand vous prévenir et quand demander au système d’afficher la demande de notation, et mémoriser votre dernier choix.
 </li><li>
@@ -1346,7 +1555,7 @@ Pour les effacer avant un partage, utilisez « Supprimer les infos privées »
 </li><li>
 <strong>Reconnaissance vocale</strong> : « Transcription » reconnaît sur votre appareil les paroles des vidéos et des enregistrements pour en faire des sous-titres ou une transcription ; l’audio n’est pas envoyé. Si le système demande cette autorisation et que vous la refusez, vous ne pouvez pas utiliser « Transcription ».
 </li><li>
-<strong>Face ID / Touch ID</strong> : utilisés uniquement si vous activez le verrouillage dans « Réglages de conversion », pour vérifier que c’est bien vous quand vous ouvrez Radius ; en cas d’échec, vous pouvez saisir le code de l’appareil. La comparaison est faite par iOS : Radius sait seulement si la vérification a réussi et ne reçoit jamais vos données de visage ou d’empreinte, qui restent dans le Secure Enclave de l’appareil. Si vous n’activez pas le verrouillage, Radius n’utilise jamais cette autorisation.
+<strong>Face ID / Touch ID</strong> : utilisés uniquement si vous activez le verrouillage dans « Réglages de conversion », pour vérifier que c’est bien vous quand vous ouvrez Radius ; en cas d’échec, vous pouvez saisir le code de l’appareil. La comparaison est faite par iOS : Radius sait seulement si la vérification a réussi et ne reçoit jamais vos données de visage ou d’empreinte, qui restent dans le Secure Enclave de l’appareil. Si vous choisissez le code Radius, vous pouvez activer en plus « Déverrouiller aussi avec Face ID » ; dans ce cas, seuls le visage ou l’empreinte digitale sont acceptés, sans possibilité de saisir le code de l’appareil à la place. Si vous n’activez pas le verrouillage, Radius n’utilise jamais cette autorisation.
 </li><li>
 <strong>Autorisations que Radius ne demande pas</strong> :
 <ul><li>
@@ -1362,7 +1571,7 @@ Localisation, contacts, notifications, et « Autoriser le suivi ».
 <strong>Modifier ou retirer une autorisation</strong> : vous pouvez à tout moment modifier ou retirer chacune des autorisations ci-dessus dans « Réglages › Apps › Radius » d’iOS. Seules les fonctions qui en ont besoin cessent de fonctionner ; le reste continue normalement.
 </li></ul>
 <h2>7. Quand le réseau est utilisé</h2>
-<p>La conversion elle-même ne nécessite pas de connexion. Les cas suivants utilisent le réseau ; tous sont gérés par le système d’Apple ou par un service que vous choisissez, et nous ne recevons jamais ces données :</p>
+<p>La conversion elle-même ne nécessite pas de connexion. Les cas suivants utilisent le réseau : à l’exception de « Télécharger des vidéos du web », où Radius se connecte directement au site que vous indiquez, tous sont gérés par le système d’Apple ou par un service que vous choisissez. Dans tous les cas, nous ne recevons jamais ces données :</p>
 <ul><li>
 <strong>App Store</strong> : les achats, la restauration des achats et l’utilisation de codes d’offre sont gérés par l’App Store d’Apple.
 </li><li>
@@ -1373,6 +1582,21 @@ Localisation, contacts, notifications, et « Autoriser le suivi ».
 <strong>Photos et fichiers encore dans le cloud</strong> : si une photo, une Live Photo ou un fichier que vous choisissez n’est pas encore téléchargé sur l’appareil, c’est le système ou le service cloud qui le fournit qui le télécharge.
 </li><li>
 <strong>Enregistrement dans un dossier cloud</strong> : si vous choisissez comme emplacement d’enregistrement un dossier fourni par une app de stockage cloud, Radius se contente d’y écrire les fichiers ; l’envoi est assuré par ce service et relève de sa politique de confidentialité. Radius ne se connecte jamais à votre compte cloud et n’y accède jamais.
+</li><li>
+<strong>Télécharger des vidéos du web</strong> : uniquement lorsque vous touchez « Partager › Radius » sur une page web.
+<ul><li>
+Radius lit l’adresse et le titre de cette page, ainsi que les adresses des vidéos qu’elle contient, afin de repérer les vidéos présentes sur la page. Lorsque vous partagez depuis Safari, Radius lit aussi la chaîne d’identification du navigateur et les cookies que ce site a enregistrés dans le navigateur et que la page elle-même peut lire.
+</li><li>
+Une fois que vous avez choisi la vidéo à télécharger, Radius se connecte directement, depuis votre appareil, à ce site et aux serveurs qui hébergent la vidéo. Les cookies ne sont renvoyés qu’au site d’origine, jamais à un autre site ; l’adresse complète de la page n’est communiquée qu’à ce même site, et les autres serveurs savent seulement de quel site vous venez.
+</li><li>
+Ces connexions ne passent pas par nous, et Radius n’a pas de serveur propre : nous ne savons ni quelle page vous avez consultée ni ce que vous avez téléchargé.
+</li><li>
+Le site en question voit votre adresse IP, comme lorsque vous regardez une vidéo dans un navigateur, et peut en garder une trace ; cela relève de la politique de confidentialité de ce site.
+</li><li>
+Les données ci-dessus ne sont utilisées qu’au moment du téléchargement et ne sont pas conservées ; Radius n’utilise pas l’espace de stockage des cookies du système et ne garde aucun cache. Les téléchargements se font uniquement par connexion chiffrée (https).
+</li><li>
+Radius ne contourne aucune protection contre la copie ; ne téléchargez que les vidéos que vous avez le droit de conserver.
+</li></ul>
 </li><li>
 <strong>Actions que vous faites vous-même</strong> : envoyer un fichier à quelqu’un ou à une autre app avec Partager, ou toucher un lien de la page « À propos » (ouvert dans le navigateur). Une fois envoyé, le fichier ou le lien est traité par le destinataire que vous avez choisi.
 </li></ul>
@@ -1413,7 +1637,7 @@ E-mail : <a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a>
 </article>
 <article id="pt-BR" lang="pt-BR">
 <h1>Política de Privacidade do Radius</h1>
-<p class="meta">Versão 1.2 | Vigente a partir de 16 de outubro de 2026</p>
+<p class="meta">Versão 1.3 | Vigente a partir de 24 de novembro de 2026</p>
 <p class="summary"><strong>Resumindo: o Radius não coleta, não envia e não compartilha seus dados pessoais nem seus arquivos. Seus arquivos são convertidos somente no seu aparelho.</strong></p>
 <h2>1. Abrangência</h2>
 <p>Esta política vale para o app Radius para iOS na App Store e para a extensão dele no menu Compartilhar (juntos, “Radius”). O Radius é criado por um desenvolvedor individual; nesta política, “nós” se refere a esse desenvolvedor.</p>
@@ -1438,6 +1662,8 @@ As cópias temporárias e os arquivos intermediários da conversão são apagado
 Os arquivos convertidos ficam no app Arquivos, em “No Meu iPhone › Radius”. Os arquivos convertidos no menu Compartilhar são movidos para essa pasta na próxima vez que você voltar ao Radius.
 </li><li>
 Tarefas que precisam ser passadas para o app (por exemplo, editar um PDF no menu Compartilhar) ficam guardadas temporariamente em um espaço compartilhado entre o app e a extensão e são apagadas assim que o app as recebe.
+</li><li>
+Os vídeos baixados da web (veja a seção 7) vão primeiro para a área temporária e depois são convertidos como você escolher, ou salvos como estão na pasta Radius. Se você cancelar ou o download falhar, o arquivo temporário é apagado na hora.
 </li></ul>
 <h2>4. Dados guardados no seu aparelho</h2>
 <p>Os dados abaixo ficam somente no seu aparelho e não são enviados para nós.</p>
@@ -1470,14 +1696,25 @@ Para quê: usá-la direto na próxima vez que você assinar.
 Como apagar: toque em “Apagar assinatura salva” na tela de assinatura ou apague o app.
 </li></ul>
 </li><li>
-<strong>Ajuste do bloqueio do app</strong>: se o Radius é bloqueado com Face ID ou Touch ID (ou com o código do aparelho) e depois de quanto tempo fora do app ele pede o desbloqueio de novo.
+<strong>Ajuste do bloqueio do app</strong>: se o Radius é bloqueado, qual forma de desbloqueio é usada (Face ID, Touch ID ou código do aparelho, ou então o código do Radius) e depois de quanto tempo fora do app ele pede o desbloqueio de novo.
 <ul><li>
 Onde fica: somente no app (o Radius no menu Compartilhar não é bloqueado). “Restaurar padrões” não o altera.
 </li><li>
 Como apagar: desative o bloqueio em “Ajustes de conversão” ou apague o app.
 </li></ul>
 </li><li>
-<strong>Pequeno registro de uso</strong>: o total de arquivos convertidos com sucesso, contadores usados para a janela de avaliação, se você já viu o tutorial, se o aviso de que os usos grátis estão acabando já foi mostrado, quando a tela de compra ou o cartão de presente apareceu pela última vez, o último idioma escolhido em Fala para texto e o tamanho e a cor do texto das anotações.
+<strong>Código do Radius</strong> (só existe se você escolher essa forma de desbloqueio):
+<ul><li>
+Onde fica: o código em si não é guardado. O que fica guardado é um hash calculado depois de juntar dados aleatórios ao código; ele fica em Chaves (Keychain), somente neste aparelho, não é sincronizado pelas Chaves do iCloud e não permite chegar de volta ao código.
+</li><li>
+O app também anota quantas vezes seguidas o código foi digitado errado e até quando é preciso esperar para tentar de novo, além de um valor que representa o estado do cadastro do Face ID ou do Touch ID deste iPhone no momento em que o código foi definido (fornecido pelo sistema, serve para perceber se algum rosto ou digital foi adicionado ou alterado depois; não é um dado de rosto nem de digital).
+</li><li>
+Só você conhece esse código; nós não temos acesso a ele e não conseguimos recuperá-lo para você.
+</li><li>
+Como apagar: desativar o bloqueio em “Ajustes de conversão” apaga o código. Depois de apagar o app, o hash pode continuar em Chaves, mas, ao reinstalar, o bloqueio vem desativado e o hash não é mais usado; ele é sobrescrito na próxima vez que você definir um código.
+</li></ul>
+</li><li>
+<strong>Pequeno registro de uso</strong>: o total de arquivos convertidos com sucesso, contadores usados para a janela de avaliação, se você já viu o tutorial, se já viu a explicação de “Baixar vídeos da web”, se o aviso de que os usos grátis estão acabando já foi mostrado, quando a tela de compra ou o cartão de presente apareceu pela última vez, o último idioma escolhido em Fala para texto e o tamanho e a cor do texto das anotações.
 <ul><li>
 Para quê: decidir quando lembrar você de algo, quando pedir ao sistema a janela de avaliação e lembrar sua última escolha.
 </li><li>
@@ -1517,7 +1754,7 @@ Para limpar antes de compartilhar, use “Remover dados privados”. Ele vale pa
 </li><li>
 <strong>Reconhecimento de Fala</strong>: Fala para texto reconhece, no próprio aparelho, o que é dito em vídeos e gravações para criar legendas ou transcrições; o áudio não é enviado. Se o sistema pedir essa permissão e você não permitir, Fala para texto não pode ser usado.
 </li><li>
-<strong>Face ID / Touch ID</strong>: só são usados se você ativar o bloqueio em “Ajustes de conversão”, para confirmar que é você quando o Radius é aberto; se a verificação falhar, você pode digitar o código do aparelho. A comparação é feita pelo iOS e o Radius só recebe “sucesso” ou “falha”, nunca os dados do seu rosto ou da sua digital, que ficam no Secure Enclave do aparelho. Se você não ativar o bloqueio, o Radius não usa essa permissão.
+<strong>Face ID / Touch ID</strong>: só são usados se você ativar o bloqueio em “Ajustes de conversão”, para confirmar que é você quando o Radius é aberto; se a verificação falhar, você pode digitar o código do aparelho. A comparação é feita pelo iOS e o Radius só recebe “sucesso” ou “falha”, nunca os dados do seu rosto ou da sua digital, que ficam no Secure Enclave do aparelho. Quem usa o código do Radius pode ainda ativar “Desbloquear também com Face ID”; nesse caso, só o rosto ou a digital são aceitos, sem a opção de digitar o código do aparelho. Se você não ativar o bloqueio, o Radius não usa essa permissão.
 </li><li>
 <strong>Permissões que o Radius não pede</strong>:
 <ul><li>
@@ -1533,7 +1770,7 @@ Localização, Contatos, Notificações e “Permitir Rastreamento”.
 <strong>Alterar ou revogar permissões</strong>: você pode alterar ou revogar as permissões acima quando quiser em “Ajustes › Apps › Radius” do iOS. Depois de revogar, só deixam de funcionar os recursos que usam aquela permissão; o resto continua normal.
 </li></ul>
 <h2>7. Quando a rede é usada</h2>
-<p>A conversão em si não precisa de internet. Nos casos abaixo a rede é usada, sempre pelo sistema da Apple ou por um serviço que você escolheu, e não temos acesso a esses dados:</p>
+<p>A conversão em si não precisa de internet. Nos casos abaixo a rede é usada: com exceção de “Baixar vídeos da web”, em que o Radius se conecta diretamente ao site que você indicou, tudo passa pelo sistema da Apple ou por um serviço que você escolheu. Em nenhum dos casos temos acesso a esses dados:</p>
 <ul><li>
 <strong>App Store</strong>: compra, restauração de compras e resgate de códigos de oferta são tratados pela App Store da Apple.
 </li><li>
@@ -1544,6 +1781,21 @@ Localização, Contatos, Notificações e “Permitir Rastreamento”.
 <strong>Fotos e arquivos que ainda estão na nuvem</strong>: se uma foto, Live Photo ou arquivo que você escolheu ainda não está no aparelho, o sistema ou o serviço de nuvem que guarda o arquivo faz o download.
 </li><li>
 <strong>Salvar em uma pasta na nuvem</strong>: se você definir como local de salvamento uma pasta fornecida por um app de armazenamento na nuvem, o Radius apenas grava o arquivo nessa pasta; o envio fica a cargo desse serviço e segue a política de privacidade dele. O Radius não faz login na sua conta na nuvem nem a acessa.
+</li><li>
+<strong>Baixar vídeos da web</strong>: só acontece quando você toca em “Compartilhar › Radius” em uma página da web.
+<ul><li>
+O Radius lê o endereço e o título da página e os endereços dos vídeos que estão nela, para descobrir quais vídeos a página tem. Quando você compartilha a partir do Safari, ele também lê a string de identificação do navegador (user agent) e os cookies que o site guardou no navegador e que a própria página consegue ler.
+</li><li>
+Depois que você escolhe o vídeo para baixar, o Radius se conecta, direto do seu aparelho, a esse site e ao servidor onde o vídeo está hospedado. Os cookies só são enviados de volta ao site de origem, nunca a outros sites; o endereço completo da página só é informado ao mesmo site, e os outros servidores ficam sabendo apenas de qual site você veio.
+</li><li>
+Essas conexões não passam por nós, e o Radius não tem servidores próprios; não ficamos sabendo que página você viu nem o que baixou.
+</li><li>
+O site do outro lado vê o seu endereço IP, como acontece quando você assiste ao vídeo no navegador, e pode guardar um registro disso; nessa parte vale a política de privacidade do próprio site.
+</li><li>
+Os dados acima são usados só durante o download e não ficam guardados; o Radius não usa o armazenamento de cookies do sistema nem mantém cache. O download é feito somente por conexão criptografada (https).
+</li><li>
+O Radius não remove nenhuma proteção de direitos autorais; baixe apenas vídeos que você tem o direito de guardar.
+</li></ul>
 </li><li>
 <strong>O que você faz por conta própria</strong>: enviar um arquivo a outra pessoa ou a outro app com Compartilhar, ou tocar em um link da página “Sobre” (aberto no navegador). Depois disso, o arquivo ou o link fica a cargo de quem você escolheu.
 </li></ul>
