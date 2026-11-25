@@ -6,10 +6,11 @@ import html, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(HERE)
 APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Corner Talk', '美國生活英文單字卡'), ('mots-de-voyage', 'Mots de voyage', '法國旅遊法文單字卡'), ('ferdaord', 'Ferðaorð', '冰島旅遊冰島文單字卡'), ('palabras-de-viaje', 'Palabras de viaje', '西班牙旅遊西語單字卡'), ('reisewoerter', 'Reisewörter', '德國旅遊德語單字卡'), ('parole-di-viaggio', 'Parole di viaggio', '義大利旅遊義語單字卡'),
-        ('typeday', 'Typeday', '打字機風格的待辦月曆'), ('radius', 'Radius', '在 iPhone 上離線轉檔')]
+        ('typeday', 'Typeday', '打字機風格的待辦月曆'), ('radius', 'Radius', '在 iPhone 上離線轉檔'), ('halzo', 'Halzo', '底片濾鏡相機')]
 # 頁面由 App 自己產生、直接寫進這裡的子資料夾（這支只列在首頁）：Typeday＝../checkly-ios 的 tools/appstore/build_site.py --apps（中英兩版）；
 # Radius＝../radius 的 scripts/build_public_pages.py（9 種語言、一頁切換，網址是資料夾形式 radius/privacy/、radius/support/）
-PREBUILT = {'typeday', 'radius'}
+# Halzo＝../leakframe 的 tools/build_pages.py ../apps（中英日三語，同一頁用 #zh #en #ja 切換）
+PREBUILT = {'typeday', 'radius', 'halzo'}
 # 首頁連結的路徑（沒列的照 <repo>/privacy.html、<repo>/support.html）
 LINKS = {'radius': ('radius/privacy/', 'radius/support/')}
 # 首頁另外多列的連結：Radius 的「原始碼與建置說明」（LGPL／MPL 元件的原始碼，由 ../radius 的原始碼包流程產生，2026-10-16）
