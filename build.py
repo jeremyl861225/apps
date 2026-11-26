@@ -6,11 +6,14 @@ import html, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(HERE)
 APPS = [('tabi-kotoba', '旅ことば', '日本旅遊日文單字卡'), ('yeohaengmal', '여행말', '韓國旅遊韓文單字卡'), ('street-talk', 'Corner Talk', '美國生活英文單字卡'), ('mots-de-voyage', 'Mots de voyage', '法國旅遊法文單字卡'), ('ferdaord', 'Ferðaorð', '冰島旅遊冰島文單字卡'), ('palabras-de-viaje', 'Palabras de viaje', '西班牙旅遊西語單字卡'), ('reisewoerter', 'Reisewörter', '德國旅遊德語單字卡'), ('parole-di-viaggio', 'Parole di viaggio', '義大利旅遊義語單字卡'),
-        ('typeday', 'Typeday', '打字機風格的待辦月曆'), ('radius', 'Radius', '在 iPhone 上離線轉檔'), ('halzo', 'Halzo', '底片濾鏡相機')]
+        ('typeday', 'Typeday', '打字機風格的待辦月曆'), ('radius', 'Radius', '在 iPhone 上離線轉檔'), ('halzo', 'Halzo', '底片濾鏡相機'),
+        ('goldlight', '等光 Goldlight', '風景攝影時機')]
 # 頁面由 App 自己產生、直接寫進這裡的子資料夾（這支只列在首頁）：Typeday＝../checkly-ios 的 tools/appstore/build_site.py --apps（中英兩版）；
 # Radius＝../radius 的 scripts/build_public_pages.py（9 種語言、一頁切換，網址是資料夾形式 radius/privacy/、radius/support/）
 # Halzo＝../leakframe 的 tools/build_pages.py ../apps（中英日三語，同一頁用 #zh #en #ja 切換）
 PREBUILT = {'typeday', 'radius', 'halzo'}
+# 網址與 App repo 資料夾名稱不同的（等光的 repo 仍叫 LightPlanner，2026-11-26）
+SRC = {'goldlight': 'LightPlanner'}
 # 首頁連結的路徑（沒列的照 <repo>/privacy.html、<repo>/support.html）
 LINKS = {'radius': ('radius/privacy/', 'radius/support/')}
 # 首頁另外多列的連結：Radius 的「原始碼與建置說明」（LGPL／MPL 元件的原始碼，由 ../radius 的原始碼包流程產生，2026-10-16）
@@ -70,7 +73,7 @@ def main():
             continue
         os.makedirs(os.path.join(HERE, repo), exist_ok=True)
         for kind, fn, title in (('privacy', 'PRIVACY.md', '隱私權政策'), ('support', 'SUPPORT.md', '使用說明與支援')):
-            md = open(os.path.join(BASE, repo, fn), encoding='utf-8').read()
+            md = open(os.path.join(BASE, SRC.get(repo, repo), fn), encoding='utf-8').read()
             open(os.path.join(HERE, repo, f'{kind}.html'), 'w', encoding='utf-8').write(page(f'{name} {title}', md2html(md)))
     idx = '<h1>App 隱私權政策與支援</h1>\n<p>jeremyl861225 的 iPhone App。聯絡：<a href="mailto:lins.program@gmail.com">lins.program@gmail.com</a></p>\n' + '\n'.join(
         f'<h2>{name}<span style="font-weight:400;color:var(--ink2);font-size:15px">　{sub}</span></h2>'
